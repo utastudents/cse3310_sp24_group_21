@@ -13,8 +13,5 @@ public class WordList {
     public String getWord() {
         return null;
     }
-
-    public void foundWord(String word) {
-
-    }
+    
 }

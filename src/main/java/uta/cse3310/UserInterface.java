@@ -2,47 +2,47 @@ package uta.cse3310;
 
 public class UserInterface {
 
-    private void enterName() {
+    public void enterName() {
 
     }
 
-    private void lobby() {
+    public void lobby() {
 
     }
 
-    private void wordList() {
+    public void wordList() {
 
     }
 
-    private void rules() {
+    public void rules() {
         
     }
 
-    private void scoreBoard() {
+    public void scoreBoard() {
         
     }
 
-    private void leaderBoard() {
+    public void leaderBoard() {
         
     }
     
-    private void chat() {
+    public void chat() {
         
     }
 
-    private void grid() {
+    public void grid() {
         
     }
 
-    private void playerlist() {
+    public void playerlist() {
         
     }
 
-    private void gridinfo() {
+    public void gridinfo() {
         
     }
 
-    private void timer() {
+    public void timer() {
         
     }
 }
