@@ -3,21 +3,25 @@ package uta.cse3310;
 // there are a lot of remnants from the tictactoe program incase they're needed later, will be removed otherwise
 public class Game {
 
-    PlayerType Players;
+    public PlayerType Players;
+    public PlayerType CurrentTurn;
     public PlayerType[] Button;
-
     public String[] Msg;
     public int GameId;
-    public Statistics Stats;
+    //public Statistics Stats;
 
-    Game(Statistics s) {
-        Stats = s;
+    Game(/*Statistics s*/) {
+        // Stats = s;
         Button = new PlayerType[9];
         // initialize it
         ResetGrid();
-
-        Msg = new String[2];
-        Msg[0] = "";
+        Players = PlayerType.PLAYERONE;
+        CurrentTurn = PlayerType.NOPLAYER;
+        Msg = new String[4];//2
+        Msg[0] = "Waiting for other player to join";
+        Msg[1] = "";
+        Msg[2] = "";
+        Msg[3] = "";
     }
 
     public void ResetGrid() {
@@ -28,8 +32,12 @@ public class Game {
     }
 
     public void StartGame() {
-        Msg[0] = "";
-        Stats.setGamesInProgress(Stats.getGamesInProgress() + 1);
+        Msg[0] = "Player1";
+        Msg[1] = "Player2";
+        Msg[2] = "Player3";
+        Msg[3] = "Player4";
+        CurrentTurn = PlayerType.PLAYERONE;
+        // Stats.setGamesInProgress(Stats.getGamesInProgress() + 1);
     }
 
     private boolean CheckLine(int i, int j, int k, PlayerType player) {
@@ -63,10 +71,53 @@ public class Game {
     // It does not depend on the representation of Enums
     public int PlayerToIdx(PlayerType P) {
         int retval = 0;
+        //add idx for player 3,4
+        if (P == PlayerType.PLAYERONE) {
+            retval = 0;
+        } else {
+            retval = 1;
+        }
         return retval;
     }
 
     public void Update(UserEvent U) {
+        if ((CurrentTurn == U.PlayerIdx) && (CurrentTurn == PlayerType.PLAYERONE || CurrentTurn == PlayerType.PLAYERTWO)) {
+                        // Move is legitimate, lets do what was requested
+            
+                        // Is the button not taken by X or O?
+                        if (Button[U.Button] == PlayerType.NOPLAYER) {
+                            System.out.println("the button was 0, setting it to" + U.PlayerIdx);
+                            Button[U.Button] = U.PlayerIdx;
+                            if (U.PlayerIdx == PlayerType.PLAYERTWO) {
+                                CurrentTurn = PlayerType.PLAYERONE;
+                                Msg[1] = "Other Players Move.";
+                                Msg[0] = "Your Move.";
+                            } else {
+                                CurrentTurn = PlayerType.PLAYERTWO;
+                                Msg[0] = "Other Players Move.";
+                                Msg[1] = "Your Move.";
+                            }
+                        } else {
+                            Msg[PlayerToIdx(U.PlayerIdx)] = "Not a legal move.";
+                        }
+                    }
+            
+                        // Check for winners, losers, and a draw
+                        
+                        // if (CheckBoard(PlayerType.XPLAYER)) {
+                        //     Msg[0] = "You Win!";
+                        //     Msg[1] = "You Lose!";
+                        //     CurrentTurn = PlayerType.NOPLAYER;
+                        // } else if (CheckBoard(PlayerType.OPLAYER)) {
+                        //     Msg[1] = "You Win!";
+                        //     Msg[0] = "You Lose!";
+                        //     CurrentTurn = PlayerType.NOPLAYER;
+                        // } else if (CheckDraw(U.PlayerIdx)) {
+                        //     Msg[0] = "Draw";
+                        //     Msg[1] = "Draw";
+                        //     CurrentTurn = PlayerType.NOPLAYER;
+                        // }  
+            
     }
 
     public void GameTime() {
@@ -75,5 +126,14 @@ public class Game {
 
     }
 }
-// In windows, shift-alt-F formats the source code
-// In linux, it is ctrl-shift-I
+
+
+
+    
+    
+
+    
+
+   
+    
+   

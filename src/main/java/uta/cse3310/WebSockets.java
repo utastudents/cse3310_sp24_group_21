@@ -52,7 +52,7 @@ public class WebSockets extends WebSocketServer {
       // search for a game needing a player
       Game G = null;
       for (Game i : ActiveGames) {
-        if (i.Players == uta.cse3310.PlayerType.PLAYERONE) {
+        if (i.Players == uta.cse3310.PlayerType.PLAYERONE || i.Players == uta.cse3310.PlayerType.PLAYERTWO || i.Players == uta.cse3310.PlayerType.PLAYERTHREE) {
           G = i;
           System.out.println("found a match");
         }
@@ -70,14 +70,12 @@ public class WebSockets extends WebSocketServer {
       }else if(G.Players == uta.cse3310.PlayerType.PLAYERONE){
         System.out.println("not a new game");
         G.Players = uta.cse3310.PlayerType.PLAYERTWO;
-        G.StartGame();
+        //G.StartGame();
     }else if(G.Players == uta.cse3310.PlayerType.PLAYERTWO){
         G.Players = uta.cse3310.PlayerType.PLAYERTHREE;
-        G.StartGame();
     }else if(G.Players == uta.cse3310.PlayerType.PLAYERTHREE){
         G.Players = uta.cse3310.PlayerType.PLAYERFOUR;
-        G.StartGame();
-    }
+    }G.StartGame();
       // } else {
       //   // join an existing game
       //   System.out.println(" not a new game");
