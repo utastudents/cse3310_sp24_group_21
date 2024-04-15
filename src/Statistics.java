@@ -36,5 +36,11 @@ public class Statistics {
     public void setGamesInProgress(Integer gamesInProgress) {
         GamesInProgress = gamesInProgress;
     }
+    public void incrementGamesInProgress() {
+        GamesInProgress++;
+    }
+    public void incrementTotalGames() {
+        TotalGames++;
+    }
 
 }
