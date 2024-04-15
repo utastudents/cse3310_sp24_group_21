@@ -15,7 +15,7 @@
         <button onclick="enterName()">Enter</button>
         <p>Options:</p>
         <button onclick="startGame()">Start Game</button>
-        <button onclick="viewRules()">View Rules</button>
+        <button onclick="viewRules()">View Rules</button> <!-- Added View Rules button -->
     </div>
     <div id="rules" style="display: none;">
         <h2>Game Rules</h2>
@@ -29,10 +29,11 @@
         <p>Scoreboard:</p>
         <p id="scoreboard">Display current game score here.</p>
         <button onclick="chat()">Chat</button>
-        <button onclick="grid()">Display Game Grid</button>
+        <button onclick="displayGrid()">Display Game Grid</button>
         <button onclick="playerlist()">List of Players</button>
         <button onclick="gridinfo()">Game Grid Information</button>
         <button onclick="timer()">Start Timer</button>
+        <div id="gridContainer"></div> <!-- Container for displaying the grid -->
     </div>
 
     <script>
@@ -80,13 +81,31 @@
         }
 
         function viewRules() {
-            lobbyDiv.style.display = "none";
-            rulesDiv.style.display = "block";
-        }
+    var rulesList = [
+        "1. Players take turns guessing a word.",
+        "2. The word to be guessed must be a common English word with a words greater than 3 letter.",
+        "3. After each guess, the host provides feedback indicating how many letters in the guess are correct and in the correct position.",
+        "4. Players continue guessing until the word is correctly guessed or until the timer runs out.",
+        "5. The player who correctly guesses the word wins the round."
+    ];
+
+    var rulesHTML = "<h2>Game Rules</h2><ul>";
+    rulesList.forEach(function(rule) {
+        rulesHTML += "<li>" + rule + "</li>";
+    });
+    rulesHTML += "</ul>";
+
+    document.getElementById("rules").innerHTML = rulesHTML;
+    document.getElementById("rules").style.display = "block";
+    lobbyDiv.style.display = "none";
+    gameDiv.style.display = "none";
+}
+
 
         function backToLobby() {
             rulesDiv.style.display = "none";
             lobbyDiv.style.display = "block";
+            gameDiv.style.display = "none";
         }
 
         function chat() {
@@ -94,9 +113,10 @@
             // Implement chat functionality
         }
 
-        function grid() {
+        function displayGrid() {
             displayMessage("Displaying game grid...");
-            // Implement game grid display
+            // Call a function to generate and display the game grid
+            generateAndDisplayGrid();
         }
 
         function playerlist() {
@@ -132,36 +152,40 @@
         function updateScoreboard(score) {
             scoreboardP.textContent = "Score: " + score;
         }
+
+        function displayGrid() {
+            displayMessage("Displaying game grid...");
+
+            // Make an AJAX request to fetch words from the server
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/fetchWords", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var letters = JSON.parse(xhr.responseText);
+                    generateAndDisplayGrid(letters);
+                }
+            };
+            xhr.send();
+        }
+
+        function generateAndDisplayGrid(letters) {
+            var gridData = "<table>";
+            for (var i = 0; i < 50; i++) {
+                gridData += "<tr>";
+                for (var j = 0; j < 50; j++) {
+                    var index = i * 50 + j;
+                    gridData += "<td>" + letters[index] + "</td>";
+                }
+                gridData += "</tr>";
+            }
+            gridData += "</table>";
+
+            document.getElementById("gridContainer").innerHTML = gridData;
+        }
+
+        function displayMessage(msg) {
+            document.getElementById("message").textContent = msg;
+        }
     </script>
 </body>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </html>
