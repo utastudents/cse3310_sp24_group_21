@@ -42,11 +42,6 @@ public class WebSocket extends WebSocketServer {
 
 
     @Override
-    public void onStart() {
-        System.out.println("WebSocket server started successfully.");
-    }
-
-    @Override
     public void onOpen(org.java_websocket.WebSocket conn, ClientHandshake handshake) {
         System.out.println(conn.getRemoteSocketAddress().getAddress().getHostAddress() + " connected");
         ServerEvent E = new ServerEvent();
@@ -140,7 +135,7 @@ public void onMessage(org.java_websocket.WebSocket conn, String message) {
         return message.replaceAll("[\r\n]", "\\\\n");
     }
 
-    public void start() {
+    public void onStart() {
         setConnectionLostTimeout(0);
         stats = new Statistics();
         startTime = Instant.now();
