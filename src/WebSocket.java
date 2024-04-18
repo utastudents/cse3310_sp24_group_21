@@ -18,16 +18,19 @@ import java.time.Duration;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+
 public class WebSocket extends WebSocketServer {
     private Vector<Game> ActiveGames = new Vector<Game>();
     private int GameId = 1;
     private Statistics stats;
     private Instant startTime;
     private int connectionId = 0;
+    private Grid grid;
 
     public WebSocket(int port) {
         super(new InetSocketAddress(port));
     }
+
 
     public WebSocket(InetSocketAddress address) {
         super(address);
@@ -36,7 +39,7 @@ public class WebSocket extends WebSocketServer {
     public WebSocket(int port, Draft_6455 draft) {
         super(new InetSocketAddress(port), Collections.singletonList(draft));
     }
-    
+
 
     @Override
     public void onStart() {
@@ -101,10 +104,31 @@ public class WebSocket extends WebSocketServer {
         G = null;
     }
 
-    @Override
-    public void onMessage(org.java_websocket.WebSocket conn, String message) {
-        System.out.println("Received message from client: " + message);
+    private char[][] getGridCells() {
+        Grid.GridGen gridGen = new Grid.GridGen(); // Create an instance of GridGen
+        return gridGen.cells; // Return the cells matrix
     }
+    
+    
+
+    @Override
+public void onMessage(org.java_websocket.WebSocket conn, String message) {
+    System.out.println("Received message from client: " + message);
+
+    // Check if the client requested the game grid
+    if (message.equals("getGrid")) {
+        // Create an instance of GridGen
+        Grid.GridGen gridGen = new Grid.GridGen();
+        // Access the cells (the grid itself is a 2D array of chars)
+        char[][] grid = gridGen.cells;
+        
+        // Convert grid to JSON and send it to the client
+        Gson gson = new Gson();
+        String gridJson = gson.toJson(grid);
+        conn.send(gridJson);
+    }
+}
+
 
     @Override
     public void onError(org.java_websocket.WebSocket conn, Exception ex) {
