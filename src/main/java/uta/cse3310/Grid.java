@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.io.File;
 
 public class Grid {
     static class GridGen {
@@ -30,16 +31,21 @@ public class Grid {
 
     public static void main(String[] args) {
 
-        printResult(createGrid(readWords("words.txt")));
-
+        // printResult(createGrid(readWords()));
+               
     }
-
-    public static List<String> readWords(String filename) {
+    
+    // public static List<String> readWords(String filename) {
+        public static List<String> readWords(){
         int maxLength = Math.max(nRows, nCols);
+        // int maxLength = 15;
 
         List<String> words = new ArrayList<>();
+        String filePath = "src/words.txt";
+        File file = new File(filePath);
 
-        try (Scanner sc = new Scanner(new FileReader(filename))) {
+        try (Scanner sc = new Scanner(new FileReader(file))) {
+              
             while (sc.hasNext()) {
                 String s = sc.next().trim().toLowerCase();
 
@@ -47,11 +53,12 @@ public class Grid {
                 if (s.matches("^[a-z]{3," + maxLength + "}$")) {
                     words.add(s.toUpperCase());
                 }
-            }
+            }System.out.println("in read words");
         } catch (FileNotFoundException e) {
-            // error
+            System.err.println("File not found: " + e.getMessage());
         }
 
+    
         return words;
     }
 

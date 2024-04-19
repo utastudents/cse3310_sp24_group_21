@@ -14,12 +14,12 @@ public class Game {
     // // public String[] Msg;
     // public int GameId;    
     // public String names;
-    // public Vector<String> vnames = new Vector<>();
+    // public ArrayList<String> vnames = new ArrayList<String>();
+    char[][] cells = new char[15][15];
 
     public ArrayList<String> players = new ArrayList<>();
     public GameState state = GameState.LOBBY;
-    // public ArrayList<String> vnames = new ArrayList<String>();
-
+    PlayerType player;
     public int playerNum;
     
     
