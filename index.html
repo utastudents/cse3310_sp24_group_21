@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-image: url('game.jpg'); /* New image URL */
+            background-image: url('game.jpg'); 
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -133,7 +132,6 @@
 
     </style>
 </head>
-
 <body>
 
     <div id="container">
@@ -148,11 +146,9 @@
         </div>
         <div id="game">
             <p id="gameStatus">Game is starting...</p>
-
-            <table id="grid"></table>
-
             <div id="gamePlayers"></div>
         </div>
+        <table id="grid"></table>
 
         <button id="startButton" onclick="startGame()" style="display:none;">Start Game</button>
         <button id="rulesButton" onclick="showRules()">Rules</button>
@@ -175,34 +171,18 @@
         <label id="bottomMessage"></label>
     </div>
 
-    <script>
-        function showRules() {
-            var rulesDiv = document.getElementById("rules");
-            rulesDiv.style.display = "block";
-        }
-
-        function hideRules() {
-            var rulesDiv = document.getElementById("rules");
-            rulesDiv.style.display = "none";
-        }
-    </script>
 
 </body>
 
 </html>
-
-
-
-
-
-
 
  <script>
      var connection = null;
      var game = null;
      var playerName = "";
      var inLobby = false;
- 
+     var id =0;
+     var gameid = -1;
      class Lobby {
         Name = null;
         }
@@ -212,6 +192,7 @@
  
      connection.onopen = function (evt) {
          console.log("open");
+         createTable();
      }
  
      connection.onclose = function (evt) {
@@ -223,6 +204,18 @@
          var msg = evt.data;
          console.log("Message received: " + msg);
          const obj = JSON.parse(msg);
+
+         if ('YouAre' in obj) {
+                    
+            if (obj.YouAre == "PLAYERONE") {
+                id = 0;
+            }else if (obj.YouAre == "PLAYERTWO"){
+                id = 1;
+            }
+            gameid = obj.GameId;
+                    
+        }
+
          if ('Game' in obj) {
              game = obj.Game;
              if (game.state === "PLAYING") {
@@ -252,7 +245,6 @@
  
             for (var i = 0; i < obj.Players.length; i++) {
                 var playerDiv = document.createElement("div");
-                // playerDiv.textContent = players[i];
                 playerDiv.textContent = obj.Players[i];
                 playersDiv.appendChild(playerDiv);
 
@@ -264,27 +256,50 @@
             }
          }
          if ('cells' in obj){
-            showGrid(obj.cells);
+            fillGrid(obj.cells);
          }
      }
      
    
-     
-     function showGrid(array){
+     function fillGrid(array) {
+        for(var i =0; i< 50; i++){
+            for(var j=0; j<50; j++){
+                if (array[i][j] == 0) {
+                    array[i][j] = (char) ('A' + RANDOM.nextInt(26)); // Fill empty cells with random letters
+                }
+                var button = document.getElementById(i + "," + j);
+                button.innerHTML = array[i][j];
+            }
+        }
+     }
+
+     function createTable() {
         var table = document.getElementById("grid");
-        for(var i =0; i< 15; i++){
+        for(var i =0; i<50; i++){
             var row = document.createElement('tr');
 
-            for(var j=0; j<15; j++){
+            for(var j=0; j<50; j++){
                 var button = document.createElement("button");
-                button.innerHTML= array[i][j];
                 var data = document.createElement('td');
+                button.id = (i + "," + j);
+                button.class = "myButton";
+
                 data.appendChild(button);
                 row.appendChild(data);
             }table.appendChild(row);
         }
         document.getElementById("grid").style.display = "none";
      }
+
+     function showRules() {
+            var rulesDiv = document.getElementById("rules");
+            rulesDiv.style.display = "block";
+        }
+
+        function hideRules() {
+            var rulesDiv = document.getElementById("rules");
+            rulesDiv.style.display = "none";
+        }
 
      function updateLobbyStatus(players) {
         //  var playersDiv = document.getElementById("players");
@@ -339,6 +354,6 @@
          }
      }
  </script>
- 
- </body>
- </html>
+
+</body>
+</html>

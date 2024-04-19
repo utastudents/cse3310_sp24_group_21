@@ -12,10 +12,10 @@ public class Game {
     // // public PlayerType CurrentTurn;
     // // public PlayerType[] Button;
     // // public String[] Msg;
-    // public int GameId;    
+    public int GameId;    
     // public String names;
     // public ArrayList<String> vnames = new ArrayList<String>();
-    char[][] cells = new char[15][15];
+    char[][] cells = new char[50][50];
 
     public ArrayList<String> players = new ArrayList<>();
     public GameState state = GameState.LOBBY;
