@@ -1,4 +1,3 @@
-
 # Derived from an example provided by https://blog.benoitblanchon.fr/github-action-run-ssh-commands/
 #                                     https://github.blog/2015-06-16-read-only-deploy-keys/
 #
@@ -46,7 +45,6 @@ jobs:
         
       - name: create systemd unit file
         run: |
-        
            # without enable-linger, you must be logged in. So, we enable it.
            ssh production "loginctl enable-linger"
            ssh production "mkdir --parents .config/systemd/user"
