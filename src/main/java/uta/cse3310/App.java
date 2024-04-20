@@ -163,7 +163,7 @@ public class App extends WebSocketServer {
   
     
   
-    public static void main(String[] args) {
+  public static void main(String[] args) {
   
       // Set up the http server
       int port = 9021;
