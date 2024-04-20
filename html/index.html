@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -176,11 +177,105 @@
 
 </html>
 
+=======
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Word Search Game</title>
+     <style>
+         body {
+             font-family: Arial, sans-serif;
+             text-align: center;
+             background-color: gray;
+         }
+ 
+         #container {
+             max-width: 600px;
+             margin: 50px auto;
+             background-color: #ffffff;
+             padding: 20px;
+             border-radius: 10px;
+             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+         }
+ 
+         #header {
+             font-size: 24px;
+             font-weight: bold;
+             margin-bottom: 20px;
+         }
+ 
+         #game {
+             display: none;
+         }
+ 
+         #players {
+             font-weight: bold;
+             margin-bottom: 10px;
+         }
+ 
+         #bottomMessage {
+             margin-top: 20px;
+             font-style: italic;
+         }
+ 
+         button {
+             padding: 10px 20px;
+             background-color: #007bff;
+             color: #ffffff;
+             border: none;
+             border-radius: 5px;
+             cursor: pointer;
+             transition: background-color 0.3s;
+         }
+ 
+         button:hover {
+             background-color: #0056b3;
+         }
+ 
+         input[type="text"] {
+             padding: 10px;
+             margin: 10px 0;
+             width: 100%;
+             box-sizing: border-box;
+             border-radius: 5px;
+             border: 1px solid #ccc;
+         }
+     </style>
+ </head>
+ <body>
+ 
+ <div id="container">
+     <div id="header">Word Search Game</div>
+ 
+     <div id="lobby">
+         <label for="name">Enter your name:</label>
+         <input type="text" id="name" placeholder="Enter name">
+         <button onclick="joinLobby()">Join Lobby</button>
+         <p id="lobbyStatus">Players in the lobby:</p>
+         <div id="players"></div>
+     </div>
+     <div id="game">
+         <p id="gameStatus">Game is starting...</p>
+
+         <table id="grid"></table>
+
+         <div id="gamePlayers"></div>
+     </div>
+ 
+     <button id="startButton" onclick="startGame()" style="display:none;">Start Game</button>
+ 
+     <label id="topMessage"></label>
+     <label id="bottomMessage"></label>
+ </div>
+ 
+>>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da
  <script>
      var connection = null;
      var game = null;
      var playerName = "";
      var inLobby = false;
+<<<<<<< HEAD
      var id =0;
      var gameid = -1;
      class Lobby {
@@ -216,6 +311,29 @@
                     
         }
 
+=======
+ 
+     class Lobby {
+        Name = null;
+        }
+
+     var serverUrl = "ws://" + window.location.hostname + ":9880";
+     connection = new WebSocket(serverUrl);
+ 
+     connection.onopen = function (evt) {
+         console.log("open");
+     }
+ 
+     connection.onclose = function (evt) {
+         console.log("close");
+         document.getElementById("topMessage").innerHTML = "Server Offline";
+     }
+ 
+     connection.onmessage = function (evt) {
+         var msg = evt.data;
+         console.log("Message received: " + msg);
+         const obj = JSON.parse(msg);
+>>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da
          if ('Game' in obj) {
              game = obj.Game;
              if (game.state === "PLAYING") {
@@ -245,6 +363,10 @@
  
             for (var i = 0; i < obj.Players.length; i++) {
                 var playerDiv = document.createElement("div");
+<<<<<<< HEAD
+=======
+                // playerDiv.textContent = players[i];
+>>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da
                 playerDiv.textContent = obj.Players[i];
                 playersDiv.appendChild(playerDiv);
 
@@ -256,11 +378,16 @@
             }
          }
          if ('cells' in obj){
+<<<<<<< HEAD
             fillGrid(obj.cells);
+=======
+            showGrid(obj.cells);
+>>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da
          }
      }
      
    
+<<<<<<< HEAD
      function fillGrid(array) {
         for(var i =0; i< 50; i++){
             for(var j=0; j<50; j++){
@@ -301,6 +428,25 @@
             rulesDiv.style.display = "none";
         }
 
+=======
+     
+     function showGrid(array){
+        var table = document.getElementById("grid");
+        for(var i =0; i< 15; i++){
+            var row = document.createElement('tr');
+
+            for(var j=0; j<15; j++){
+                var button = document.createElement("button");
+                button.innerHTML= array[i][j];
+                var data = document.createElement('td');
+                data.appendChild(button);
+                row.appendChild(data);
+            }table.appendChild(row);
+        }
+        document.getElementById("grid").style.display = "none";
+     }
+
+>>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da
      function updateLobbyStatus(players) {
         //  var playersDiv = document.getElementById("players");
         //  playersDiv.innerHTML = "";
@@ -354,6 +500,12 @@
          }
      }
  </script>
+<<<<<<< HEAD
 
 </body>
 </html>
+=======
+ 
+ </body>
+ </html>
+>>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da

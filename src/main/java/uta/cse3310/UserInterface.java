@@ -17,6 +17,7 @@ public void enterName() {
     String name = scanner.nextLine();
     System.out.println("Welcome, " + name + "!");
 }
+<<<<<<< HEAD
 
 public void lobby() {
     //System.out.println("Welcome to the lobby!");
@@ -39,6 +40,30 @@ public void lobby() {
           //  System.out.println("Invalid choice.");
     }
 
+=======
+
+public void lobby() {
+    System.out.println("Welcome to the lobby!");
+    System.out.println("Options:");
+    System.out.println("1. Start Game");
+    System.out.println("2. View Rules");
+    System.out.println("3. View Leaderboard");
+    int choice = getIntInput("Enter your choice: ");
+    switch (choice) {
+        case 1:
+            System.out.println("Starting game...");
+            break;
+        case 2:
+            rules();
+            break;
+        case 3:
+            leaderBoard();
+            break;
+        default:
+            System.out.println("Invalid choice.");
+    }
+}
+>>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da
 
 public void wordList() {
     System.out.println("List of available words:");

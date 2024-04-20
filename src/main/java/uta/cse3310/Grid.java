@@ -1,28 +1,46 @@
 package uta.cse3310;
 
+<<<<<<< HEAD
+=======
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+>>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+<<<<<<< HEAD
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 public class Grid {
 
+=======
+import java.io.File;
+
+public class Grid {
+>>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da
     static class GridGen {
         int numAttempts;
         char[][] cells = new char[nRows][nCols];
         List<String> solutions = new ArrayList<>();
+<<<<<<< HEAD
         double density;
     }
 
     // gen words 8 directions
+=======
+    }
+
+    // 8 directions gen words
+>>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da
     static final int[][] DIRS = {
             { 1, 0 }, { 0, 1 }, { 1, 1 }, { 1, -1 }, { -1, 0 }, { 0, -1 }, { -1, -1 }, { -1, 1 }
     };
 
     // grid size
+<<<<<<< HEAD
     static final int nRows = 50, nCols = 50;
     static final int gridSize = nRows * nCols;
 
@@ -58,6 +76,53 @@ public class Grid {
         int numAttempts = 0;
 
         // attempt grid 100 times
+=======
+    static final int nRows = 15, nCols = 15;
+    static final int gridSize = nRows * nCols;
+
+    // min words in grid
+    static final int minWords = 5;
+    static final Random RANDOM = new Random();
+
+    public static void main(String[] args) {
+
+        // printResult(createGrid(readWords()));
+               
+    }
+    
+    // public static List<String> readWords(String filename) {
+        public static List<String> readWords(){
+        int maxLength = Math.max(nRows, nCols);
+        // int maxLength = 15;
+
+        List<String> words = new ArrayList<>();
+        String filePath = "src/words.txt";
+        File file = new File(filePath);
+
+        try (Scanner sc = new Scanner(new FileReader(file))) {
+              
+            while (sc.hasNext()) {
+                String s = sc.next().trim().toLowerCase();
+
+                // words between 3 and maxlength
+                if (s.matches("^[a-z]{3," + maxLength + "}$")) {
+                    words.add(s.toUpperCase());
+                }
+            }System.out.println("in read words");
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found: " + e.getMessage());
+        }
+
+    
+        return words;
+    }
+
+    static GridGen createGrid(List<String> words) {
+        GridGen grid = null;
+        int numAttempts = 0;
+
+        // attempt to create grid 100 times
+>>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da
         while (++numAttempts < 100) {
             Collections.shuffle(words); // shuffle words
             grid = new GridGen();
@@ -68,6 +133,7 @@ public class Grid {
             for (String word : words) {
                 cellsFilled += tryPlaceWord(grid, word);
 
+<<<<<<< HEAD
                 if (cellsFilled == target || grid.solutions.size() >= maxWords) {
                     break; // Stop placing words if the target is reached or maximum words reached
                 }
@@ -77,6 +143,15 @@ public class Grid {
                 grid.numAttempts = numAttempts;
                 grid.density = (double) countValidWordCharacters(grid) / gridSize; // Calculate density
                 return grid;
+=======
+                if (cellsFilled == target) {
+                    if (grid.solutions.size() >= minWords) {
+                        grid.numAttempts = numAttempts;
+                        return grid;
+                    } else
+                        break; // grid full but not enough words, retry
+                }
+>>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da
             }
         }
 
@@ -165,6 +240,7 @@ public class Grid {
         return lettersPlaced;
     }
 
+<<<<<<< HEAD
     // Count the characters in valid words placed on the grid
     static int countValidWordCharacters(GridGen grid) {
         int count = 0;
@@ -175,6 +251,8 @@ public class Grid {
         return count;
     }
 
+=======
+>>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da
     // print
     static void printResult(GridGen grid) {
         if (grid == null || grid.numAttempts == 0) {
@@ -186,8 +264,11 @@ public class Grid {
 
         System.out.println("Number of Attempts: " + grid.numAttempts);
         System.out.println("Number of words: " + size);
+<<<<<<< HEAD
         System.out.println("Density of the grid: " + grid.density); // Print the density
 
+=======
+>>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da
         System.out.print("\n    ");
 
         for (int c = 0; c < nCols; c++) {
@@ -200,9 +281,12 @@ public class Grid {
             System.out.printf("%n%d  ", r);
 
             for (int c = 0; c < nCols; c++) {
+<<<<<<< HEAD
                 if (grid.cells[r][c] == 0) {
                     grid.cells[r][c] = (char) ('A' + RANDOM.nextInt(26)); // Fill empty cells with random letters
                 }
+=======
+>>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da
                 System.out.printf(" %c ", grid.cells[r][c]);
             }
         }
@@ -217,4 +301,5 @@ public class Grid {
             System.out.println(grid.solutions.get(size - 1));
         }
     }
+
 }

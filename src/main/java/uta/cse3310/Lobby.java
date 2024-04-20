@@ -35,4 +35,8 @@ public class Lobby {
     public ArrayList<String> getPlayers(Game game) {
         return new ArrayList<>(game.players);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da

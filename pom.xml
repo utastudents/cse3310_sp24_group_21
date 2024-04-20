@@ -5,10 +5,17 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>uta.cse3310</groupId>
+<<<<<<< HEAD
   <artifactId>WORDLE</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <name>WORDLE</name>
+=======
+  <artifactId>WordGame</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <name>WordGame</name>
+>>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da
   <description>A simple game example.</description>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
