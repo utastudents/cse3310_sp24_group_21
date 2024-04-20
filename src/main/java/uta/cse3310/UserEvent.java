@@ -3,16 +3,16 @@ package uta.cse3310;
 
 public class UserEvent {
     int GameId; // the game ID on the server
-    PlayerType PlayerIdx; 
-    int Button; // button number from 0 to 8
-
+    // PlayerType PlayerIdx; 
+    // int Button; // button number from 0 to 8
+    String Name;
     UserEvent() {
 
     }
 
-    UserEvent(int _GameId, PlayerType _PlayerIdx, int _Button) {
-        GameId = _GameId;
-        PlayerIdx = _PlayerIdx;
-        Button = _Button;
-    }
+    // UserEvent(int _GameId, PlayerType _PlayerIdx, int _Button) {
+    //     GameId = _GameId;
+    //     PlayerIdx = _PlayerIdx;
+    //     // Button = _Button;
+    // }
 }

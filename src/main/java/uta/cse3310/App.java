@@ -57,31 +57,23 @@ public class App extends WebSocketServer {
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
   
       System.out.println(conn.getRemoteSocketAddress().getAddress().getHostAddress() + " connected");
-      ServerEvent E = new ServerEvent();
+
       Game G = null;
-      for(Game i : ActiveGames) {
-        if (i.player == uta.cse3310.PlayerType.PLAYERONE){
-          G = i;
-        }
-      }
+       
 
       if (G == null){
         G = new Game();
-        // Lobby L = new Lobby();
-        // G = L.createGame();
-        words = Grid.readWords("words.txt");
-        GridGen gen = Grid.createGrid(words,250);
+        Lobby L = new Lobby();
+        G = L.createGame();
+        words = Grid.readWords("words.txt"); // Provide the filename as argument to readWords
+        Grid.GridGen gen = Grid.createGrid(words, 250); // Provide words list and maxWords as arguments
         G.cells = gen.cells;
         Grid.printResult(gen);
-        G.GameId = GameId;
-        GameId++;
+    
+        G.player = PlayerType.PLAYERONE;
+    }
+    
 
-        G.player = uta.cse3310.PlayerType.PLAYERONE;
-        ActiveGames.add(G);
-      }
-
-      E.YouAre = G.player;
-      E.GameId = G.GameId;
       // allows the websocket to give us the Game when a message arrives
       conn.setAttachment(G);
   
@@ -90,8 +82,7 @@ public class App extends WebSocketServer {
   
       // The state of the game has changed, so lets send it to everyone
       String jsonString;
-      jsonString = gson.toJson(E);
-      conn.send(jsonString);
+
       jsonString = gson.toJson(G);
   
       System.out.println(jsonString);
@@ -163,7 +154,7 @@ public class App extends WebSocketServer {
   
     
   
-  public static void main(String[] args) {
+    public static void main(String[] args) {
   
       // Set up the http server
       int port = 9021;
@@ -190,3 +181,6 @@ public class App extends WebSocketServer {
   //     public String BottomMsg;
   //     public ArrayList<String> Players;
   //   }
+
+
+
