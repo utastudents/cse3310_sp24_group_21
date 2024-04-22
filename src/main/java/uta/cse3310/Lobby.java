@@ -19,7 +19,11 @@ public class Lobby {
         game.players.add(playerName);
         return game;
     }
-
+     
+     public ArrayList<Game> getActiveGames() {
+        return activeGames;
+    }
+    
     public boolean startGame(Game game) {
         if(game.players.size() >= 2) {
             game.state = GameState.PLAYING;
