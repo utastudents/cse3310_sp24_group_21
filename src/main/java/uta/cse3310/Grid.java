@@ -53,7 +53,7 @@ public class Grid {
         return words;
     }
 
-   static GridGen createGrid(List<String> words) {
+    public static GridGen createGrid(List<String> words, int maxWords) {
         GridGen grid = null;
         int numAttempts = 0;
 
