@@ -1,8 +1,8 @@
 package uta.cse3310;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.HashMap;
+import java.util.Random;
 
 public class Game {
 
@@ -11,28 +11,26 @@ public class Game {
     private String[] messages;
     private int gameId;
     private ArrayList<String> playerNames = new ArrayList<>();
-    private char[][] grid = new char[50][50];
+    private char[][] grid = new char[50][50];  
     private GameState state;
     private Statistics stats;
-    private HashMap<String, Boolean> wordList;
+    private HashMap<String, Boolean> wordList; 
     private int[] scores;
+    private Grid gameGrid; 
 
     public Game(Statistics stats) {
         this.stats = stats;
         this.players = new PlayerType[4];
         this.messages = new String[4];
         this.scores = new int[4];
-        resetGrid();
+        this.gameGrid = new Grid();  
         this.state = GameState.LOBBY;
         currentPlayerIndex = 0;
-        wordList = initializeWordList();
+        initializeGameGrid();
     }
 
-    private HashMap<String, Boolean> initializeWordList() {
-        HashMap<String, Boolean> words = new HashMap<>();
-        words.put("EXAMPLE", true);
-        return words;
-    }
+    private void initializeGameGrid() {
+        this.gameGrid.createGrid(Grid.readWords("words.txt"), 250);  
 
     public void addPlayer(String name) {
         if (playerNames.size() < 4) {
@@ -51,14 +49,6 @@ public class Game {
         stats.setGamesInProgress(stats.getGamesInProgress() + 1);
     }
 
-    private void resetGrid() {
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
-                grid[i][j] = ' ';
-            }
-        }
-    }
-
     private void fillGridWithRandomLetters() {
         Random rand = new Random();
         for (int i = 0; i < grid.length; i++) {
@@ -69,12 +59,7 @@ public class Game {
     }
 
     public void displayBoard() {
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
-                System.out.print(grid[i][j] + " ");
-            }
-            System.out.println();
-        }
+        gameGrid.displayGrid();  
     }
 
     public boolean isWordValid(String word) {
@@ -142,8 +127,6 @@ public class Game {
         return state;
     }
 }
-
-
 
 
     
