@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<<<<<<< HEAD
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,9 +17,10 @@
         }
         
         #container {
+            
             max-width: 600px; /* Increased maximum width */
             width: 500%;
-            margin: 50px auto;
+            margin: 200px auto;
             background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
             padding: 20px;
             border-radius: 10px;
@@ -95,7 +95,7 @@
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #3480d0;
         }
 
         input[type="text"] {
@@ -134,7 +134,7 @@
     </style>
 </head>
 <body>
-
+    
     <div id="container">
         <div id="header">Word Search Game</div>
 
@@ -147,6 +147,16 @@
         </div>
         <div id="game">
             <p id="gameStatus">Game is starting...</p>
+             
+
+            
+            <table id="timerTable" style="position: absolute; top: 20px; left: 20px; background-color: rgba(0, 0, 0, 0.7); color: #ffffff;">
+                <tr>
+                    <td>Time Left: <span id="timerDisplay">5:00</span></td>
+                </tr>
+            </table>
+            
+
             <div id="gamePlayers"></div>
         </div>
         <table id="grid"></table>
@@ -166,8 +176,7 @@
             <p>7. Points are awarded based on the length and of the word.
             <p>                           Good Luck!
             </p>
-        </div>
-
+        </div> 
         <label id="topMessage"></label>
         <label id="bottomMessage"></label>
     </div>
@@ -177,107 +186,16 @@
 
 </html>
 
-=======
- <html lang="en">
- <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Word Search Game</title>
-     <style>
-         body {
-             font-family: Arial, sans-serif;
-             text-align: center;
-             background-color: gray;
-         }
- 
-         #container {
-             max-width: 600px;
-             margin: 50px auto;
-             background-color: #ffffff;
-             padding: 20px;
-             border-radius: 10px;
-             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-         }
- 
-         #header {
-             font-size: 24px;
-             font-weight: bold;
-             margin-bottom: 20px;
-         }
- 
-         #game {
-             display: none;
-         }
- 
-         #players {
-             font-weight: bold;
-             margin-bottom: 10px;
-         }
- 
-         #bottomMessage {
-             margin-top: 20px;
-             font-style: italic;
-         }
- 
-         button {
-             padding: 10px 20px;
-             background-color: #007bff;
-             color: #ffffff;
-             border: none;
-             border-radius: 5px;
-             cursor: pointer;
-             transition: background-color 0.3s;
-         }
- 
-         button:hover {
-             background-color: #0056b3;
-         }
- 
-         input[type="text"] {
-             padding: 10px;
-             margin: 10px 0;
-             width: 100%;
-             box-sizing: border-box;
-             border-radius: 5px;
-             border: 1px solid #ccc;
-         }
-     </style>
- </head>
- <body>
- 
- <div id="container">
-     <div id="header">Word Search Game</div>
- 
-     <div id="lobby">
-         <label for="name">Enter your name:</label>
-         <input type="text" id="name" placeholder="Enter name">
-         <button onclick="joinLobby()">Join Lobby</button>
-         <p id="lobbyStatus">Players in the lobby:</p>
-         <div id="players"></div>
-     </div>
-     <div id="game">
-         <p id="gameStatus">Game is starting...</p>
-
-         <table id="grid"></table>
-
-         <div id="gamePlayers"></div>
-     </div>
- 
-     <button id="startButton" onclick="startGame()" style="display:none;">Start Game</button>
- 
-     <label id="topMessage"></label>
-     <label id="bottomMessage"></label>
- </div>
- 
->>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da
  <script>
      var connection = null;
      var game = null;
      var playerName = "";
      var inLobby = false;
-<<<<<<< HEAD
      var id =0;
      var gameid = -1;
+     var timerInterval;
+     var timerDisplay = document.getElementById('timerDisplay');
+     var timerSeconds = 180; // 3 minutes
      class Lobby {
         Name = null;
         }
@@ -296,9 +214,19 @@
      }
  
      connection.onmessage = function (evt) {
-         var msg = evt.data;
-         console.log("Message received: " + msg);
-         const obj = JSON.parse(msg);
+            var msg = evt.data;
+            console.log("Message received: " + msg);
+            const obj = JSON.parse(msg);
+
+            if ('Game' in obj) {
+                game = obj.Game;
+                if (game.state === "PLAYING") {
+                    document.getElementById("startButton").style.display = "none";
+                    document.getElementById("lobby").style.display = "none";
+                    document.getElementById("game").style.display = "block";
+                    document.getElementById("gameStatus").innerHTML = "Game Begins";
+                }
+            }
 
          if ('YouAre' in obj) {
                     
@@ -311,29 +239,6 @@
                     
         }
 
-=======
- 
-     class Lobby {
-        Name = null;
-        }
-
-     var serverUrl = "ws://" + window.location.hostname + ":9880";
-     connection = new WebSocket(serverUrl);
- 
-     connection.onopen = function (evt) {
-         console.log("open");
-     }
- 
-     connection.onclose = function (evt) {
-         console.log("close");
-         document.getElementById("topMessage").innerHTML = "Server Offline";
-     }
- 
-     connection.onmessage = function (evt) {
-         var msg = evt.data;
-         console.log("Message received: " + msg);
-         const obj = JSON.parse(msg);
->>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da
          if ('Game' in obj) {
              game = obj.Game;
              if (game.state === "PLAYING") {
@@ -363,10 +268,6 @@
  
             for (var i = 0; i < obj.Players.length; i++) {
                 var playerDiv = document.createElement("div");
-<<<<<<< HEAD
-=======
-                // playerDiv.textContent = players[i];
->>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da
                 playerDiv.textContent = obj.Players[i];
                 playersDiv.appendChild(playerDiv);
 
@@ -378,16 +279,11 @@
             }
          }
          if ('cells' in obj){
-<<<<<<< HEAD
             fillGrid(obj.cells);
-=======
-            showGrid(obj.cells);
->>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da
          }
      }
      
    
-<<<<<<< HEAD
      function fillGrid(array) {
         for(var i =0; i< 50; i++){
             for(var j=0; j<50; j++){
@@ -428,40 +324,21 @@
             rulesDiv.style.display = "none";
         }
 
-=======
-     
-     function showGrid(array){
-        var table = document.getElementById("grid");
-        for(var i =0; i< 15; i++){
-            var row = document.createElement('tr');
-
-            for(var j=0; j<15; j++){
-                var button = document.createElement("button");
-                button.innerHTML= array[i][j];
-                var data = document.createElement('td');
-                data.appendChild(button);
-                row.appendChild(data);
-            }table.appendChild(row);
-        }
-        document.getElementById("grid").style.display = "none";
-     }
-
->>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da
      function updateLobbyStatus(players) {
-        //  var playersDiv = document.getElementById("players");
-        //  playersDiv.innerHTML = "";
+        var playersDiv = document.getElementById("players");
+         playersDiv.innerHTML = "";
  
-        //  for (var i = 0; i < players.length; i++) {
-        //      var playerDiv = document.createElement("div");
-        //      playerDiv.textContent = players[i];
-        //      playersDiv.appendChild(playerDiv);
-        //  }
+          for (var i = 0; i < players.length; i++) {
+              var playerDiv = document.createElement("div");
+              playerDiv.textContent = players[i];
+              playersDiv.appendChild(playerDiv);
+          }
  
-        //  if (players.length >= 2) {
-        //      document.getElementById("startButton").style.display = "block";
-        //  } else {
-        //      document.getElementById("startButton").style.display = "none";
-        //  }
+        if (players.length >= 2) {
+              document.getElementById("startButton").style.display = "block";
+          } else {
+              document.getElementById("startButton").style.display = "none";
+          }
      }
  
      function joinLobby() {
@@ -478,18 +355,36 @@
             inLobby = true;
          }
      }
+     function startTimer() {
+    timerInterval = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+    var minutes = Math.floor(timerSeconds / 60);
+    var seconds = timerSeconds % 60;
+
+    timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+    if (timerSeconds <= 0) {
+        clearInterval(timerInterval);
+        timerDisplay.textContent = 'TIMES UP!!'; //whatever you want to display
+    } else {
+        timerSeconds--;
+    }
+}
  
-     function startGame() {
-         var msg = {
-             "Action": "START_GAME"
-         };
-         connection.send(JSON.stringify(msg));
- 
+function startGame() {
+    var msg = {
+        "Action": "START_GAME"
+    };
+    connection.send(JSON.stringify(msg));
+    // The rest of your startGame function
+
          // Hide the lobby and show the game
          document.getElementById("lobby").style.display = "none";
          document.getElementById("game").style.display = "block";
          document.getElementById("grid").style.display = "block";
- 
+         startTimer(); 
          // Display the players' names side by side
          var playersDiv = document.getElementById("players");
          var playerNames = playersDiv.getElementsByTagName("div");
@@ -500,12 +395,6 @@
          }
      }
  </script>
-<<<<<<< HEAD
 
 </body>
 </html>
-=======
- 
- </body>
- </html>
->>>>>>> 55b2f119201565365ba9d5a3f0aeabfb786707da
