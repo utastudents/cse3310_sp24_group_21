@@ -53,35 +53,56 @@ public class Grid {
         return words;
     }
 
-    static GridGen createGrid(List<String> words, int maxWords) {
+   static GridGen createGrid(List<String> words) {
         GridGen grid = null;
         int numAttempts = 0;
 
-        // attempt grid 100 times
+        // attempt to create grid 100 times
         while (++numAttempts < 100) {
-            Collections.shuffle(words); // shuffle words
+            Collections.shuffle(words); // Shuffle words
             grid = new GridGen();
             int messageLength = placeMessage(grid, "Grid:");
             int target = gridSize - messageLength;
             int cellsFilled = 0;
+            int horizontalWords = 0, verticalWords = 0, diagonalDownWords = 0, diagonalUpWords = 0;
 
             for (String word : words) {
+                int orientation = RANDOM.nextInt(4); // Randomly select orientation for each word
+            switch (orientation) {
+                case 0: // horizontal
+                    horizontalWords++;
+                    break;
+                case 1: // vertical
+                    verticalWords++;
+                    break;
+                case 2: // diagonal down
+                    diagonalDownWords++;
+                    break;
+                case 3: // diagonal up
+                    diagonalUpWords++;
+                    break;
+            }
                 cellsFilled += tryPlaceWord(grid, word);
-
-                if (cellsFilled == target || grid.solutions.size() >= maxWords) {
-                    break; // Stop placing words if the target is reached or maximum words reached
+                // check
+                if (horizontalWords >= minWords && verticalWords >= minWords &&
+                 diagonalDownWords >= minWords && diagonalUpWords >= minWords) {
+                // calculate density after each word placement
+                double density = (double) cellsFilled / target;
+                if (density > 0.6) {
+                    if (cellsFilled == target) {
+                        if (grid.solutions.size() >= minWords) {
+                            grid.numAttempts = numAttempts;
+                            return grid;
+                        } else {
+                            break; // grid full but not enough words, retry
+                        }
+                    }
                 }
             }
-
-            if (grid.solutions.size() >= minWords && grid.solutions.size() <= maxWords) {
-                grid.numAttempts = numAttempts;
-                grid.density = (double) countValidWordCharacters(grid) / gridSize; // Calculate density
-                return grid;
-            }
         }
-
-        return grid;
     }
+    return grid;
+}
 
     static int placeMessage(GridGen grid, String msg) {
         msg = msg.toUpperCase().replaceAll("[^A-Z]", "");
