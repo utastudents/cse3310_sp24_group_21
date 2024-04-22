@@ -17,9 +17,10 @@
         }
         
         #container {
+            
             max-width: 600px; /* Increased maximum width */
             width: 500%;
-            margin: 50px auto;
+            margin: 200px auto;
             background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
             padding: 20px;
             border-radius: 10px;
@@ -94,7 +95,7 @@
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #3480d0;
         }
 
         input[type="text"] {
@@ -133,7 +134,7 @@
     </style>
 </head>
 <body>
-
+    
     <div id="container">
         <div id="header">Word Search Game</div>
 
@@ -146,6 +147,16 @@
         </div>
         <div id="game">
             <p id="gameStatus">Game is starting...</p>
+             
+
+            
+            <table id="timerTable" style="position: absolute; top: 20px; left: 20px; background-color: rgba(0, 0, 0, 0.7); color: #ffffff;">
+                <tr>
+                    <td>Time Left: <span id="timerDisplay">5:00</span></td>
+                </tr>
+            </table>
+            
+
             <div id="gamePlayers"></div>
         </div>
         <table id="grid"></table>
@@ -165,8 +176,7 @@
             <p>7. Points are awarded based on the length and of the word.
             <p>                           Good Luck!
             </p>
-        </div>
-
+        </div> 
         <label id="topMessage"></label>
         <label id="bottomMessage"></label>
     </div>
@@ -183,6 +193,9 @@
      var inLobby = false;
      var id =0;
      var gameid = -1;
+     var timerInterval;
+     var timerDisplay = document.getElementById('timerDisplay');
+     var timerSeconds = 180; // 3 minutes
      class Lobby {
         Name = null;
         }
@@ -201,9 +214,19 @@
      }
  
      connection.onmessage = function (evt) {
-         var msg = evt.data;
-         console.log("Message received: " + msg);
-         const obj = JSON.parse(msg);
+            var msg = evt.data;
+            console.log("Message received: " + msg);
+            const obj = JSON.parse(msg);
+
+            if ('Game' in obj) {
+                game = obj.Game;
+                if (game.state === "PLAYING") {
+                    document.getElementById("startButton").style.display = "none";
+                    document.getElementById("lobby").style.display = "none";
+                    document.getElementById("game").style.display = "block";
+                    document.getElementById("gameStatus").innerHTML = "Game Begins";
+                }
+            }
 
          if ('YouAre' in obj) {
                     
@@ -302,20 +325,20 @@
         }
 
      function updateLobbyStatus(players) {
-        //  var playersDiv = document.getElementById("players");
-        //  playersDiv.innerHTML = "";
+        var playersDiv = document.getElementById("players");
+         playersDiv.innerHTML = "";
  
-        //  for (var i = 0; i < players.length; i++) {
-        //      var playerDiv = document.createElement("div");
-        //      playerDiv.textContent = players[i];
-        //      playersDiv.appendChild(playerDiv);
-        //  }
+          for (var i = 0; i < players.length; i++) {
+              var playerDiv = document.createElement("div");
+              playerDiv.textContent = players[i];
+              playersDiv.appendChild(playerDiv);
+          }
  
-        //  if (players.length >= 2) {
-        //      document.getElementById("startButton").style.display = "block";
-        //  } else {
-        //      document.getElementById("startButton").style.display = "none";
-        //  }
+        if (players.length >= 2) {
+              document.getElementById("startButton").style.display = "block";
+          } else {
+              document.getElementById("startButton").style.display = "none";
+          }
      }
  
      function joinLobby() {
@@ -332,18 +355,36 @@
             inLobby = true;
          }
      }
+     function startTimer() {
+    timerInterval = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+    var minutes = Math.floor(timerSeconds / 60);
+    var seconds = timerSeconds % 60;
+
+    timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+    if (timerSeconds <= 0) {
+        clearInterval(timerInterval);
+        timerDisplay.textContent = 'TIMES UP!!'; //whatever you want to display
+    } else {
+        timerSeconds--;
+    }
+}
  
-     function startGame() {
-         var msg = {
-             "Action": "START_GAME"
-         };
-         connection.send(JSON.stringify(msg));
- 
+function startGame() {
+    var msg = {
+        "Action": "START_GAME"
+    };
+    connection.send(JSON.stringify(msg));
+    // The rest of your startGame function
+
          // Hide the lobby and show the game
          document.getElementById("lobby").style.display = "none";
          document.getElementById("game").style.display = "block";
          document.getElementById("grid").style.display = "block";
- 
+         startTimer(); 
          // Display the players' names side by side
          var playersDiv = document.getElementById("players");
          var playerNames = playersDiv.getElementsByTagName("div");
