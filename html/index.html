@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head>ver
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Word Search Game</title>
@@ -206,7 +206,8 @@
         j = 0;
      }
 
-     var serverUrl = "ws://" + window.location.hostname + ":9880";
+     //var serverUrl = "ws://" + window.location.hostname + ":9880";
+     var serverUrl = "ws://" + window.location.hostname +":"+ (parseInt(location.port) + 100);
      connection = new WebSocket(serverUrl);
  
      connection.onopen = function (evt) {
