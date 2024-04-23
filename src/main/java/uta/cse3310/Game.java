@@ -10,12 +10,12 @@ public class Game {
 
     // public PlayerType Players;
     // // public PlayerType CurrentTurn;
-    // // public PlayerType[] Button;
+    public PlayerType[][] Button;
     // // public String[] Msg;
-    // public int GameId;    
-    // public String names;
+    public int GameId;    
+    public String PlayerName;
     // public ArrayList<String> vnames = new ArrayList<String>();
-    char[][] cells = new char[15][15];
+    char[][] cells = new char[50][50];
 
     public ArrayList<String> players = new ArrayList<>();
     public GameState state = GameState.LOBBY;
@@ -24,83 +24,36 @@ public class Game {
     
     
 
-    //public Statistics Stats;
 
-    // Game(/*Statistics s*/) {
-    //     // Stats = s;
-    //     // Button = new PlayerType[9];
-    //     // // initialize it
-    //     // ResetGrid();
-    //     // Players = PlayerType.PLAYERONE;
-    //     // CurrentTurn = PlayerType.NOPLAYER;
-    //     // Msg = new String[4];//2
-    //     // Msg[0] = "Waiting for other player to join";
-    //     // Msg[1] = "";
-    //     // Msg[2] = "";
-    //     // Msg[3] = "";
-    //     // playerNum=0;
+    Game() {
+        Button = new PlayerType[50][50];
+        ResetBoard();
+    }
 
-    // }
-    // public void addPlayer(String name){
-    //     vnames.add(name);
-    //     playerNum++;
-    // }
-    // public void ResetGrid() {
-    //     // initializes the board to NOPLAYER in all spots
-    //     for (int i = 0; i < Button.length; i++) {
-    //         Button[i] = PlayerType.NOPLAYER;
-            
-    //     }
-    // }
+    public void Update(UserEvent U) {        
+        if (Button[U.i][U.j] == PlayerType.NOPLAYER) { 
+            Button[U.i][U.j] = U.PlayerIdx;
+        }  
+    }
+   
+    public void ResetBoard() {
+        // initializes the board to NOPLAYER in all spots
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 20; j++){
+            Button[i][j] = PlayerType.NOPLAYER;
+            }
+        }
+    }
 
-    // public void StartGame() {
-    //     // Msg[0] = "Player1";
-    //     // Msg[1] = "Player2";
-    //     // Msg[2] = "Player3";
-    //     // Msg[3] = "Player4";
-    //     // CurrentTurn = PlayerType.PLAYERONE;
-    //     // Stats.setGamesInProgress(Stats.getGamesInProgress() + 1);
-    // }
+    
 
-    // private boolean CheckLine(int i, int j, int k, PlayerType player) {
-    //     return player == Button[i] && player == Button[j] && player == Button[k];
-    // }
+    
 
-    // private boolean CheckHorizontal(PlayerType player) {
-    //     return CheckLine(0, 1, 2, player) || CheckLine(3, 4, 5, player) || CheckLine(6, 7, 8, player);
-    // }
+   
 
-    // private boolean CheckVertical(PlayerType player) {
-    //     return CheckLine(0, 3, 6, player) || CheckLine(1, 4, 7, player) || CheckLine(2, 5, 8, player);
-    // }
+    
 
-    // private boolean CheckDiagonal(PlayerType player) {
-    //     return CheckLine(0, 4, 8, player) || CheckLine(2, 4, 6, player);
-    // }
-
-    // public boolean CheckBoard(PlayerType player) {
-    //     return CheckHorizontal(player) || CheckVertical(player) || CheckDiagonal(player);
-    // }
-
-    // public boolean CheckDraw(PlayerType player) {
-        // It is a draw if neither player has won.
-    //     boolean retval = false;
-
-    //     return retval;
-    // }
-
-    // This function returns an index for each player
-    // It does not depend on the representation of Enums
-    // public int PlayerToIdx(PlayerType P) {
-    //     int retval = 0;
-    //     //add idx for player 3,4
-    //     if (P == PlayerType.PLAYERONE) {
-    //         retval = 0;
-    //     } else {
-    //         retval = 1;
-    //     }
-    //     return retval;
-    // }
+    
 
     // public void Update(UserEvent U) {
     //     if ((CurrentTurn == U.PlayerIdx) && (CurrentTurn == PlayerType.PLAYERONE || CurrentTurn == PlayerType.PLAYERTWO)) {
@@ -127,11 +80,7 @@ public class Game {
             
     // }
 
-    // public void GameTime() {
-    //     // this function can be called periodically if a
-    //     // timer is needed.
-
-    // }
+    
 }
 
 

@@ -198,7 +198,13 @@
      var timerSeconds = 180; // 3 minutes
      class Lobby {
         Name = null;
-        }
+     }
+     class UserEvent {
+        PlayerIdx = 0;
+        GameId = 0;
+        i = 0;
+        j = 0;
+     }
 
      var serverUrl = "ws://" + window.location.hostname + ":9880";
      connection = new WebSocket(serverUrl);
@@ -261,29 +267,54 @@
              document.getElementById("bottomMessage").innerHTML = obj.BottomMsg;
          }
  
-         if ('Players' in obj) {
-            updateLobbyStatus(obj.Players);
-            var playersDiv = document.getElementById("players");
-            playersDiv.innerHTML = "";
+         if ('players' in obj) {
+            updateLobbyStatus(obj.players);
+            // var playersDiv = document.getElementById("players");
+            // playersDiv.innerHTML = "";
  
-            for (var i = 0; i < obj.Players.length; i++) {
-                var playerDiv = document.createElement("div");
-                playerDiv.textContent = obj.Players[i];
-                playersDiv.appendChild(playerDiv);
+            // for (var i = 0; i < obj.Players.length; i++) {
+            //     var playerDiv = document.createElement("div");
+            //     playerDiv.textContent = obj.Players[i];
+            //     playersDiv.appendChild(playerDiv);
 
-                if(obj.Players.length >= 2){
-                    document.getElementById("startButton").style.display = "block";
-                } else {
-                    document.getElementById("startButton").style.display = "none";
-                }
-            }
+            //     if(obj.Players.length >= 2){
+            //         document.getElementById("startButton").style.display = "block";
+            //     } else {
+            //         document.getElementById("startButton").style.display = "none";
+            //     }
+            // }
          }
          if ('cells' in obj){
             fillGrid(obj.cells);
+
+            if (gameid == obj.GameId){
+                for(var i =0; i< 20; i++){
+                    for(var j=0; j<20; j++){
+                        //show colors to players
+                        var v = document.getElementById(i + "," + j);
+                        if(obj.Button[i][j] == "PLAYERONE")
+                        v.style.backgroundColor = "red";
+                        else if(obj.Button[i][j] == "PLAYERTWO")
+                        v.style.backgroundColor = "blue";
+                    }
+                }
+            }
          }
      }
      
-   
+     function buttonClick(i, j) {
+        U = new UserEvent();
+        if (id == 0)
+        U.PlayerIdx = "PLAYERONE";
+        else if (id == 1)
+        U.PlayerIdx = "PLAYERTWO";
+        U.GameId = gameid;
+        U.i = i;
+        U.j = j;
+
+        connection.send(JSON.stringify(U));
+        console.log(JSON.stringify(U))
+     }
      function fillGrid(array) {
         for(var i =0; i< 50; i++){
             for(var j=0; j<50; j++){
@@ -305,8 +336,13 @@
                 var button = document.createElement("button");
                 var data = document.createElement('td');
                 button.id = (i + "," + j);
-                button.class = "myButton";
 
+                button.onclick = function(row, col) {
+                    return function() {
+                        buttonClick(row, col);
+                    };
+                }(i, j);
+                
                 data.appendChild(button);
                 row.appendChild(data);
             }table.appendChild(row);

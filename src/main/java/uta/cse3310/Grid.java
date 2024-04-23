@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
@@ -31,15 +32,15 @@ public class Grid {
     static final Random RANDOM = new Random();
 
     public static void main(String[] args) {
-        printResult(createGrid(readWords("words.txt"), 250)); // number at end is for max word limit
+        // printResult(createGrid(readWords(), 250)); // number at end is for max word limit
     }
 
-    static List<String> readWords(String filename) {
+    public static List<String> readWords() {
         int maxLength = Math.max(nRows, nCols);
-
+        
         List<String> words = new ArrayList<>();
-
-        try (Scanner sc = new Scanner(new FileReader(filename))) {
+        File file = new File("src/words.txt");
+        try (Scanner sc = new Scanner(new FileReader(file))) {
             while (sc.hasNext()) {
                 String s = sc.next().trim().toLowerCase();
                 if (s.matches("^[a-z]{3," + maxLength + "}$")) { // 3 is min word size limit
@@ -64,44 +65,57 @@ public class Grid {
             int messageLength = placeMessage(grid, "Grid:");
             int target = gridSize - messageLength;
             int cellsFilled = 0;
-            int horizontalWords = 0, verticalWords = 0, diagonalDownWords = 0, diagonalUpWords = 0;
+            // int horizontalWords = 0, verticalWords = 0, diagonalDownWords = 0, diagonalUpWords = 0;
 
             for (String word : words) {
-                int orientation = RANDOM.nextInt(4); // Randomly select orientation for each word
-            switch (orientation) {
-                case 0: // horizontal
-                    horizontalWords++;
-                    break;
-                case 1: // vertical
-                    verticalWords++;
-                    break;
-                case 2: // diagonal down
-                    diagonalDownWords++;
-                    break;
-                case 3: // diagonal up
-                    diagonalUpWords++;
-                    break;
-            }
                 cellsFilled += tryPlaceWord(grid, word);
-                // check
-                if (horizontalWords >= minWords && verticalWords >= minWords &&
-                 diagonalDownWords >= minWords && diagonalUpWords >= minWords) {
-                // calculate density after each word placement
-                double density = (double) cellsFilled / target;
-                if (density > 0.6) {
-                    if (cellsFilled == target) {
-                        if (grid.solutions.size() >= minWords) {
-                            grid.numAttempts = numAttempts;
-                            return grid;
-                        } else {
-                            break; // grid full but not enough words, retry
-                        }
-                    }
+
+                if (cellsFilled == target || grid.solutions.size() >= maxWords) {
+                    break; 
                 }
             }
         }
-    }
-    return grid;
+        if (grid.solutions.size() >= minWords && grid.solutions.size() <= maxWords) {
+                    grid.numAttempts = numAttempts;
+                    grid.density = (double) countValidWordCharacters(grid) / gridSize; // Calculate density
+                    return grid;
+        }return grid;
+                // int orientation = RANDOM.nextInt(4); // Randomly select orientation for each word
+            // switch (orientation) {
+            //     case 0: // horizontal
+            //         horizontalWords++;
+            //         break;
+            //     case 1: // vertical
+            //         verticalWords++;
+            //         break;
+            //     case 2: // diagonal down
+            //         diagonalDownWords++;
+            //         break;
+            //     case 3: // diagonal up
+            //         diagonalUpWords++;
+            //         break;
+            
+                // cellsFilled += tryPlaceWord(grid, word);
+                
+                // check
+                // if (horizontalWords >= minWords && verticalWords >= minWords &&
+                //  diagonalDownWords >= minWords && diagonalUpWords >= minWords) {
+                // calculate density after each word placement
+            //     double density = (double) cellsFilled / target;
+            //     if (density > 0.6) {
+            //         if (cellsFilled == target) {
+            //             if (grid.solutions.size() >= minWords) {
+            //                 grid.numAttempts = numAttempts;
+            //                 return grid;
+            //             } else {
+            //                 break; // grid full but not enough words, retry
+            //             }
+            //         }
+            //     // }
+            // }
+    //     }
+    // }
+    // return grid;
 }
 
     static int placeMessage(GridGen grid, String msg) {

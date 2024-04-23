@@ -3,9 +3,10 @@ package uta.cse3310;
 
 public class UserEvent {
     int GameId; // the game ID on the server
-    // PlayerType PlayerIdx; 
+    PlayerType PlayerIdx; 
     // int Button; // button number from 0 to 8
     String Name;
+    int i,j;
     UserEvent() {
 
     }
