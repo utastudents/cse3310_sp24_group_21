@@ -206,8 +206,8 @@
         j = 0;
      }
 
-     //var serverUrl = "ws://" + window.location.hostname + ":9880";
-     var serverUrl = "ws://" + window.location.hostname +":"+ (parseInt(location.port) + 100);
+     var serverUrl = "ws://" + window.location.hostname + ":9880";
+     //var serverUrl = "ws://" + window.location.hostname +":"+ (parseInt(location.port) + 100);
      connection = new WebSocket(serverUrl);
  
      connection.onopen = function (evt) {
