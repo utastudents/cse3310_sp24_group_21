@@ -38,8 +38,8 @@ public class Game {
    
     public void ResetBoard() {
         // initializes the board to NOPLAYER in all spots
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 20; j++){
+        for (int i = 0; i < 50; i++) {
+            for (int j = 0; j < 50; j++){
             Button[i][j] = PlayerType.NOPLAYER;
             }
         }
