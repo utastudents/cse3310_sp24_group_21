@@ -72,9 +72,10 @@ public class App extends WebSocketServer {
         // Lobby L = new Lobby();
         // G = L.createGame();
         words = Grid.readWords(); // Provide the filename as argument to readWords
-        GridGen gen = Grid.createGrid(words, 250); // Provide words list and maxWords as arguments
+        GridGen gen = Grid.createGrid(words, 40); // Provide words list and maxWords as arguments
         G.cells = gen.cells;
         Grid.printResult(gen);
+        G.sol = gen.sol;
         GameId++;
         G.player = uta.cse3310.PlayerType.PLAYERONE;
         ActiveGames.add(G);
@@ -119,14 +120,11 @@ public class App extends WebSocketServer {
       Lobby lobby = gson.fromJson(message, Lobby.class);
       UserEvent U = gson.fromJson(message, UserEvent.class);
               Game game = conn.getAttachment();
+              if (U.playing == true)
               game.Update(U);
+
               lobby.joinGame(game, lobby.name);
-              // ServerEvent event = new ServerEvent();
-              // event.Game = game;
-              // event.PlayerName = lobby.name;
-              // event.Players = lobby.getPlayers(game);
               game.PlayerName = lobby.name;
-              game.players = lobby.getPlayers(game);
               
                 String jsonString;
                 jsonString = gson.toJson(game);
