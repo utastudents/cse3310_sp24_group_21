@@ -15,9 +15,10 @@ public class Game {
     public int GameId;    
     public String PlayerName;
     // public ArrayList<String> vnames = new ArrayList<String>();
-    char[][] cells = new char[50][50];
+    char[][] cells = new char[20][20];
 
     public ArrayList<String> players = new ArrayList<>();
+    public ArrayList<String> sol = new ArrayList<>();
     public GameState state = GameState.LOBBY;
     PlayerType player;
     public int playerNum;
@@ -26,20 +27,48 @@ public class Game {
 
 
     Game() {
-        Button = new PlayerType[50][50];
+        Button = new PlayerType[20][20];
         ResetBoard();
     }
 
-    public void Update(UserEvent U) {        
-        if (Button[U.i][U.j] == PlayerType.NOPLAYER) { 
-            Button[U.i][U.j] = U.PlayerIdx;
-        }  
+    public void Update(UserEvent U) {       
+        int i,j,k,l;
+        String delim = "[,]+"; 
+        for (String s : sol){
+            String[] arr = s.split(delim);
+            String a = arr[0];
+            String b = arr[1];
+            String c = arr[2];
+            String d = arr[3];
+            i = Integer.valueOf(b);
+            j = Integer.valueOf(a);
+            k = Integer.valueOf(d);
+            l = Integer.valueOf(c);
+
+            if(U.i == i && U.k == k && Button[U.i][U.j] == PlayerType.NOPLAYER 
+            && Button[U.k][U.l] == PlayerType.NOPLAYER) {
+                horizontal(i, j, k, l, U.PlayerIdx);
+            } 
+        }
+    }
+
+    public void horizontal(int i, int j, int k, int l, PlayerType PlayerIdx) {
+        //horizontal word
+        if (j > l && i == k) {
+            for (int e = l; e <= j; e++) {
+                Button[i][e] = PlayerIdx;
+            }
+        } else if (l > j && i == k) {
+            for (int f = j; f <= l; f++){
+                Button[i][f] = PlayerIdx;
+            }
+        }
     }
    
     public void ResetBoard() {
         // initializes the board to NOPLAYER in all spots
-        for (int i = 0; i < 50; i++) {
-            for (int j = 0; j < 50; j++){
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 20; j++){
             Button[i][j] = PlayerType.NOPLAYER;
             }
         }
