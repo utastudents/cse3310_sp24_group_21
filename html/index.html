@@ -279,14 +279,12 @@
      }
      
      function buttonClick(i, j) {
-        console.log("PLAYER ID " + id)
         if (id == 0) {
             p1turns++;
             if (p1turns % 2 != 0){
                 p1i = i;
                 p1j = j;
             }
-            console.log("P1 TURNS INCREMENT" + p1turns);
         }
         else if (id == 1) {
             p2turns++;
@@ -294,10 +292,8 @@
                 p2i = i;
                 p2j = j;
             }
-            console.log("P2 TURNS INCREMENT" + p2turns);
         }
         if (p1turns != 0 && p1turns % 2 == 0 && id == 0) {
-            console.log("EVERY TWO TURNS");
             U = new UserEvent();
             if (id == 0)
             U.PlayerIdx = "PLAYERONE";
@@ -313,8 +309,6 @@
             connection.send(JSON.stringify(U));
             console.log(JSON.stringify(U))
         } else if (p2turns != 0 && p2turns % 2 == 0 && id == 1) {
-            console.log("i: " + p2i + " j: " + p2j + " k: " + i + " l: " + j);
-            console.log("button presssed: " + p2turns);
             U = new UserEvent();
             if (id == 0)
             U.PlayerIdx = "PLAYERONE";
