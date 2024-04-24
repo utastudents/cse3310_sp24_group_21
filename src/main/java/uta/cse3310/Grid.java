@@ -33,12 +33,20 @@ public class Grid {
     static final Random RANDOM = new Random();
 
     public static void main(String[] args) {
-        // printResult(createGrid(readWords(), 250)); // number at end is for max word limit
+        /*
+         * long startTime = System.currentTimeMillis();
+         * printResult(createGrid(readWords(), 750)); // number at end is for max word
+         * limit
+         * long endTime = System.currentTimeMillis();
+         * long elapsedTime = endTime - startTime;
+         * System.out.println("\nTime taken to generate grid: " + elapsedTime +
+         * " milliseconds");
+         */
     }
 
     public static List<String> readWords() {
         int maxLength = Math.max(nRows, nCols);
-        
+
         List<String> words = new ArrayList<>();
         File file = new File("src/words.txt");
         try (Scanner sc = new Scanner(new FileReader(file))) {
@@ -59,65 +67,30 @@ public class Grid {
         GridGen grid = null;
         int numAttempts = 0;
 
-        // attempt to create grid 100 times
+        // attempt grid 100 times
         while (++numAttempts < 100) {
-            Collections.shuffle(words); // Shuffle words
+            Collections.shuffle(words); // shuffle words
             grid = new GridGen();
-            int messageLength = placeMessage(grid, "Grid:");
-            int target = gridSize - messageLength;
+            int target = (int) (gridSize * 0.67); // Target approximately 67% of the grid area
             int cellsFilled = 0;
-            // int horizontalWords = 0, verticalWords = 0, diagonalDownWords = 0, diagonalUpWords = 0;
 
             for (String word : words) {
                 cellsFilled += tryPlaceWord(grid, word);
 
-                if (cellsFilled == target || grid.solutions.size() >= maxWords) {
-                    break; 
+                if (cellsFilled > target || grid.solutions.size() >= maxWords) {
+                    break; // Stop placing words if the target is reached or maximum words reached
                 }
             }
+
+            if (grid.solutions.size() >= minWords && grid.solutions.size() <= maxWords) {
+                grid.numAttempts = numAttempts;
+                grid.density = (double) countValidWordCharacters(grid) / gridSize; // Calculate density
+                return grid;
+            }
         }
-        if (grid.solutions.size() >= minWords && grid.solutions.size() <= maxWords) {
-                    grid.numAttempts = numAttempts;
-                    grid.density = (double) countValidWordCharacters(grid) / gridSize; // Calculate density
-                    return grid;
-        }return grid;
-                // int orientation = RANDOM.nextInt(4); // Randomly select orientation for each word
-            // switch (orientation) {
-            //     case 0: // horizontal
-            //         horizontalWords++;
-            //         break;
-            //     case 1: // vertical
-            //         verticalWords++;
-            //         break;
-            //     case 2: // diagonal down
-            //         diagonalDownWords++;
-            //         break;
-            //     case 3: // diagonal up
-            //         diagonalUpWords++;
-            //         break;
-            
-                // cellsFilled += tryPlaceWord(grid, word);
-                
-                // check
-                // if (horizontalWords >= minWords && verticalWords >= minWords &&
-                //  diagonalDownWords >= minWords && diagonalUpWords >= minWords) {
-                // calculate density after each word placement
-            //     double density = (double) cellsFilled / target;
-            //     if (density > 0.6) {
-            //         if (cellsFilled == target) {
-            //             if (grid.solutions.size() >= minWords) {
-            //                 grid.numAttempts = numAttempts;
-            //                 return grid;
-            //             } else {
-            //                 break; // grid full but not enough words, retry
-            //             }
-            //         }
-            //     // }
-            // }
-    //     }
-    // }
-    // return grid;
-}
+
+        return grid;
+    }
 
     static int placeMessage(GridGen grid, String msg) {
         msg = msg.toUpperCase().replaceAll("[^A-Z]", "");
@@ -197,7 +170,7 @@ public class Grid {
 
         if (lettersPlaced > 0)
             grid.solutions.add(String.format("%-10s (%d, %d)(%d,%d)", word, c, r, cc, rr));
-            grid.sol.add(String.format("%d,%d,%d,%d", c, r, cc, rr));
+        grid.sol.add(String.format("%d,%d,%d,%d", c, r, cc, rr));
         return lettersPlaced;
     }
 

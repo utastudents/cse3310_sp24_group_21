@@ -8,6 +8,6 @@ public class ServerEvent {
     public Game Game;
     public int PlayerId;
     public String PlayerName;
-    public String BottomMsg;        
-    public ArrayList<String> Players = new ArrayList<>();   
+    public String BottomMsg;
+    public ArrayList<String> Players = new ArrayList<>();
 }

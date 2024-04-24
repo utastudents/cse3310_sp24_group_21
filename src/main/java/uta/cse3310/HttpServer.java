@@ -13,7 +13,7 @@ import net.freeutils.httpserver.HTTPServer.VirtualHost;
 
 // http server include is a GPL licensed package from
 //            http://www.freeutils.net/source/jlhttp/
-    
+
 public class HttpServer {
 
     private static final String HTML = "./html";
