@@ -6,7 +6,9 @@ public class UserEvent {
     PlayerType PlayerIdx; 
     // int Button; // button number from 0 to 8
     String Name;
-    int i,j;
+    int i,j,k,l;
+    public boolean playing;
+    
     UserEvent() {
 
     }
