@@ -169,6 +169,9 @@
      var inLobby = false;
      var id =0;
      var gameid = -1;
+     var p1turns = 0;
+     var p2turns = 0;
+     var p1i,p1j,p2i,p2j,c,d = 0;
      var timerInterval;
      var timerDisplay = document.getElementById('timerDisplay');
      var timerSeconds = 180; // 3 minutes
@@ -180,6 +183,7 @@
         GameId = 0;
         i = 0;
         j = 0;
+        playing = false;
      }
 
      var serverUrl = "ws://" + window.location.hostname + ":9121";
@@ -275,20 +279,52 @@
      }
      
      function buttonClick(i, j) {
-        U = new UserEvent();
-        if (id == 0)
-        U.PlayerIdx = "PLAYERONE";
-        else if (id == 1)
-        U.PlayerIdx = "PLAYERTWO";
-        U.GameId = gameid;
-        U.i = i;
-        U.j = j;
-        connection.send(JSON.stringify(U));
-        console.log(JSON.stringify(U))
+        if (p1turns % 2 == 0 && id == 0) {
+            U = new UserEvent();
+            if (id == 0)
+            U.PlayerIdx = "PLAYERONE";
+            else if (id == 1)
+            U.PlayerIdx = "PLAYERTWO";
+            U.GameId = gameid;
+            
+            U.i = p1i;
+            U.j = p2j;
+            U.k = i
+            U.l = j; 
+            U.playing = true;
+            connection.send(JSON.stringify(U));
+            console.log(JSON.stringify(U))
+        } else if (p2turns % 2 == 0 && id == 1) {
+
+            U = new UserEvent();
+            if (id == 0)
+            U.PlayerIdx = "PLAYERONE";
+            else if (id == 1)
+            U.PlayerIdx = "PLAYERTWO";
+            U.GameId = gameid;
+           
+            U.i = p2i;
+            U.j = p2j;
+            U.k = i;
+            U.l = j; 
+            U.playing = true;
+            connection.send(JSON.stringify(U));
+            console.log(JSON.stringify(U))
+        } 
+        if (id == 0) {
+            p1turns++;
+            p1i = i;
+            p1j = j;
+        }
+        else if (id == 1) {
+            p2turns++;
+            p2i = i;
+            p2j = j;
+        }
      }
      function fillGrid(array) {
-        for(var i =0; i< 50; i++){
-            for(var j=0; j<50; j++){
+        for(var i =0; i< 20; i++){
+            for(var j=0; j<20; j++){
                 if (array[i][j] == 0) {
                     array[i][j] = (char) ('A' + RANDOM.nextInt(26)); // Fill empty cells with random letters
                 }
@@ -299,9 +335,9 @@
      }
      function createTable() {
         var table = document.getElementById("grid");
-        for(var i =0; i<50; i++){
+        for(var i =0; i<20; i++){
             var row = document.createElement('tr');
-            for(var j=0; j<50; j++){
+            for(var j=0; j<20; j++){
                 var button = document.createElement("button");
                 var data = document.createElement('td');
                 button.id = (i + "," + j);
