@@ -36,10 +36,10 @@ public class Game {
             String b = arr[1];
             String c = arr[2];
             String d = arr[3];
-            i = Integer.valueOf(b);
-            j = Integer.valueOf(a);
-            k = Integer.valueOf(d);
-            l = Integer.valueOf(c);
+            i = Integer.valueOf(a);
+            j = Integer.valueOf(b);
+            k = Integer.valueOf(c);
+            l = Integer.valueOf(d);
 
             if (U.i == i && U.j == j && U.k == k && U.l == l && Button[U.i][U.j] == PlayerType.NOPLAYER
                     && Button[U.k][U.l] == PlayerType.NOPLAYER) {
@@ -50,13 +50,13 @@ public class Game {
 
     public void horizontal(int i, int j, int k, int l, PlayerType PlayerIdx) {
         // horizontal word
-        if (j > l && i == k) {
-            for (int e = l; e <= j; e++) {
-                Button[i][e] = PlayerIdx;
+        if (i > k && j == l) {
+            for (int e = k; e <= i; e++) {
+                Button[j][e] = PlayerIdx;
             }
-        } else if (l > j && i == k) {
-            for (int f = j; f <= l; f++) {
-                Button[i][f] = PlayerIdx;
+        } else if (k > i && j == l) {
+            for (int f = i; f <= k; f++){
+                Button[j][f] = PlayerIdx;
             }
         }
     }
