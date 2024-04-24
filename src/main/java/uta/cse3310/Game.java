@@ -45,7 +45,7 @@ public class Game {
             k = Integer.valueOf(d);
             l = Integer.valueOf(c);
 
-            if(U.i == i && U.k == k && Button[U.i][U.j] == PlayerType.NOPLAYER 
+            if(U.i == i && U.j == j && U.k == k && U.l == l && Button[U.i][U.j] == PlayerType.NOPLAYER 
             && Button[U.k][U.l] == PlayerType.NOPLAYER) {
                 horizontal(i, j, k, l, U.PlayerIdx);
             } 
