@@ -15,6 +15,7 @@ public class Grid {
         int numAttempts;
         char[][] cells = new char[nRows][nCols];
         List<String> solutions = new ArrayList<>();
+        ArrayList<String> sol = new ArrayList<>();
         double density;
     }
 
@@ -24,7 +25,7 @@ public class Grid {
     };
 
     // grid size
-    static final int nRows = 50, nCols = 50;
+    static final int nRows = 20, nCols = 20;
     static final int gridSize = nRows * nCols;
 
     // min words in grid
@@ -196,7 +197,7 @@ public class Grid {
 
         if (lettersPlaced > 0)
             grid.solutions.add(String.format("%-10s (%d, %d)(%d,%d)", word, c, r, cc, rr));
-
+            grid.sol.add(String.format("%d,%d,%d,%d", c, r, cc, rr));
         return lettersPlaced;
     }
 
