@@ -43,7 +43,8 @@ public class Game {
             if (U.i == i && U.j == j && U.k == k && U.l == l && Button[U.i][U.j] == PlayerType.NOPLAYER
                     && Button[U.k][U.l] == PlayerType.NOPLAYER) {
                 horizontal(i, j, k, l, U.PlayerIdx);
-
+                vertical(i, j, k, l, U.PlayerIdx);
+                diagonal(i, j, k, l, U.PlayerIdx);
                 for (String words : findword) {
                     String[] word = words.split(delim);
                     String removedWord = word[0];
@@ -62,7 +63,47 @@ public class Game {
             }
         }
     }
-
+    public void diagonal(int i, int j, int k, int l, PlayerType PlayerIdx) {
+        if (i < k && j > l) {
+            for (int a = i, b = j; a<=k;) {
+                Button[b][a] = PlayerIdx;
+                a++;
+                b--;
+            }
+        } 
+        else if (i > k && j > l) {
+            for (int a = i, b = j; a>=k;) {
+                Button[b][a] = PlayerIdx;
+                a--;
+                b--;
+            }
+        }
+        else if (i < k && j < l) {
+            for (int a = i, b = j; a<=k;) {
+                Button[b][a] = PlayerIdx;
+                a++;
+                b++;
+            }
+        }
+        else if (i > k && j < l) {
+            for (int a = i, b = j; a>=k;) {
+                Button[b][a] = PlayerIdx;
+                a--;
+                b++;
+            }
+        }
+    }
+    public void vertical(int i, int j, int k, int l, PlayerType PlayerIdx) {
+        if (j > l && i == k) {
+            for (int e = l; e <= j; e++) {
+                Button[e][i] = PlayerIdx;
+            }
+        } else if (l > j && i == k) {
+            for (int f = j; f <= l; f++) {
+                Button[f][i] = PlayerIdx;
+            }
+        }
+    }
     public void horizontal(int i, int j, int k, int l, PlayerType PlayerIdx) {
         // horizontal word
         if (i > k && j == l) {
