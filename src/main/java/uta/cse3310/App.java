@@ -1,31 +1,22 @@
 package uta.cse3310;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
+
 import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
-import java.io.File;
 
 import org.java_websocket.WebSocket;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.Vector;
-import java.time.Instant;
-import java.time.Duration;
 
+import java.util.Vector;
+
+import java.time.Duration;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -71,16 +62,16 @@ public class App extends WebSocketServer {
     Game G = null;
     for (Game i : ActiveGames) {
       if (i.player == uta.cse3310.PlayerType.PLAYERONE ||
-      i.player == uta.cse3310.PlayerType.PLAYERTWO ||
-      i.player == uta.cse3310.PlayerType.PLAYERTHREE ||
-      i.player == uta.cse3310.PlayerType.PLAYERFOUR
+          i.player == uta.cse3310.PlayerType.PLAYERTWO ||
+          i.player == uta.cse3310.PlayerType.PLAYERTHREE ||
+          i.player == uta.cse3310.PlayerType.PLAYERFOUR
 
       ) {
         G = i;
         System.out.println("Found A Match");
       }
     }
-// If no Matches
+    // If no Matches
     if (G == null) {
       G = new Game();
       G.GameId = GameId;
@@ -112,8 +103,6 @@ public class App extends WebSocketServer {
         .println("> " + Duration.between(TimeStart, Instant.now()).toMillis() + " " + connectionId + " "
             + escape(jsonString));
 
-    
-
     // The state of the game has changed, so lets send it to everyone
     jsonString = gson.toJson(G);
     System.out
@@ -121,10 +110,10 @@ public class App extends WebSocketServer {
     broadcast(jsonString);
 
   }
+
   public class G {
 
   }
-  
 
   @Override
   public void onClose(WebSocket conn, int code, String reason, boolean remote) {
@@ -133,25 +122,26 @@ public class App extends WebSocketServer {
     Game G = conn.getAttachment();
     G = null;
   }
-String type; // The chat message 
-    String text;
-    String username;
+
+  String type; // The chat message
+  String text;
+  String username;
+
   @Override
   public void onMessage(WebSocket conn, String message) {
-    System.out.println("< " + Duration.between(TimeStart, Instant.now()).toMillis() + " " + "-" + " " + escape(message));
+    System.out
+        .println("< " + Duration.between(TimeStart, Instant.now()).toMillis() + " " + "-" + " " + escape(message));
 
-   
     GsonBuilder builder = new GsonBuilder();
     Gson gson = builder.create();
 
-
-    try{
+    try {
       UserEvent U = gson.fromJson(message, UserEvent.class);
       Game G = conn.getAttachment();
       G.Update(U);
 
       System.err.println("message: " + message + message.contains("username") + U.GameId + G.GameId);
-      if (message.contains("username")){ //  && U.GameId == G.GameId
+      if (message.contains("username")) { // && U.GameId == G.GameId
         G.PlayerUserNames.add(U.username);
       }
       System.err.println(gson.toJson(U));
@@ -166,25 +156,17 @@ String type; // The chat message
         return;
       }
 
-      
-
-
-     
-
-  
-  
-
-    String jsonString;
-    jsonString = gson.toJson(G);
-    System.out.println("> " + Duration.between(TimeStart, Instant.now()).toMillis() + " " + "*" + " " + escape(jsonString));
-    broadcast(jsonString);
-    }
-    catch (Exception e) {
+      String jsonString;
+      jsonString = gson.toJson(G);
+      System.out
+          .println("> " + Duration.between(TimeStart, Instant.now()).toMillis() + " " + "*" + " " + escape(jsonString));
+      broadcast(jsonString);
+    } catch (Exception e) {
       System.err.println("The Message isn't a valid JSON: " + e);
     }
-  
-    }
-  
+
+  }
+
   @Override
   public void onMessage(WebSocket conn, ByteBuffer message) {
     System.out.println(conn + ": " + message);
@@ -206,7 +188,7 @@ String type; // The chat message
     setConnectionLostTimeout(0);
     TimeStart = Instant.now();
   }
-  
+
   private String escape(String S) {
     // turns " into \"
     String retval = new String();
@@ -220,34 +202,34 @@ String type; // The chat message
       retval = retval + ch;
     }
     return retval;
-}
-
-public static void main(String[] args) {
-
-  String HttpPort = System.getenv("HTTP_PORT");
-  int port = 9080;
-  if (HttpPort!=null) {
-    port = Integer.valueOf(HttpPort);
   }
 
-  // Set up the http server
+  public static void main(String[] args) {
 
-  HttpServer H = new HttpServer(port, "./html");
-  H.start();
-  System.out.println("http Server started on port: " + port);
+    String HttpPort = System.getenv("HTTP_PORT");
+    int port = 9080;
+    if (HttpPort != null) {
+      port = Integer.valueOf(HttpPort);
+    }
 
-  // create and start the websocket server
+    // Set up the http server
 
-  port = 9180;
-  String WSPort = System.getenv("WEBSOCKET_PORT");
-  if (WSPort!=null) {
-    port = Integer.valueOf(WSPort);
+    HttpServer H = new HttpServer(port, "./html");
+    H.start();
+    System.out.println("http Server started on port: " + port);
+
+    // create and start the websocket server
+
+    port = 9180;
+    String WSPort = System.getenv("WEBSOCKET_PORT");
+    if (WSPort != null) {
+      port = Integer.valueOf(WSPort);
+    }
+
+    App A = new App(port);
+    A.setReuseAddr(true);
+    A.start();
+    System.out.println("websocket Server started on port: " + port);
+
   }
-
-  App A = new App(port);
-  A.setReuseAddr(true);
-  A.start();
-  System.out.println("websocket Server started on port: " + port);
-
-}
 }
