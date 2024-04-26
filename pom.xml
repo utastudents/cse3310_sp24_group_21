@@ -5,13 +5,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>uta.cse3310</groupId>
-  <artifactId>WORDLE</artifactId>
+  <artifactId>TWSG</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>WORDLE</name>
-  <description>A simple game example.</description>
+  <name>TWSG</name>
+  <description>Word Search Game</description>
   <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <url>cse3310.org</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
