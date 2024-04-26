@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>ver
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Word Search Game</title>
@@ -8,57 +8,74 @@
         #word-bank {
             width: 10%;
             padding: 20px;
-            background-color: #ffffff;
+            background-color: rgba(0, 0, 0, 0.5);
             border-radius: 10px;
-            margin: 20px;
+            margin-right: 20px;
+            float: left;
+            color: #ffffff;
         }
+
+        #grid {
+            width: 70%;
+            float: left;
+            background-color: #000000;
+            border-radius: 10px;
+        }
+        #grid button {
+        font-size: 10px;
+        }
+
 
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-image: url('game.jpg'); 
+            background-image: url('game.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             margin: 0;
             padding: 0;
         }
-        
+
         #container {
-            
-            max-width: 600px; /* Increased maximum width */
+            max-width: 600px;
             width: 500%;
             margin: 200px auto;
-            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+            background-color: rgba(0, 0, 0, 0.7);
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            color: #ffffff; /* Text color */
+            color: #ffffff;
             position: relative;
         }
+
         #header {
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 20px;
         }
+
         #lobby {
             margin-bottom: 20px;
         }
+
         #lobby label {
             display: block;
             margin-bottom: 10px;
-            color: #ffffff; /* Text color */
+            color: #ffffff;
         }
+
         #lobby input[type="text"] {
             padding: 10px;
             margin: 10px 0;
-            width: calc(100% - 20px); /* Adjusted width */
+            width: calc(100% - 20px);
             box-sizing: border-box;
             border-radius: 5px;
-            border: 1px solid #ffffff; /* Border color */
-            background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white background */
-            color: #ffffff; /* Text color */
+            border: 1px solid #ffffff;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
         }
+
         #lobby button {
             padding: 10px 20px;
             background-color: #007bff;
@@ -68,20 +85,25 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
+
         #lobby button:hover {
             background-color: #0056b3;
         }
+
         #game {
             display: none;
         }
+
         #players {
             font-weight: bold;
             margin-bottom: 10px;
         }
+
         #bottomMessage {
             margin-top: 20px;
             font-style: italic;
         }
+
         button {
             padding: 10px 20px;
             background-color: #007bff;
@@ -91,9 +113,11 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
+
         button:hover {
             background-color: #3480d0;
         }
+
         input[type="text"] {
             padding: 10px;
             margin: 10px 0;
@@ -102,6 +126,7 @@
             border-radius: 5px;
             border: 1px solid #ccc;
         }
+
         #rules {
             display: none;
             position: fixed;
@@ -109,20 +134,44 @@
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
-            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+            background-color: rgba(0, 0, 0, 0.7);
             padding: 20px;
             border-radius: 10px;
-            color: #ffffff; /* Text color */
+            color: #ffffff;
         }
+
         #closeButton {
             position: absolute;
             top: 10px;
             right: 10px;
             background-color: transparent;
             border: none;
-            color: #ffffff; /* Text color */
+            color: #ffffff;
             font-size: 16px;
             cursor: pointer;
+        }
+
+        .button-container {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
+
+        /* Adjusted styles for the buttons */
+        #rulesButton,
+        #startButton {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #rulesButton:hover,
+        #startButton:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -154,8 +203,13 @@
             <div id="gamePlayers"></div>
         </div>
         <table id="grid"></table>
-        <button id="startButton" onclick="startGame()" style="display:none;">Start Game</button>
-        <button id="rulesButton" onclick="showRules()">Rules</button>
+        
+        <!-- Buttons container -->
+        <div class="button-container">
+            <button id="startButton" onclick="startGame()" style="display:none;">Start Game</button>
+            <button id="rulesButton" onclick="showRules()">Rules</button>
+        </div>
+        
         <div id="rules">
             <button id="closeButton" onclick="hideRules()">X</button>
             <p>Rules:</p>
@@ -174,6 +228,7 @@
     </div>
 </body>
 </html>
+
  <script>
      var connection = null;
      var game = null;
