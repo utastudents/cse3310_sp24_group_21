@@ -9,9 +9,10 @@ public class UserEvent {
     int i, j, k, l;
     public boolean playing;
 
-    UserEvent() {
+    UserEvent(int m, int n, int o, int p, PlayerType noplayer) {
 
     }
+
 
     // UserEvent(int _GameId, PlayerType _PlayerIdx, int _Button) {
     // GameId = _GameId;
