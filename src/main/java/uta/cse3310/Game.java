@@ -16,7 +16,8 @@ public class Game {
     // public ArrayList<String> vnames = new ArrayList<String>();
     char[][] cells = new char[20][20];
 
-    public ArrayList<String> players = new ArrayList<>();
+    public PlayerType players = new ArrayList<>();
+    public ArrayList<String> PlayerUserNames = new ArrayList<String>();
     public ArrayList<String> sol = new ArrayList<>();
     public GameState state = GameState.LOBBY;
     PlayerType player;
@@ -68,6 +69,11 @@ public class Game {
                 Button[i][j] = PlayerType.NOPLAYER;
             }
         }
+    }
+
+    public void StartGame() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'StartGame'");
     }
 
     // public void Update(UserEvent U) {

@@ -8,11 +8,16 @@ public class UserEvent {
     String Name;
     int i, j, k, l;
     public boolean playing;
+    String type;  
+    String text;
+    String username;
 
-    UserEvent() {
-
-    }
-
+   
+   public UserEvent(String _Type, String _Text, String _Username) {
+    type = _Type;
+    text = _Text;
+    username = _Username;
+}
     // UserEvent(int _GameId, PlayerType _PlayerIdx, int _Button) {
     // GameId = _GameId;
     // PlayerIdx = _PlayerIdx;
