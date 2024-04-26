@@ -21,27 +21,29 @@ public class Grid {
         double density;
     }
 
-    // gen words 8 directions (technically 8 because diagonal is four different directions) 
+    // gen words 8 directions (technically 8 because diagonal is four different
+    // directions)
     static final int[][] DIRS = {
             { 1, 0 }, { 0, 1 }, { 1, 1 }, { 1, -1 }, { -1, 0 }, { 0, -1 }, { -1, -1 }, { -1, 1 }
     };
 
     // grid size
-    static final int nRows = 20, nCols = 20;
+    static final int nRows = 10, nCols = 10;
     static final int gridSize = nRows * nCols;
 
     // min words in grid
-    static final int minWords = 1;
+    static final int minWords = 6;
     static final Random RANDOM = new Random();
 
     public static void main(String[] args) {
-       /* 
-          long startTime = System.currentTimeMillis();
-         printResult(createGrid(readWords(), 500)); // number at end is for max word limit
-          long endTime = System.currentTimeMillis();
-         long elapsedTime = endTime - startTime;
-          System.out.println("\nTime taken to generate grid: " + elapsedTime +
-         " milliseconds");
+        /*
+         * long startTime = System.currentTimeMillis();
+         * printResult(createGrid(readWords(), 750)); // number at end is for max word
+         * limit
+         * long endTime = System.currentTimeMillis();
+         * long elapsedTime = endTime - startTime;
+         * System.out.println("\nTime taken to generate grid: " + elapsedTime +
+         * " milliseconds");
          */
     }
 
@@ -67,39 +69,29 @@ public class Grid {
     public static GridGen createGrid(List<String> words, int maxWords) {
         GridGen grid = null;
         int numAttempts = 0;
-    
+
         // attempt grid 100 times
         while (++numAttempts < 100) {
             Collections.shuffle(words); // shuffle words
             grid = new GridGen();
             int target = (int) (gridSize * 0.67); // Target approximately 67% of the grid area
             int cellsFilled = 0;
-            int minWordsPerOrientation = (int) Math.ceil(gridSize * 0.15 / 5); // 15% of each orientation
-    
-            int[] orientations = new int[8]; // Track the number of words placed in each orientation
-    
+
             for (String word : words) {
-                // Ensure that each orientation has at least 15% of the required words
-                if (orientations[0] >= minWordsPerOrientation && orientations[1] >= minWordsPerOrientation &&
-                        orientations[2] >= minWordsPerOrientation && orientations[3] >= minWordsPerOrientation &&
-                        orientations[4] >= minWordsPerOrientation) {
-                    break;
-                }
-    
-                cellsFilled += tryPlaceWord(grid, word, orientations);
-    
+                cellsFilled += tryPlaceWord(grid, word);
+
                 if (cellsFilled > target || grid.solutions.size() >= maxWords) {
                     break; // Stop placing words if the target is reached or maximum words reached
                 }
             }
-    
+
             if (grid.solutions.size() >= minWords && grid.solutions.size() <= maxWords) {
                 grid.numAttempts = numAttempts;
                 grid.density = (double) countValidWordCharacters(grid) / gridSize; // Calculate density
                 return grid;
             }
         }
-    
+
         return grid;
     }
 
@@ -121,28 +113,24 @@ public class Grid {
         return 0;
     }
 
-    static int tryPlaceWord(GridGen grid, String word, int[] orientations) {
+    static int tryPlaceWord(GridGen grid, String word) {
         int randDir = RANDOM.nextInt(DIRS.length);
         int randPos = RANDOM.nextInt(gridSize);
-        int cellsFilled = 0;
-    
+
         for (int dir = 0; dir < DIRS.length; dir++) {
             dir = (dir + randDir) % DIRS.length;
-    
+
             for (int pos = 0; pos < gridSize; pos++) {
                 pos = (pos + randPos) % gridSize;
-    
+
                 int lettersPlaced = tryLocation(grid, word, dir, pos);
-    
-                if (lettersPlaced > 0) {
-                    cellsFilled += lettersPlaced;
-                    orientations[dir]++;
-                    return cellsFilled;
-                }
+
+                if (lettersPlaced > 0)
+                    return lettersPlaced;
             }
         }
-    
-        return cellsFilled;
+
+        return 0;
     }
 
     static int tryLocation(GridGen grid, String word, int dir, int pos) {
