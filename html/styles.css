@@ -1,174 +1,181 @@
-#word-bank {
-    width: 10%;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
-    margin-right: 20px;
-    float: left;
-    color: #ffffff;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Search Game</title>
+    <style>
+        #word-bank {
+            width: 10%;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            margin-right: 20px;
+            float: left;
+            color: #ffffff;
+        }
 
-#grid {
-    width: 70%;
-    float: left;
-    background-color: #000000;
-    border-radius: 10px;
-}
+        #grid {
+            width: 70%;
+            float: left;
+            background-color: #000000;
+            border-radius: 10px;
+        }
+        #grid button {
+        font-size: 10px;
+        }
 
-#grid button {
-    font-size: 10px;
-}
 
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-image: url('game.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+        }
 
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background-image: url('game.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    margin: 0;
-    padding: 0;
-}
-
-#container {
-    max-width: 800px;
-    /* Increase the maximum width as needed */
-    width: 5000%;
-    /* Adjust the width as needed */
-    margin: 20px auto;
-    /* Center the container horizontally */
+        #container {
+    max-width: 800px; 
+    width: 5000%; 
+    margin: 20px auto; /* Center the container horizontally */
     background-color: rgba(0, 0, 0, 0.7);
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     color: #ffffff;
     position: relative;
-    top: 0;
-    /* Position the container at the top of the screen */
+    top: 0; /* Position the container at the top of the screen */
 }
 
-#header {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
+        #header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
 
-#lobby {
-    margin-bottom: 20px;
-}
+        #lobby {
+            margin-bottom: 20px;
+        }
 
-#lobby label {
-    display: block;
-    margin-bottom: 10px;
-    color: #ffffff;
-}
+        #lobby label {
+            display: block;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
 
-#lobby input[type="text"] {
-    padding: 10px;
-    margin: 10px 0;
-    width: calc(100% - 20px);
-    box-sizing: border-box;
-    border-radius: 5px;
-    border: 1px solid #ffffff;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-}
+        #lobby input[type="text"] {
+            padding: 10px;
+            margin: 10px 0;
+            width: calc(100% - 20px);
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: 1px solid #ffffff;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
 
-#lobby button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
+        #lobby button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
-#lobby button:hover {
-    background-color: #0056b3;
-}
+        #lobby button:hover {
+            background-color: #0056b3;
+        }
 
-#game {
-    display: none;
-}
+        #game {
+            display: none;
+        }
 
-#players {
-    font-weight: bold;
-    margin-bottom: 10px;
-}
+        #players {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
 
-#bottomMessage {
-    margin-top: 20px;
-    font-style: italic;
-}
+        #bottomMessage {
+            margin-top: 20px;
+            font-style: italic;
+        }
 
-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
+        #topMessage {
+            margin-top: 10px; /* Adjust margin-top as needed */
+        }
 
-button:hover {
-    background-color: #3480d0;
-}
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
-input[type="text"] {
-    padding: 10px;
-    margin: 10px 0;
-    width: 100%;
-    box-sizing: border-box;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
+        button:hover {
+            background-color: #3480d0;
+        }
 
-#rules {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 20px;
-    border-radius: 10px;
-    color: #ffffff;
-}
+        input[type="text"] {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
 
-#closeButton {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: transparent;
-    border: none;
-    color: #ffffff;
-    font-size: 16px;
-    cursor: pointer;
-}
+        #rules {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            color: #ffffff;
+        }
 
-.button-container {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-}
+        #closeButton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 16px;
+            cursor: pointer;
+        }
 
-/* Adjusted styles for the buttons */
-#rulesButton,
-#startButton {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
+        .button-container {
+            position: absolute;
+            top: 20px; /* Adjust the top position as needed */
+            right: 20px; /* Adjust the right position as needed */
+        }
 
-#rulesButton:hover,
-#startButton:hover {
-    background-color: #0056b3;
-}
+        /* Adjusted styles for the buttons */
+        #rulesButton,
+        #startButton {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 10px; /* Adjust margin-bottom as needed */
+        }
+
+        #rulesButton:hover,
+        #startButton:hover {
+            background-color: #0056b3;
+        }
