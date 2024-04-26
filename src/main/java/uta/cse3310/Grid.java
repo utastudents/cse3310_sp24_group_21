@@ -35,14 +35,14 @@ public class Grid {
     static final Random RANDOM = new Random();
 
     public static void main(String[] args) {
-       
+       /* 
           long startTime = System.currentTimeMillis();
          printResult(createGrid(readWords(), 500)); // number at end is for max word limit
           long endTime = System.currentTimeMillis();
          long elapsedTime = endTime - startTime;
           System.out.println("\nTime taken to generate grid: " + elapsedTime +
          " milliseconds");
-         
+         */
     }
 
     public static List<String> readWords() {
@@ -207,49 +207,38 @@ public class Grid {
             System.out.println("No grid to display");
             return;
         }
-    
+
         int size = grid.solutions.size();
-    
+
         System.out.println("Number of Attempts: " + grid.numAttempts);
         System.out.println("Number of words: " + size);
         System.out.println("Density of the grid: " + grid.density); // Print the density
-    
-        // Create shuffled array containing all letters of the alphabet
-        List<Character> alphabet = new ArrayList<>();
-        for (char letter = 'A'; letter <= 'Z'; letter++) {
-            alphabet.add(letter);
-        }
-        Collections.shuffle(alphabet);
-    
+
         System.out.print("\n    ");
-    
+
         for (int c = 0; c < nCols; c++) {
             System.out.print(c + "  ");
         }
-    
+
         System.out.println();
-    
-        // Fill empty cells with uniformly distributed random letters
-        int alphabetIndex = 0; // Index for iterating through shuffled alphabet
+
         for (int r = 0; r < nRows; r++) {
             System.out.printf("%n%d  ", r);
-    
+
             for (int c = 0; c < nCols; c++) {
                 if (grid.cells[r][c] == 0) {
-                    // Fill empty cell with a letter from the shuffled alphabet
-                    grid.cells[r][c] = alphabet.get(alphabetIndex);
-                    alphabetIndex = (alphabetIndex + 1) % 26; // Increment index, wrap around if needed
+                    grid.cells[r][c] = (char) ('A' + RANDOM.nextInt(26)); // Fill empty cells with random letters
                 }
                 System.out.printf(" %c ", grid.cells[r][c]);
             }
         }
-    
+
         System.out.println("\n");
-    
+
         for (int i = 0; i < size - 1; i += 2) {
             System.out.printf("%s %s%n", grid.solutions.get(i), grid.solutions.get(i + 1));
         }
-    
+
         if (size % 2 == 1) {
             System.out.println(grid.solutions.get(size - 1));
         }
