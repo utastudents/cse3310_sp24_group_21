@@ -85,7 +85,7 @@ public class App extends WebSocketServer {
       System.out.println(" Creating a new Game");
     } else {
       System.out.println(" Not a new game");
-      G.players = PlayerType.values()[G.players.ordinal() + 1];
+      G.players = (PlayerType) PlayerType.values()[G.players.ordinal() + 1];
       G.StartGame();
     }
     E.YouAre = G.player;
