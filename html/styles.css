@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Word Search Game</title>
     <style>
-        #word-bank {
+            #word-bank {
             width: 10%;
             padding: 20px;
             background-color: rgba(0, 0, 0, 0.5);
