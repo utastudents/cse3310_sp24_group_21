@@ -28,7 +28,7 @@ public class Grid {
     };
 
     // grid size
-    static final int nRows = 10, nCols = 10;
+    static final int nRows = 20, nCols = 20;
     static final int gridSize = nRows * nCols;
 
     // min words in grid
