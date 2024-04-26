@@ -1,6 +1,7 @@
 package uta.cse3310;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -36,15 +37,14 @@ public class Grid {
     static final Random RANDOM = new Random();
 
     public static void main(String[] args) {
-        /*
-         * long startTime = System.currentTimeMillis();
-         * printResult(createGrid(readWords(), 750)); // number at end is for max word
-         * limit
-         * long endTime = System.currentTimeMillis();
-         * long elapsedTime = endTime - startTime;
-         * System.out.println("\nTime taken to generate grid: " + elapsedTime +
-         * " milliseconds");
-         */
+        /* 
+        long startTime = System.currentTimeMillis();
+        printResult(createGrid(readWords(), 750)); // number at end is for max word limit
+        long endTime = System.currentTimeMillis();
+        long elapsedTime = endTime - startTime;
+        System.out.println("\nTime taken to generate grid: " + elapsedTime +
+                " milliseconds");
+        */
     }
 
     public static List<String> readWords() {
@@ -76,9 +76,19 @@ public class Grid {
             grid = new GridGen();
             int target = (int) (gridSize * 0.67); // Target approximately 67% of the grid area
             int cellsFilled = 0;
+            int minWordsPerOrientation = (int) Math.ceil(gridSize * 0.15 / 5); // 15% of each orientation
+
+            int[] orientations = new int[8]; // Track the number of words placed in each orientation
 
             for (String word : words) {
-                cellsFilled += tryPlaceWord(grid, word);
+                // Ensure that each orientation has at least 15% of the required words
+                if (orientations[0] >= minWordsPerOrientation && orientations[1] >= minWordsPerOrientation &&
+                        orientations[2] >= minWordsPerOrientation && orientations[3] >= minWordsPerOrientation &&
+                        orientations[4] >= minWordsPerOrientation) {
+                    break;
+                }
+
+                cellsFilled += tryPlaceWord(grid, word, orientations);
 
                 if (cellsFilled > target || grid.solutions.size() >= maxWords) {
                     break; // Stop placing words if the target is reached or maximum words reached
@@ -113,9 +123,10 @@ public class Grid {
         return 0;
     }
 
-    static int tryPlaceWord(GridGen grid, String word) {
+    static int tryPlaceWord(GridGen grid, String word, int[] orientations) {
         int randDir = RANDOM.nextInt(DIRS.length);
         int randPos = RANDOM.nextInt(gridSize);
+        int cellsFilled = 0;
 
         for (int dir = 0; dir < DIRS.length; dir++) {
             dir = (dir + randDir) % DIRS.length;
@@ -125,12 +136,15 @@ public class Grid {
 
                 int lettersPlaced = tryLocation(grid, word, dir, pos);
 
-                if (lettersPlaced > 0)
-                    return lettersPlaced;
+                if (lettersPlaced > 0) {
+                    cellsFilled += lettersPlaced;
+                    orientations[dir]++;
+                    return cellsFilled;
+                }
             }
         }
 
-        return 0;
+        return cellsFilled;
     }
 
     static int tryLocation(GridGen grid, String word, int dir, int pos) {
@@ -210,12 +224,29 @@ public class Grid {
 
         System.out.println();
 
+        // Count occurrences of each letter in words
+        int[] letterCount = new int[26];
+        for (String word : grid.words) {
+            for (char letter : word.toCharArray()) {
+                letterCount[letter - 'A']++;
+            }
+        }
+
+        // Determine the maximum occurrences of any letter
+        int maxOccurrences = Arrays.stream(letterCount).max().orElse(0);
+
+        // Calculate the minimum occurrences of each letter for uniform distribution
+        int minOccurrences = (gridSize - grid.solutions.stream().mapToInt(s -> s.length()).sum()) / 26;
+
         for (int r = 0; r < nRows; r++) {
             System.out.printf("%n%d  ", r);
 
             for (int c = 0; c < nCols; c++) {
                 if (grid.cells[r][c] == 0) {
-                    grid.cells[r][c] = (char) ('A' + RANDOM.nextInt(26)); // Fill empty cells with random letters
+                    // Fill empty cells with random letters ensuring uniform distribution
+                    char filler = getUniformFiller(letterCount, minOccurrences, maxOccurrences);
+                    grid.cells[r][c] = filler;
+                    letterCount[filler - 'A']--;
                 }
                 System.out.printf(" %c ", grid.cells[r][c]);
             }
@@ -231,4 +262,19 @@ public class Grid {
             System.out.println(grid.solutions.get(size - 1));
         }
     }
+
+    // Method to get a uniform filler character
+    static char getUniformFiller(int[] letterCount, int minOccurrences, int maxOccurrences) {
+        char filler = (char) ('A' + RANDOM.nextInt(26));
+        int index = filler - 'A';
+
+        // Ensure the chosen filler has not exceeded its maximum occurrences
+        while (letterCount[index] <= minOccurrences && letterCount[index] < maxOccurrences) {
+            filler = (char) ('A' + RANDOM.nextInt(26));
+            index = filler - 'A';
+        }
+
+        return filler;
+    }
+
 }
