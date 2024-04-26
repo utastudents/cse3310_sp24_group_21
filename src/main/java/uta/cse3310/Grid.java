@@ -21,8 +21,7 @@ public class Grid {
         double density;
     }
 
-    // gen words 8 directions (technically 8 because diagonal is four different
-    // directions)
+    // gen words 8 directions (technically 8 because diagonal is four different directions) 
     static final int[][] DIRS = {
             { 1, 0 }, { 0, 1 }, { 1, 1 }, { 1, -1 }, { -1, 0 }, { 0, -1 }, { -1, -1 }, { -1, 1 }
     };
@@ -32,18 +31,18 @@ public class Grid {
     static final int gridSize = nRows * nCols;
 
     // min words in grid
-    static final int minWords = 0;
+    static final int minWords = 1;
     static final Random RANDOM = new Random();
 
     public static void main(String[] args) {
-
-        long startTime = System.currentTimeMillis();
-        printResult(createGrid(readWords(), 500)); // number at end is for max word limit
-        long endTime = System.currentTimeMillis();
-        long elapsedTime = endTime - startTime;
-        System.out.println("\nTime taken to generate grid: " + elapsedTime +
-                " milliseconds");
-
+       
+          long startTime = System.currentTimeMillis();
+         printResult(createGrid(readWords(), 500)); // number at end is for max word limit
+          long endTime = System.currentTimeMillis();
+         long elapsedTime = endTime - startTime;
+          System.out.println("\nTime taken to generate grid: " + elapsedTime +
+         " milliseconds");
+         
     }
 
     public static List<String> readWords() {
@@ -68,29 +67,39 @@ public class Grid {
     public static GridGen createGrid(List<String> words, int maxWords) {
         GridGen grid = null;
         int numAttempts = 0;
-
+    
         // attempt grid 100 times
         while (++numAttempts < 100) {
             Collections.shuffle(words); // shuffle words
             grid = new GridGen();
             int target = (int) (gridSize * 0.67); // Target approximately 67% of the grid area
             int cellsFilled = 0;
-
+            int minWordsPerOrientation = (int) Math.ceil(gridSize * 0.15 / 5); // 15% of each orientation
+    
+            int[] orientations = new int[8]; // Track the number of words placed in each orientation
+    
             for (String word : words) {
-                cellsFilled += tryPlaceWord(grid, word);
-
+                // Ensure that each orientation has at least 15% of the required words
+                if (orientations[0] >= minWordsPerOrientation && orientations[1] >= minWordsPerOrientation &&
+                        orientations[2] >= minWordsPerOrientation && orientations[3] >= minWordsPerOrientation &&
+                        orientations[4] >= minWordsPerOrientation) {
+                    break;
+                }
+    
+                cellsFilled += tryPlaceWord(grid, word, orientations);
+    
                 if (cellsFilled > target || grid.solutions.size() >= maxWords) {
                     break; // Stop placing words if the target is reached or maximum words reached
                 }
             }
-
+    
             if (grid.solutions.size() >= minWords && grid.solutions.size() <= maxWords) {
                 grid.numAttempts = numAttempts;
                 grid.density = (double) countValidWordCharacters(grid) / gridSize; // Calculate density
                 return grid;
             }
         }
-
+    
         return grid;
     }
 
@@ -112,24 +121,28 @@ public class Grid {
         return 0;
     }
 
-    static int tryPlaceWord(GridGen grid, String word) {
+    static int tryPlaceWord(GridGen grid, String word, int[] orientations) {
         int randDir = RANDOM.nextInt(DIRS.length);
         int randPos = RANDOM.nextInt(gridSize);
-
+        int cellsFilled = 0;
+    
         for (int dir = 0; dir < DIRS.length; dir++) {
             dir = (dir + randDir) % DIRS.length;
-
+    
             for (int pos = 0; pos < gridSize; pos++) {
                 pos = (pos + randPos) % gridSize;
-
+    
                 int lettersPlaced = tryLocation(grid, word, dir, pos);
-
-                if (lettersPlaced > 0)
-                    return lettersPlaced;
+    
+                if (lettersPlaced > 0) {
+                    cellsFilled += lettersPlaced;
+                    orientations[dir]++;
+                    return cellsFilled;
+                }
             }
         }
-
-        return 0;
+    
+        return cellsFilled;
     }
 
     static int tryLocation(GridGen grid, String word, int dir, int pos) {
@@ -194,66 +207,51 @@ public class Grid {
             System.out.println("No grid to display");
             return;
         }
-
+    
         int size = grid.solutions.size();
-
+    
         System.out.println("Number of Attempts: " + grid.numAttempts);
         System.out.println("Number of words: " + size);
         System.out.println("Density of the grid: " + grid.density); // Print the density
-
-        System.out.print("\n    ");
-
-        // Create an array to store the count of each letter
-        int[] letterCounts = new int[26]; // 26 letters in the alphabet
-
-        // Fill the array with equal distribution of each letter
-        for (int i = 0; i < gridSize; i++) {
-            char randomLetter = (char) ('A' + (i % 26)); // Generate letters cyclically from A to Z
-            letterCounts[randomLetter - 'A']++; // Increment count for the corresponding letter
+    
+        // Create shuffled array containing all letters of the alphabet
+        List<Character> alphabet = new ArrayList<>();
+        for (char letter = 'A'; letter <= 'Z'; letter++) {
+            alphabet.add(letter);
         }
-
+        Collections.shuffle(alphabet);
+    
+        System.out.print("\n    ");
+    
         for (int c = 0; c < nCols; c++) {
             System.out.print(c + "  ");
         }
-
+    
         System.out.println();
-
+    
+        // Fill empty cells with uniformly distributed random letters
+        int alphabetIndex = 0; // Index for iterating through shuffled alphabet
         for (int r = 0; r < nRows; r++) {
             System.out.printf("%n%d  ", r);
-
+    
             for (int c = 0; c < nCols; c++) {
                 if (grid.cells[r][c] == 0) {
-                    // Find the next available letter with equal distribution
-                    char nextLetter = findNextLetter(letterCounts);
-                    grid.cells[r][c] = nextLetter; // Fill the cell with the letter
+                    // Fill empty cell with a letter from the shuffled alphabet
+                    grid.cells[r][c] = alphabet.get(alphabetIndex);
+                    alphabetIndex = (alphabetIndex + 1) % 26; // Increment index, wrap around if needed
                 }
                 System.out.printf(" %c ", grid.cells[r][c]);
             }
         }
-
+    
         System.out.println("\n");
-
+    
         for (int i = 0; i < size - 1; i += 2) {
             System.out.printf("%s %s%n", grid.solutions.get(i), grid.solutions.get(i + 1));
         }
-
+    
         if (size % 2 == 1) {
             System.out.println(grid.solutions.get(size - 1));
         }
-    }
-
-    // Helper method to find the next available letter with equal distribution
-    private static char findNextLetter(int[] letterCounts) {
-        // Find the index of the next letter with the minimum count
-        int minIndex = 0;
-        for (int i = 1; i < letterCounts.length; i++) {
-            if (letterCounts[i] < letterCounts[minIndex]) {
-                minIndex = i;
-            }
-        }
-        // Increment the count for the chosen letter
-        letterCounts[minIndex]++;
-        // Return the corresponding letter
-        return (char) ('A' + minIndex);
     }
 }
