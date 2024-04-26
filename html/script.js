@@ -21,6 +21,7 @@ class UserEvent {
     i = 0;
     j = 0;
     playing = false;
+    start = false;
 }
 
 var serverUrl = "ws://" + window.location.hostname + ":9121";
@@ -84,6 +85,11 @@ connection.onmessage = function (evt) {
 
     if ('players' in obj) {
         updateLobbyStatus(obj.players);
+    }
+
+    if ('start' in obj) {
+        if (obj.start == true)
+        startGame();
     }
 
     if ('gameWords' in obj) {
@@ -225,12 +231,15 @@ function updateLobbyStatus(players) {
     }
 
     if (players.length >= 2) {
-        document.getElementById("startButton").style.display = "block";
-    } else {
-        document.getElementById("startButton").style.display = "none";
-    }
+        var startButton = document.getElementById("startButton");
+        startButton.style.display = "block";
+        startButton.addEventListener("click", function(){
+            U = new UserEvent();
+            U.start = true
+            connection.send(JSON.stringify(U));
+        });
+    } 
 }
-
 function joinLobby() {
     var name = document.getElementById("name").value;
     if (name.trim() !== "") {

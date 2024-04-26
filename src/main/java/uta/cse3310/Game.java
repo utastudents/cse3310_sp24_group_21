@@ -20,6 +20,7 @@ public class Game {
     public GameState state = GameState.LOBBY;
     PlayerType player;
     public int playerNum;
+    boolean start;
 
     Game() {
         Button = new PlayerType[20][20];

@@ -8,6 +8,7 @@ public class UserEvent {
     String Name;
     int i, j, k, l;
     public boolean playing;
+    boolean start;
 
     UserEvent(int m, int n, int o, int p, PlayerType noplayer) {
 

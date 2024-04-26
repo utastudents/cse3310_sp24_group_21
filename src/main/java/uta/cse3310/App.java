@@ -120,6 +120,7 @@ public class App extends WebSocketServer {
     Lobby lobby = gson.fromJson(message, Lobby.class);
     UserEvent U = gson.fromJson(message, UserEvent.class);
     Game game = conn.getAttachment();
+    game.start = U.start;
     if (U.playing == true)
       game.Update(U);
 
