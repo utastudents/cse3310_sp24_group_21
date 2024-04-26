@@ -152,8 +152,8 @@ input[type="text"] {
 
 .button-container {
     position: absolute;
-    bottom: 20px;
-    right: 20px;
+    bottom: 750px;
+    right: 35px;
 }
 
 /* Adjusted styles for the buttons */
