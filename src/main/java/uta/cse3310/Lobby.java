@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Lobby {
-     private ArrayList<Game> activeGames;
+     private ArrayList<Game> activeGames = new ArrayList<>();
     private int gameId = 1;
     public String name;
 
     public Game createGame() {
         Game game = new Game();
         activeGames.add(game);
-        activeGames = new ArrayList<>();
+        game.players = new ArrayList<>();
         return game;
     }
 
@@ -36,5 +36,7 @@ public class Lobby {
         activeGames.remove(game);
     }
 
-    
+    public ArrayList<String> getPlayers(Game game) {
+        return new ArrayList<>(game.players);
+    }
 }

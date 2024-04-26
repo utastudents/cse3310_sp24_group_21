@@ -5,15 +5,5 @@ public enum PlayerType {
     PLAYERONE,
     PLAYERTWO,
     PLAYERTHREE,
-    PLAYERFOUR;
+    PLAYERFOUR}
 
-    void add(String playerName) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'add'");
-    }
-
-    int size() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'size'");
-    }
-}

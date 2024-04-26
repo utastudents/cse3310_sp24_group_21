@@ -16,10 +16,12 @@ public class Grid {
         char[][] cells = new char[nRows][nCols];
         List<String> solutions = new ArrayList<>();
         ArrayList<String> sol = new ArrayList<>();
+        ArrayList<String> words = new ArrayList<>();
+        ArrayList<String> findword = new ArrayList<>();
         double density;
     }
 
-    // gen words 8 directions
+    // gen words 8 directions (technically 8 because diagonal is four different directions) 
     static final int[][] DIRS = {
             { 1, 0 }, { 0, 1 }, { 1, 1 }, { 1, -1 }, { -1, 0 }, { 0, -1 }, { -1, -1 }, { -1, 1 }
     };
@@ -33,15 +35,14 @@ public class Grid {
     static final Random RANDOM = new Random();
 
     public static void main(String[] args) {
-        /*
-         * long startTime = System.currentTimeMillis();
-         * printResult(createGrid(readWords(), 750)); // number at end is for max word
-         * limit
-         * long endTime = System.currentTimeMillis();
-         * long elapsedTime = endTime - startTime;
-         * System.out.println("\nTime taken to generate grid: " + elapsedTime +
-         * " milliseconds");
-         */
+       
+          long startTime = System.currentTimeMillis();
+         printResult(createGrid(readWords(), 750)); // number at end is for max word limit
+          long endTime = System.currentTimeMillis();
+         long elapsedTime = endTime - startTime;
+          System.out.println("\nTime taken to generate grid: " + elapsedTime +
+         " milliseconds");
+         
     }
 
     public static List<String> readWords() {
@@ -171,6 +172,8 @@ public class Grid {
         if (lettersPlaced > 0)
             grid.solutions.add(String.format("%-10s (%d, %d)(%d,%d)", word, c, r, cc, rr));
         grid.sol.add(String.format("%d,%d,%d,%d", c, r, cc, rr));
+        grid.words.add(word);
+        grid.findword.add(String.format("%s,%d,%d,%d,%d", word, c, r, cc, rr));
         return lettersPlaced;
     }
 
