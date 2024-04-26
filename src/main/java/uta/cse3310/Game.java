@@ -7,17 +7,16 @@ import java.util.Vector;
 // there are a lot of remnants from the tictactoe program incase they're needed later, will be removed otherwise
 public class Game {
 
-    // public PlayerType Players;
-    // // public PlayerType CurrentTurn;
     public PlayerType[][] Button;
-    // // public String[] Msg;
     public int GameId;
     public String PlayerName;
-    // public ArrayList<String> vnames = new ArrayList<String>();
     char[][] cells = new char[20][20];
 
     public ArrayList<String> players = new ArrayList<>();
     public ArrayList<String> sol = new ArrayList<>();
+    public ArrayList<String> gameWords = new ArrayList<>();
+    public ArrayList<String> findword = new ArrayList<>();
+    public ArrayList<String> foundwords = new ArrayList<>();
     public GameState state = GameState.LOBBY;
     PlayerType player;
     public int playerNum;
@@ -44,6 +43,22 @@ public class Game {
             if (U.i == i && U.j == j && U.k == k && U.l == l && Button[U.i][U.j] == PlayerType.NOPLAYER
                     && Button[U.k][U.l] == PlayerType.NOPLAYER) {
                 horizontal(i, j, k, l, U.PlayerIdx);
+
+                for (String words : findword) {
+                    String[] word = words.split(delim);
+                    String removedWord = word[0];
+                    String e = word[1];
+                    String f = word[2];
+                    String g = word[3];
+                    String h = word[4];
+                    int m = Integer.valueOf(e);
+                    int n = Integer.valueOf(f);
+                    int o = Integer.valueOf(g);
+                    int p = Integer.valueOf(h);
+                    if (m == i && n == j && o == k && p == l) {
+                        foundwords.add(removedWord);
+                    }
+                }
             }
         }
     }

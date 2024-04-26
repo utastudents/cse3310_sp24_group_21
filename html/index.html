@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Word Search Game</title>
     <style>
+        #word-bank {
+            width: 10%;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            margin: 20px;
+        }
+
         body {
             font-family: Arial, sans-serif;
             text-align: center;
@@ -120,6 +128,10 @@
 </head>
 <body>
     
+    <div id="word-bank" style="display:none;">
+        <p style="text-align: center">
+        </p>
+    </div>
     <div id="container">
         <div id="header">Word Search Game</div>
         <div id="lobby">
@@ -172,6 +184,7 @@
      var p1turns = 0;
      var p2turns = 0;
      var p1i,p1j,p2i,p2j,c,d = 0;
+     var count = 0;
      var timerInterval;
      var timerDisplay = document.getElementById('timerDisplay');
      var timerSeconds = 180; // 3 minutes
@@ -247,20 +260,32 @@
  
          if ('players' in obj) {
             updateLobbyStatus(obj.players);
-            // var playersDiv = document.getElementById("players");
-            // playersDiv.innerHTML = "";
- 
-            // for (var i = 0; i < obj.Players.length; i++) {
-            //     var playerDiv = document.createElement("div");
-            //     playerDiv.textContent = obj.Players[i];
-            //     playersDiv.appendChild(playerDiv);
-            //     if(obj.Players.length >= 2){
-            //         document.getElementById("startButton").style.display = "block";
-            //     } else {
-            //         document.getElementById("startButton").style.display = "none";
-            //     }
-            // }
          }
+
+         if ('gameWords' in obj) {
+            var bank = document.getElementById("word-bank");
+            
+            if (count == 0) {
+                for (var i = 0; i < obj.gameWords.length; i++) {
+                    var word = document.createElement("div");
+                    word.innerHTML = obj.gameWords[i];
+                    bank.appendChild(word);
+                }
+            } else if (count > 0) {
+                while (bank.firstChild) {
+                    bank.removeChild(bank.firstChild);
+                }
+                for (var i = 0; i < obj.gameWords.length; i++) {
+                    var word = document.createElement("div");
+                    word.innerHTML = obj.gameWords[i];
+                    for (var j = 0; j < obj.foundwords.length; j++) {
+                        if (obj.foundwords[j] == obj.gameWords[i]) 
+                        word.style.textDecoration = "line-through";
+                    }bank.appendChild(word);
+                }
+            }count++;
+         }
+
          if ('cells' in obj){
             fillGrid(obj.cells);
             if (gameid == obj.GameId){
@@ -421,6 +446,7 @@ function startGame() {
          document.getElementById("lobby").style.display = "none";
          document.getElementById("game").style.display = "block";
          document.getElementById("grid").style.display = "block";
+         document.getElementById("word-bank").style.display = "block";
          startTimer(); 
          // Display the players' names side by side
          var playersDiv = document.getElementById("players");

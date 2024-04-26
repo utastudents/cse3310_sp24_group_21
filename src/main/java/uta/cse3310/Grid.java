@@ -16,6 +16,8 @@ public class Grid {
         char[][] cells = new char[nRows][nCols];
         List<String> solutions = new ArrayList<>();
         ArrayList<String> sol = new ArrayList<>();
+        ArrayList<String> words = new ArrayList<>();
+        ArrayList<String> findword = new ArrayList<>();
         double density;
     }
 
@@ -171,6 +173,8 @@ public class Grid {
         if (lettersPlaced > 0)
             grid.solutions.add(String.format("%-10s (%d, %d)(%d,%d)", word, c, r, cc, rr));
         grid.sol.add(String.format("%d,%d,%d,%d", c, r, cc, rr));
+        grid.words.add(word);
+        grid.findword.add(String.format("%s,%d,%d,%d,%d", word, c, r, cc, rr));
         return lettersPlaced;
     }
 

@@ -75,6 +75,8 @@ public class App extends WebSocketServer {
       G.cells = gen.cells;
       Grid.printResult(gen);
       G.sol = gen.sol;
+      G.gameWords = gen.words;
+      G.findword = gen.findword;
       GameId++;
       G.player = uta.cse3310.PlayerType.PLAYERONE;
       ActiveGames.add(G);
