@@ -26,21 +26,12 @@ import java.util.Vector;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import uta.cse3310.Grid.GridGen;
-
 public class App extends WebSocketServer {
-  // All games currently underway on this server are stored in
-  // the vector ActiveGames
   Vector<Game> ActiveGames = new Vector<Game>();
-  // Vector<Game> players = new Vector<Game>();
   List<String> words = new ArrayList<>();
+  LeaderBoard leaderBoard = new LeaderBoard(); // Single leaderboard instance for the server
 
   int GameId = 0;
-  // static class gameGrid {
-  // int numAttempts;
-  // char[][] cells = new char[15][15];
-  // List<String> solutions = new ArrayList<>();
-  // }
 
   public App(int port) {
     super(new InetSocketAddress(port));
@@ -56,54 +47,44 @@ public class App extends WebSocketServer {
 
   @Override
   public void onOpen(WebSocket conn, ClientHandshake handshake) {
-
     System.out.println(conn.getRemoteSocketAddress().getAddress().getHostAddress() + " connected");
-    ServerEvent E = new ServerEvent();
     Game G = null;
     for (Game i : ActiveGames) {
-      if (i.player == uta.cse3310.PlayerType.PLAYERONE) {
+      if (i.player == PlayerType.PLAYERONE) {
         G = i;
       }
     }
 
     if (G == null) {
-      G = new Game();
-      // Lobby L = new Lobby();
-      // G = L.createGame();
-      words = Grid.readWords(); // Provide the filename as argument to readWords
-      GridGen gen = Grid.createGrid(words, 300); // Provide words list and maxWords as arguments
+      words = Grid.readWords();
+      GridGen gen = Grid.createGrid(words, 300);
+      G = new Game(leaderBoard); // Pass the leaderboard to the new game
       G.cells = gen.cells;
-      Grid.printResult(gen);
       G.sol = gen.sol;
       G.gameWords = gen.words;
       G.findword = gen.findword;
       GameId++;
-      G.player = uta.cse3310.PlayerType.PLAYERONE;
+      G.player = PlayerType.PLAYERONE;
       ActiveGames.add(G);
     } else {
-      G.player = uta.cse3310.PlayerType.PLAYERTWO;
+      G.player = PlayerType.PLAYERTWO;
     }
+
+    ServerEvent E = new ServerEvent();
     E.YouAre = G.player;
     E.GameId = G.GameId;
-    // allows the websocket to give us the Game when a message arrives
     conn.setAttachment(G);
 
     Gson gson = new Gson();
-
-    // The state of the game has changed, so lets send it to everyone
-    String jsonString;
-    jsonString = gson.toJson(E);
+    String jsonString = gson.toJson(E);
     conn.send(jsonString);
     jsonString = gson.toJson(G);
-
-    // System.out.println(jsonString);
     broadcast(jsonString);
   }
 
   @Override
   public void onClose(WebSocket conn, int code, String reason, boolean remote) {
     System.out.println(conn + " has closed");
-    // Retrieve the game tied to the websocket connection
     Game G = conn.getAttachment();
     G = null;
   }
@@ -111,42 +92,19 @@ public class App extends WebSocketServer {
   @Override
   public void onMessage(WebSocket conn, String message) {
     System.out.println(conn + ": " + message);
-
-    // Bring in the data from the webpage
-    // A UserEvent is all that is allowed at this point
-    GsonBuilder builder = new GsonBuilder();
-    Gson gson = builder.create();
-
-    Lobby lobby = gson.fromJson(message, Lobby.class);
+    Gson gson = new GsonBuilder().create();
     UserEvent U = gson.fromJson(message, UserEvent.class);
     Game game = conn.getAttachment();
-    game.start = U.start;
-    if (U.playing == true)
+    if (U.playing) {
       game.Update(U);
-
-    lobby.joinGame(game, lobby.name);
-    game.PlayerName = lobby.name;
-
-    String jsonString;
-    jsonString = gson.toJson(game);
-    System.out.println(jsonString);
-    broadcast(jsonString);
-
-  }
-
-  @Override
-  public void onMessage(WebSocket conn, ByteBuffer message) {
-    System.out.println(conn + ": " + message);
-
-  }
-
-  @Override
-  public void onError(WebSocket conn, Exception ex) {
-    ex.printStackTrace();
-    if (conn != null) {
-      // some errors like port binding failed may not be assignable to a specific
-      // websocket
+      broadcastLeaderboard(); // Update all clients with the latest leaderboard
     }
+  }
+
+  // Broadcast the current state of the leaderboard to all clients
+  private void broadcastLeaderboard() {
+    String leaderboardJson = new Gson().toJson(leaderBoard.getHighScores());
+    broadcast(leaderboardJson);
   }
 
   @Override
@@ -156,18 +114,14 @@ public class App extends WebSocketServer {
   }
 
   public static void main(String[] args) {
-
-    // Set up the http server
-    int port = 9021;// 9021
+    int port = 9021;
     HttpServer H = new HttpServer(port, "./html");
     H.start();
-    System.out.println("http Server started on port:" + port);
+    System.out.println("HTTP server started on port: " + port);
 
-    // create and start the websocket server
-
-    port = 9121;// 9121
+    port = 9121;
     App A = new App(port);
     A.start();
-    System.out.println("websocket Server started on port: " + port);
+    System.out.println("WebSocket server started on port: " + port);
   }
 }
