@@ -1,4 +1,5 @@
-#word-bank {
+
+        #word-bank {
             width: 10%;
             padding: 20px;
             background-color: rgba(0, 0, 0, 0.5);
@@ -100,7 +101,7 @@
         }
 
         #topMessage {
-            margin-top: 10px; 
+            margin-top: 10px; /* Adjust margin-top as needed */
         }
 
         button {
@@ -152,10 +153,11 @@
 
         .button-container {
             position: absolute;
-            top: 20px;
-            right: 10px; 
+            top: 20px; /* Adjust the top position as needed */
+            right: 10px; /* Adjust the right position as needed */
         }
 
+        /* Adjusted styles for the buttons */
         #rulesButton,
         #startButton {
             padding: 10px 20px;
@@ -172,3 +174,35 @@
         #startButton:hover {
             background-color: #0056b3;
         }
+        
+    #leaderboard {
+    display: none; 
+    position: fixed;
+    top: 25%; 
+    right: 20px; 
+    transform: translate(0, -50%); 
+    width: 150px; 
+    background-color: rgba(0, 0, 0, 0.7); 
+    padding: 10px; 
+    border-radius: 10px; 
+    color: #ffffff; 
+    z-index: 1000; 
+}
+
+
+/* Style for leaderboard heading */
+#leaderboard h2 {
+    margin-top: 0;
+}
+
+/* Style for leaderboard list */
+#leaderboardList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#leaderboardList li {
+    margin-bottom: 5px; 
+}
+
