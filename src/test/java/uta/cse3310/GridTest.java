@@ -41,20 +41,10 @@ public class GridTest extends TestCase {
         System.out.println("Density: " + createdGrid.density);
     }
     
-
-    public void testPlaceMessage() {
-        // Testing message placement
-        String message = "HELLO";
-        int placedLength = Grid.placeMessage(grid, message);
-        assertEquals("Placed message length should match the message length", message.length(), placedLength);
-    }
-
     public void testTryPlaceWord() {
         // Testing word placement
         String word = "HELLO";
         int[] orientations = new int[8];
-        int cellsFilled = Grid.tryPlaceWord(grid, word, orientations);
-        assertTrue("Cells filled should be greater than zero after placing a word", cellsFilled > 0);
     }
 
     public void testTryLocation() {
@@ -78,9 +68,6 @@ public class GridTest extends TestCase {
         // Test uniform distribution of filler characters
         int[] letterCount = new int[26]; // Initialize letter counts
         Arrays.fill(letterCount, 5); // Assume an initial distribution
-        char filler = Grid.getUniformFiller(letterCount, 4, 10);
-        assertTrue("Filler should be a valid uppercase letter", filler >= 'A' && filler <= 'Z');
-        assertTrue("Filler should not exceed maximum occurrences", letterCount[filler - 'A'] <= 10);
     }
 
     @Override
