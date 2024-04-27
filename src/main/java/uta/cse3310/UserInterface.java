@@ -1,13 +1,15 @@
 package uta.cse3310;
 
 import java.util.Scanner;
+import java.util.List;
 
 public class UserInterface {
 
     private Scanner scanner;
-    // Declare a variable for the LeaderBoard object
+    private LeaderBoard leaderBoard;  // Instance of LeaderBoard to manage scores
 
-    public UserInterface() {
+    public UserInterface(LeaderBoard leaderboard) {
+        this.leaderBoard = leaderboard;
         scanner = new Scanner(System.in);
     }
 
@@ -18,69 +20,74 @@ public class UserInterface {
     }
 
     public void lobby() {
-        // System.out.println("Welcome to the lobby!");
-        // System.out.println("Options:");
-        // System.out.println("1. Start Game");
-        // System.out.println("2. View Rules");
-        // System.out.println("3. View Leaderboard");
-        // int choice = getIntInput("Enter your choice: ");
-        // switch (choice) {
-        // case 1:
-        // System.out.println("Starting game...");
-        // break;
-        // case 2:
-        // rules();
-        // break;
-        // case 3:
-        // leaderBoard();
-        // break;
-        // default:
-        // System.out.println("Invalid choice.");
+        System.out.println("Welcome to the lobby!");
+        System.out.println("Options:");
+        System.out.println("1. Start Game");
+        System.out.println("2. View Rules");
+        System.out.println("3. View Leaderboard");
+        int choice = getIntInput("Enter your choice: ");
+        switch (choice) {
+            case 1:
+                System.out.println("Starting game...");
+                break;
+            case 2:
+                rules();
+                break;
+            case 3:
+                leaderBoard();
+                break;
+            default:
+                System.out.println("Invalid choice.");
+        }
     }
 
     public void wordList() {
         System.out.println("List of available words:");
-        // Display list of words
+        // Assume a method exists to get words from a WordList object
     }
 
     public void rules() {
         System.out.println("Game Rules:");
-        // Display game rules and instructions
+        System.out.println("1. Describe the rules here.");
     }
 
     public void scoreBoard() {
         System.out.println("Scoreboard:");
-        // Display current game score
+        System.out.println("Current scores:");
+        // Could also call leaderBoard.displayLeaderBoard() if it returns string
     }
 
     public void leaderBoard() {
         System.out.println("Leaderboard:");
-        // Call the static method directly
+        List<LeaderBoard.PlayerScore> scores = leaderBoard.getHighScores();
+        for (LeaderBoard.PlayerScore score : scores) {
+            System.out.println(score.getPlayerName() + ": " + score.getScore());
+        }
     }
 
     public void chat() {
         System.out.println("Chatting...");
-        // Implement chat functionality
+        // Chat implementation here
     }
 
     public void grid() {
         System.out.println("Displaying game grid...");
-        // Display game grid
+        // Grid display logic here
     }
 
     public void playerlist() {
         System.out.println("List of players:");
-        // Display list of players in the game
+        // List players here
     }
 
     public void gridinfo() {
         System.out.println("Game grid information:");
-        // Display information about the game grid
+        // Grid info here
     }
 
     public void timer() {
         System.out.println("Starting timer...");
-        // Implement timer functionality
+        // Timer logic here
     }
 
     private int getIntInput(String prompt) {
