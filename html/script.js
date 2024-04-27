@@ -211,6 +211,7 @@ function createTable() {
         } table.appendChild(row);
     }
     document.getElementById("grid").style.display = "none";
+    document.getElementById("startButton").style.display = "none";
 }
 function showRules() {
     var rulesDiv = document.getElementById("rules");
@@ -274,22 +275,45 @@ function startGame() {
         "Action": "START_GAME"
     };
     connection.send(JSON.stringify(msg));
-    // The rest of your startGame function
+
+    // Hide the start button
+    document.getElementById("startButton").style.display = "none";
+
     // Hide the lobby and show the game
     document.getElementById("lobby").style.display = "none";
     document.getElementById("game").style.display = "block";
     document.getElementById("grid").style.display = "block";
     document.getElementById("word-bank").style.display = "block";
-    startTimer();
-    // Display the players' names side by side
+    document.getElementById("leaderboard").style.display = "block";
+
+    // Check if the timer is already running
+    if (!timerInterval) {
+        startTimer(); // Start the timer only if it's not already running
+    }
+
+    // Populate the leaderboard with player names
+    var leaderboardList = document.getElementById("leaderboardList");
+    leaderboardList.innerHTML = ""; // Clear existing leaderboard entries
+
+    // Get player names from the lobby and add them to the leaderboard
     var playersDiv = document.getElementById("players");
     var playerNames = playersDiv.getElementsByTagName("div");
+    for (var i = 0; i < playerNames.length; i++) {
+        var playerName = playerNames[i].textContent;
+        var listItem = document.createElement("li");
+        listItem.textContent = playerName;
+        leaderboardList.appendChild(listItem);
+    }
+
+    // Clear the top message
+    document.getElementById("topMessage").innerHTML = "";
+
+    // Display the players' names side by side
     var gamePlayersDiv = document.getElementById("gamePlayers");
     gamePlayersDiv.innerHTML = "";
     for (var i = 0; i < playerNames.length; i++) {
         gamePlayersDiv.innerHTML += "<div>" + playerNames[i].textContent + "</div>";
     }
 }
-
 
 
