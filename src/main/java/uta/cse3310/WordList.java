@@ -25,13 +25,4 @@ public class WordList {
             System.err.println("Error loading words from file: " + e.getMessage());
         }
     }
-
-    public String getWord() {
-        if (words.isEmpty()) {
-            return null;
-        }
-        // Get a random word from the list
-        int randomIndex = (int) (Math.random() * words.size());
-        return words.get(randomIndex);
-    }
 }
