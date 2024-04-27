@@ -1,23 +1,45 @@
 package uta.cse3310;
-// User events are sent from the webpage to the server
 
+/**
+ * Represents events initiated by the user from the client-side,
+ * sent to the server to update the game state or player interactions.
+ */
 public class UserEvent {
-    int GameId; // the game ID on the server
-    PlayerType PlayerIdx;
-    // int Button; // button number from 0 to 8
-    String Name;
-    int i, j, k, l;
-    public boolean playing;
-    boolean start;
+    int GameId; // The unique identifier for the game session
+    PlayerType PlayerIdx; // Identifies the player type or role
+    String Name; // Optional: Player's name if needed for the event
+    int i, j, k, l; // Coordinates or indices for game actions, like selecting grid positions
+    public boolean playing; // Flag to indicate if the event is during active play
+    boolean start; // Flag to indicate a request to start the game
 
-    UserEvent(int m, int n, int o, int p, PlayerType noplayer) {
-
+    /**
+     * Constructs a UserEvent for actions that involve specific positions in the game.
+     *
+     * @param m The start x-coordinate (row index).
+     * @param n The start y-coordinate (column index).
+     * @param o The end x-coordinate (row index).
+     * @param p The end y-coordinate (column index).
+     * @param playerIdx The type of player initiating the event.
+     */
+    UserEvent(int m, int n, int o, int p, PlayerType playerIdx) {
+        this.i = m;
+        this.j = n;
+        this.k = o;
+        this.l = p;
+        this.PlayerIdx = playerIdx;
+        this.playing = true;  // Assume this event type means the player is actively playing
     }
 
-
-    // UserEvent(int _GameId, PlayerType _PlayerIdx, int _Button) {
-    // GameId = _GameId;
-    // PlayerIdx = _PlayerIdx;
-    // // Button = _Button;
-    // }
+    /**
+     * Constructs a UserEvent for general game actions like starting a game or identifying a player.
+     *
+     * @param gameId The game ID to which the event is related.
+     * @param playerIdx The player type or identifier.
+     * @param start Flag to indicate if the game should start.
+     */
+    UserEvent(int gameId, PlayerType playerIdx, boolean start) {
+        this.GameId = gameId;
+        this.PlayerIdx = playerIdx;
+        this.start = start;
+    }
 }
