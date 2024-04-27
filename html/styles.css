@@ -153,8 +153,8 @@
 
         .button-container {
             position: absolute;
-            top: 20px; /* Adjust the top position as needed */
-            right: 10px; /* Adjust the right position as needed */
+            top: 20px; 
+            right: 10px; 
         }
 
         /* Adjusted styles for the buttons */
@@ -189,13 +189,10 @@
     z-index: 1000; 
 }
 
-
-/* Style for leaderboard heading */
 #leaderboard h2 {
     margin-top: 0;
 }
 
-/* Style for leaderboard list */
 #leaderboardList {
     list-style: none;
     padding: 0;
