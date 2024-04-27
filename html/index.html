@@ -29,7 +29,7 @@
         </div>
 
         <div id="game">
-            <p id="gameStatus">Game is starting...</p>
+            <p id="gameStatus">Game has started!</p>
 
 
             <table id="timerTable"
@@ -43,9 +43,9 @@
         </div>
         <table id="grid"></table>
 
-        <!-- Buttons container -->
+         <!-- Buttons container -->
         <div class="button-container">
-            <button id="startButton" style="display:none;">Start Game</button>
+            <button id="startButton" onclick="startGame()" style="display:none;">Start Game</button>
             <button id="rulesButton" onclick="showRules()">Rules</button>
         </div>
 
@@ -62,6 +62,11 @@
             <p> Good Luck!
             </p>
         </div>
+        <div id="leaderboard" style="display: none;">
+            <h2>Leaderboard</h2>
+            <ol id="leaderboardList"></ol>
+        </div>
+        
         <label id="topMessage"></label>
         <label id="bottomMessage"></label>
     </div>
