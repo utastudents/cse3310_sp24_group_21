@@ -1,8 +1,8 @@
 package uta.cse3310;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -20,12 +20,17 @@ public class Grid {
         ArrayList<String> words = new ArrayList<>();
         ArrayList<String> findword = new ArrayList<>();
         double density;
+        int[] orientationCounts = new int[DIRS.length]; // Track orientation counts
     }
 
-    // gen words 8 directions (technically 8 because diagonal is four different
-    // directions)
+    // gen words 6 directions
     static final int[][] DIRS = {
-            { 1, 0 }, { 0, 1 }, { 1, 1 }, { 1, -1 }, { -1, 0 }, { 0, -1 }, { -1, -1 }, { -1, 1 }
+            { 1, 0 }, // Horizontal right to left
+            { -1, 0 }, // Horizontal left to right
+            { 0, 1 }, // Vertical top to bottom
+            { 0, -1 }, // Vertical bottom to top
+            { 1, 1 }, // Diagonal down
+            { -1, -1 } // Diagonal up
     };
 
     // grid size
@@ -35,16 +40,17 @@ public class Grid {
     // min words in grid
     static final int minWords = 6;
     static final Random RANDOM = new Random();
+    static final int ALPHABET_SIZE = 26;
 
     public static void main(String[] args) {
-        /* 
+
         long startTime = System.currentTimeMillis();
-        printResult(createGrid(readWords(), 750)); // number at end is for max word limit
+        printResult(createGrid(readWords(), 500)); // number at end is for max word limit
         long endTime = System.currentTimeMillis();
         long elapsedTime = endTime - startTime;
         System.out.println("\nTime taken to generate grid: " + elapsedTime +
                 " milliseconds");
-        */
+
     }
 
     public static List<String> readWords() {
@@ -70,25 +76,18 @@ public class Grid {
         GridGen grid = null;
         int numAttempts = 0;
 
+        // Variables to keep track of word counts in each orientation
+        int[] orientationWordCounts = new int[DIRS.length];
+
         // attempt grid 100 times
         while (++numAttempts < 100) {
             Collections.shuffle(words); // shuffle words
             grid = new GridGen();
             int target = (int) (gridSize * 0.67); // Target approximately 67% of the grid area
             int cellsFilled = 0;
-            int minWordsPerOrientation = (int) Math.ceil(gridSize * 0.15 / 5); // 15% of each orientation
-
-            int[] orientations = new int[8]; // Track the number of words placed in each orientation
 
             for (String word : words) {
-                // Ensure that each orientation has at least 15% of the required words
-                if (orientations[0] >= minWordsPerOrientation && orientations[1] >= minWordsPerOrientation &&
-                        orientations[2] >= minWordsPerOrientation && orientations[3] >= minWordsPerOrientation &&
-                        orientations[4] >= minWordsPerOrientation) {
-                    break;
-                }
-
-                cellsFilled += tryPlaceWord(grid, word, orientations);
+                cellsFilled += tryPlaceWord(grid, word, orientationWordCounts);
 
                 if (cellsFilled > target || grid.solutions.size() >= maxWords) {
                     break; // Stop placing words if the target is reached or maximum words reached
@@ -98,6 +97,10 @@ public class Grid {
             if (grid.solutions.size() >= minWords && grid.solutions.size() <= maxWords) {
                 grid.numAttempts = numAttempts;
                 grid.density = (double) countValidWordCharacters(grid) / gridSize; // Calculate density
+
+                // Copy orientationWordCounts to grid's orientationCounts
+                System.arraycopy(orientationWordCounts, 0, grid.orientationCounts, 0, DIRS.length);
+
                 return grid;
             }
         }
@@ -105,46 +108,49 @@ public class Grid {
         return grid;
     }
 
-    static int placeMessage(GridGen grid, String msg) {
-        msg = msg.toUpperCase().replaceAll("[^A-Z]", "");
-        int messageLength = msg.length();
+    static int tryPlaceWord(GridGen grid, String word, int[] orientationWordCounts) {
+        int lettersPlaced = 0;
+        int[] orientationPercentages = calculateOrientationPercentages(grid, orientationWordCounts);
 
-        if (messageLength > 0 && messageLength < gridSize) {
-            int gapSize = gridSize / messageLength;
+        // Sort orientations by percentage (ascending order)
+        List<Integer> sortedOrientations = new ArrayList<>();
+        for (int i = 0; i < orientationPercentages.length; i++) {
+            sortedOrientations.add(i);
+        }
+        sortedOrientations.sort(Comparator.comparingInt(i -> orientationPercentages[i]));
 
-            for (int i = 0; i < messageLength; i++) {
-                int pos = i * gapSize + RANDOM.nextInt(gapSize);
-                grid.cells[pos / nCols][pos % nCols] = msg.charAt(i);
+        // Shuffle positions to add randomness
+        List<Integer> positions = new ArrayList<>();
+        for (int i = 0; i < gridSize; i++) {
+            positions.add(i);
+        }
+        Collections.shuffle(positions);
+
+        for (int orientation : sortedOrientations) {
+            int dir = orientation;
+
+            for (int pos : positions) {
+                lettersPlaced = tryLocation(grid, word, dir, pos);
+
+                if (lettersPlaced > 0) {
+                    orientationWordCounts[dir]++; // Increment word count for this orientation
+                    return lettersPlaced;
+                }
             }
-
-            return messageLength;
         }
 
         return 0;
     }
 
-    static int tryPlaceWord(GridGen grid, String word, int[] orientations) {
-        int randDir = RANDOM.nextInt(DIRS.length);
-        int randPos = RANDOM.nextInt(gridSize);
-        int cellsFilled = 0;
+    static int[] calculateOrientationPercentages(GridGen grid, int[] orientationWordCounts) {
+        int size = grid.solutions.size();
+        int[] orientationPercentages = new int[DIRS.length];
 
-        for (int dir = 0; dir < DIRS.length; dir++) {
-            dir = (dir + randDir) % DIRS.length;
-
-            for (int pos = 0; pos < gridSize; pos++) {
-                pos = (pos + randPos) % gridSize;
-
-                int lettersPlaced = tryLocation(grid, word, dir, pos);
-
-                if (lettersPlaced > 0) {
-                    cellsFilled += lettersPlaced;
-                    orientations[dir]++;
-                    return cellsFilled;
-                }
-            }
+        for (int i = 0; i < DIRS.length; i++) {
+            orientationPercentages[i] = (int) ((double) orientationWordCounts[i] / size * 100);
         }
 
-        return cellsFilled;
+        return orientationPercentages;
     }
 
     static int tryLocation(GridGen grid, String word, int dir, int pos) {
@@ -204,6 +210,7 @@ public class Grid {
     }
 
     // print
+    // print
     static void printResult(GridGen grid) {
         if (grid == null || grid.numAttempts == 0) {
             System.out.println("No grid to display");
@@ -214,7 +221,55 @@ public class Grid {
 
         System.out.println("Number of Attempts: " + grid.numAttempts);
         System.out.println("Number of words: " + size);
-        System.out.println("Density of the grid: " + grid.density); // Print the density
+        System.out.println("Density of the grid: " + grid.density);
+
+        // Display percentage of words in each orientation
+        System.out.println("Percentage of words in each orientation:");
+        for (int i = 0; i < DIRS.length; i++) {
+            String orientationLabel;
+            switch (i) {
+                case 0:
+                    orientationLabel = "Horizontal (right to left)";
+                    break;
+                case 1:
+                    orientationLabel = "Horizontal (left to right)";
+                    break;
+                case 2:
+                    orientationLabel = "Vertical (top to bottom)";
+                    break;
+                case 3:
+                    orientationLabel = "Vertical (bottom to top)";
+                    break;
+                case 4:
+                    orientationLabel = "Diagonal (down)";
+                    break;
+                case 5:
+                    orientationLabel = "Diagonal (up)";
+                    break;
+                default:
+                    orientationLabel = "Unknown";
+                    break;
+            }
+            double percentage = (double) grid.orientationCounts[i] / size * 100;
+            System.out.printf("%s: %.2f%%%n", orientationLabel, percentage);
+        }
+
+        // Display uniformness of filler characters
+        double[] letterCounts = new double[ALPHABET_SIZE]; // Array to store counts of each letter
+        int totalFillerCount = 0; // Total count of filler characters
+        for (int r = 0; r < nRows; r++) {
+            for (int c = 0; c < nCols; c++) {
+                if (grid.cells[r][c] == 0) {
+                    char filler = (char) ('A' + RANDOM.nextInt(ALPHABET_SIZE)); // Random filler character
+                    letterCounts[filler - 'A']++; // Increment count for the corresponding letter
+                    totalFillerCount++;
+                }
+            }
+        }
+        // Calculate uniformness. value of 1 would mean perfectly uniform
+        double uniformness = calculateUniformness(letterCounts, totalFillerCount);
+        String formattedUniformness = String.format("%.4f", uniformness);
+        System.out.println("Uniformness of filler characters: " + formattedUniformness);
 
         System.out.print("\n    ");
 
@@ -224,30 +279,12 @@ public class Grid {
 
         System.out.println();
 
-        // Count occurrences of each letter in words
-        int[] letterCount = new int[26];
-        for (String word : grid.words) {
-            for (char letter : word.toCharArray()) {
-                letterCount[letter - 'A']++;
-            }
-        }
-
-        // Determine the maximum occurrences of any letter
-        int maxOccurrences = Arrays.stream(letterCount).max().orElse(0);
-
-        // Calculate the minimum occurrences of each letter for uniform distribution
-        int minOccurrences = (gridSize - grid.solutions.stream().mapToInt(s -> s.length()).sum()) / 26;
+        fillEmptyCells(grid);
 
         for (int r = 0; r < nRows; r++) {
             System.out.printf("%n%d  ", r);
 
             for (int c = 0; c < nCols; c++) {
-                if (grid.cells[r][c] == 0) {
-                    // Fill empty cells with random letters ensuring uniform distribution
-                    char filler = getUniformFiller(letterCount, minOccurrences, maxOccurrences);
-                    grid.cells[r][c] = filler;
-                    letterCount[filler - 'A']--;
-                }
                 System.out.printf(" %c ", grid.cells[r][c]);
             }
         }
@@ -263,18 +300,24 @@ public class Grid {
         }
     }
 
-    // Method to get a uniform filler character
-    static char getUniformFiller(int[] letterCount, int minOccurrences, int maxOccurrences) {
-        char filler = (char) ('A' + RANDOM.nextInt(26));
-        int index = filler - 'A';
-
-        // Ensure the chosen filler has not exceeded its maximum occurrences
-        while (letterCount[index] <= minOccurrences && letterCount[index] < maxOccurrences) {
-            filler = (char) ('A' + RANDOM.nextInt(26));
-            index = filler - 'A';
+    // Helper method to calculate uniformness of filler characters
+    static double calculateUniformness(double[] letterCounts, int totalFillerCount) {
+        double uniformness = 0;
+        for (double count : letterCounts) {
+            uniformness += Math.pow(count / totalFillerCount - 1.0 / ALPHABET_SIZE, 2); // squared deviation
         }
+        return 1 - uniformness / ALPHABET_SIZE; // Normalize to range [0, 1]
+    }
 
-        return filler;
+    static void fillEmptyCells(GridGen grid) {
+        for (int r = 0; r < nRows; r++) {
+            for (int c = 0; c < nCols; c++) {
+                if (grid.cells[r][c] == 0) {
+                    grid.cells[r][c] = (char) ('A' + RANDOM.nextInt(ALPHABET_SIZE)); // Fill empty cells with random
+                                                                                     // letters
+                }
+            }
+        }
     }
 
 }
