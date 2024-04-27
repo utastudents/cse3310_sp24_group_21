@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
     <title>Chat</title>
     <script src="https://code.jquery.com/jquery-migrate-3.4.1.min.js"
@@ -10,50 +9,36 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
         integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
         integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
-
-
 </head>
 
 <body>
-
-
     <div class="container">
         <div class="row">
             <div class="col-100">
-                <h1>
-                    Chat_Web
-                </h1>
-
-            <div style="line-height: 2em;">
-            
-                 <ol id="websocketMessages">
-
-                 </ol>
-            
-            </div>
-            <form id="testForm">
-                <div class="form_group">
-                    <input class="form-control input-lg chatInput" type="text" id="inputField" placeholder="Type your message here..."/>
+                <h1>Chat_Web</h1>
+                <div style="line-height: 2em;">
+                    <ol id="websocketMessages"></ol>
                 </div>
-            </form>
-
+                <form id="testForm">
+                    <div class="form_group">
+                        <input class="form-control input-lg chatInput" type="text" id="inputField"
+                            placeholder="Type your message here..." />
+                        <button type="submit" class="btn btn-primary">Send</button>
+                    </div>
+                </form>
             </div>
-
         </div>
     </div>
 </body>
 <script>
-
-    var webSocket = new WebSocket("ws://localhost:9021//websocket/echo")
+    var webSocket = new WebSocket("ws://localhost:9021/websocket/echo")
 
     webSocket.onmessage = function (evt) {
         console.log(evt);
@@ -66,15 +51,12 @@
 
     $(function () {
         $("#testForm").on("submit", function (evt) {
-            e.preventDefault();
-
+            evt.preventDefault();
             var value = $("#inputField").val();
             webSocket.send(value);
             $("#inputField").val("");
         });
-    }
-
-    )
+    });
 </script>
 
 </html>
