@@ -6,78 +6,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Word Search Game</title>
     <link rel="stylesheet" href="styles.css">
-
 </head>
 
 <body>
-
-    <div id="word-bank" style="display:none;">
-        <p style="text-align: center">
-        </p>
-    </div>
     <div id="container">
-        <div id="header">Word Search Game</div>
-        <div id="lobby">
+        <header id="header">Word Search Game</header>
+
+        <section id="lobby">
             <label for="name">Enter your name:</label>
             <input type="text" id="name" placeholder="Enter name">
             <button onclick="joinLobby()">Join Lobby</button>
             <p id="lobbyStatus">Players in the lobby:</p>
             <div id="players"></div>
+        </section>
 
-
-
-        </div>
-
-        <div id="game">
-            <p id="gameStatus">Game has started!</p>
-
-
-            <table id="timerTable"
-                style="position: absolute; top: 20px; left: 20px; background-color: rgba(0, 0, 0, 0.7); color: #ffffff;">
+        <section id="game" style="display:none;">
+            <p id="gameStatus">Prepare to play!</p>
+            <table id="timerTable" style="background-color: rgba(0, 0, 0, 0.7); color: #ffffff;">
                 <tr>
                     <td>Time Left: <span id="timerDisplay">5:00</span></td>
                 </tr>
             </table>
-
             <div id="gamePlayers"></div>
-        </div>
-        <table id="grid"></table>
+            <table id="grid"></table>
+        </section>
 
-         <!-- Buttons container -->
         <div class="button-container">
             <button id="startButton" onclick="startGame()" style="display:none;">Start Game</button>
             <button id="rulesButton" onclick="showRules()">Rules</button>
         </div>
 
-        <div id="rules">
-            <button id="closeButton" onclick="hideRules()">X</button>
+        <div id="rules" style="display:none;">
+            <button onclick="hideRules()">Close Rules</button>
             <p>Rules:</p>
-            <p>1. Upon entering the game, choose a unique nickname to identify yourself.
-            <p>2. Once there's more than one player, players can start the game by clicking on start game.
-            <p>3. Words can be horizontal, vertical, diagonal, or reversed.
-            <p>4. Players can select words by clicking on the starting and ending letters with their mouse.
-            <p>5. Guess the hidden words within a limited timeframe.
-            <p>6. A list of words used in the grid is provided for players to find
-            <p>7. Points are awarded based on the length and of the word.
-            <p> Good Luck!
-            </p>
+            <ul>
+                <li>Upon entering the game, choose a unique nickname to identify yourself.</li>
+                <li>Once there's more than one player, players can start the game by clicking "Start Game".</li>
+                <li>Words can be horizontal, vertical, diagonal, or reversed.</li>
+                <li>Players can select words by clicking on the starting and ending letters with their mouse.</li>
+                <li>Guess the hidden words within a limited timeframe.</li>
+                <li>A list of words used in the grid is provided for players to find.</li>
+                <li>Points are awarded based on the length of the word.</li>
+                <li>Good Luck!</li>
+            </ul>
         </div>
-        <div id="leaderboard" style="display: none;">
+
+        <div id="leaderboard" style="display:none;">
             <h2>Leaderboard</h2>
             <ol id="leaderboardList"></ol>
         </div>
-        
+
         <label id="topMessage"></label>
         <label id="bottomMessage"></label>
     </div>
 
-
-
-</body>
-
-</html>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>
