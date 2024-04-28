@@ -17,6 +17,8 @@ public class Game {
     public ArrayList<String> gameWords = new ArrayList<>();
     public ArrayList<String> findword = new ArrayList<>();
     public ArrayList<String> foundwords = new ArrayList<>();
+    public ArrayList<String> chat = new ArrayList<>();
+    public ArrayList<String> chatplayers = new ArrayList<>();
     public GameState state = GameState.LOBBY;
     PlayerType player;
     public int playerNum;

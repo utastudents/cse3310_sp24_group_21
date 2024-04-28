@@ -7,13 +7,23 @@ var id = 0;
 var gameid = -1;
 var p1turns = 0;
 var p2turns = 0;
+var p3turns = 0;
+var p4turns = 0;
 var p1i, p1j, p2i, p2j, c, d = 0;
+var p3i, p3j, p4i, p4j = 0;
 var count = 0;
 var timerInterval;
 var timerDisplay = document.getElementById('timerDisplay');
 var timerSeconds = 180; // 3 minutes
+class Chat {
+    word = null;
+    playeridx = null;
+    chatstatus = null;
+}
 class Lobby {
     Name = null;
+    playeridx = null;
+    status = null;
 }
 class UserEvent {
     PlayerIdx = 0;
@@ -57,6 +67,10 @@ connection.onmessage = function (evt) {
             id = 0;
         } else if (obj.YouAre == "PLAYERTWO") {
             id = 1;
+        } else if (obj.Youare == "PLAYERTHREE") {
+            id = 2;
+        } else if (obj.Youare == "PLAYERFOUR") {
+            id = 3;
         }
         gameid = obj.GameId;
 
@@ -127,12 +141,46 @@ connection.onmessage = function (evt) {
                         v.style.backgroundColor = "red";
                     else if (obj.Button[i][j] == "PLAYERTWO")
                         v.style.backgroundColor = "blue";
+                    else if (obj.Button[i][j] == "PLAYERTHREE")
+                        v.style.backgroundColor = "yellow";
+                    else if (obj.Button[i][j] == "PLAYERFOUR")
+                        v.style.backgroundColor = "green";
                 }
             }
         }
     }
-}
 
+    if ('chat' in obj) {//add
+        chatbox(obj.chat);
+    }
+}
+function addChat() {
+    var addword = document.getElementById("chat-box").value;
+    c = new Chat();
+    c.word = addword;
+    c.chatstatus = true;
+    if (id == 0)
+        c.playeridx = "PLAYERONE";
+    else if (id == 1)
+        c.playeridx = "PLAYERTWO";
+    else if (id == 2)
+        c.playeridx = "PLAYERTHREE";
+    else if (id == 3)
+        c.playeridx = "PLAYERFOUR";
+    connection.send(JSON.stringify(c));
+}
+function chatbox(word) {
+        var chat = document.getElementById("chat");
+        while (chat.firstChild) {
+        chat.removeChild(chat.firstChild);
+        }
+    for (var i = 0; i < word.length; i++) {
+        var chatmsg = document.createElement("div");
+        chatmsg.textContent = word[i];
+        chatmsg.style.color = "white";
+        chat.appendChild(chatmsg);
+    }
+}
 function buttonClick(i, j) {
     if (id == 0) {
         p1turns++;
@@ -148,12 +196,23 @@ function buttonClick(i, j) {
             p2j = j;
         }
     }
+    else if (id == 2) {
+        p3turns++;
+        if (p3turns % 2 != 0) {
+            p3i = i;
+            p3j = j;
+        }
+    }
+    else if (id == 3) {
+        p4turns++;
+        if (p4turns % 2 != 0) {
+            p4i = i;
+            p4j = j;
+        }
+    }
     if (p1turns != 0 && p1turns % 2 == 0 && id == 0) {
         U = new UserEvent();
-        if (id == 0)
-            U.PlayerIdx = "PLAYERONE";
-        else if (id == 1)
-            U.PlayerIdx = "PLAYERTWO";
+        U.PlayerIdx = "PLAYERONE";
         U.GameId = gameid;
 
         U.i = p1j;
@@ -165,14 +224,35 @@ function buttonClick(i, j) {
         console.log(JSON.stringify(U))
     } else if (p2turns != 0 && p2turns % 2 == 0 && id == 1) {
         U = new UserEvent();
-        if (id == 0)
-            U.PlayerIdx = "PLAYERONE";
-        else if (id == 1)
-            U.PlayerIdx = "PLAYERTWO";
+        U.PlayerIdx = "PLAYERTWO";
         U.GameId = gameid;
 
         U.i = p2j;
         U.j = p2i;
+        U.k = j;
+        U.l = i;
+        U.playing = true;
+        connection.send(JSON.stringify(U));
+        console.log(JSON.stringify(U))
+    } else if (p3turns != 0 && p3turns % 2 == 0 && id == 2) {
+        U = new UserEvent();
+        U.PlayerIdx = "PLAYERTHREE";
+        U.GameId = gameid;
+
+        U.i = p3j;
+        U.j = p3i;
+        U.k = j;
+        U.l = i;
+        U.playing = true;
+        connection.send(JSON.stringify(U));
+        console.log(JSON.stringify(U))
+    } else if (p4turns != 0 && p4turns % 2 == 0 && id == 3) {
+        U = new UserEvent();
+        U.PlayerIdx = "PLAYERFOUR";
+        U.GameId = gameid;
+
+        U.i = p4j;
+        U.j = p4i;
         U.k = j;
         U.l = i;
         U.playing = true;
@@ -250,6 +330,15 @@ function joinLobby() {
         // };
         lobby = new Lobby;
         lobby.name = name;
+        if (id == 0)
+        lobby.playeridx = "PLAYERONE";
+        else if (id == 1)
+        lobby.playeridx = "PLAYERTWO";
+        else if (id == 2)
+        lobby.playeridx = "PLAYERTHREE";
+        else if (id == 3)
+        lobby.playeridx = "PLAYERFOUR";
+        lobby.status = true; 
         // connection.send(JSON.stringify(msg));
         connection.send(JSON.stringify(lobby));
         inLobby = true;

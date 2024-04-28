@@ -61,9 +61,10 @@ public class App extends WebSocketServer {
     ServerEvent E = new ServerEvent();
     Game G = null;
     for (Game i : ActiveGames) {
-      if (i.player == uta.cse3310.PlayerType.PLAYERONE) {
-        G = i;
-      }
+      if (i.player == uta.cse3310.PlayerType.PLAYERONE) G = i; 
+      else if (i.player == uta.cse3310.PlayerType.PLAYERTWO) G = i;
+      else if (i.player == uta.cse3310.PlayerType.PLAYERTHREE) G = i;
+      else if (i.player == uta.cse3310.PlayerType.PLAYERFOUR) G = i;
     }
 
     if (G == null) {
@@ -80,8 +81,12 @@ public class App extends WebSocketServer {
       GameId++;
       G.player = uta.cse3310.PlayerType.PLAYERONE;
       ActiveGames.add(G);
-    } else {
+    } else if (G.player == uta.cse3310.PlayerType.PLAYERONE) {
       G.player = uta.cse3310.PlayerType.PLAYERTWO;
+    } else if (G.player == uta.cse3310.PlayerType.PLAYERTWO) {
+      G.player = uta.cse3310.PlayerType.PLAYERTHREE;
+    } else if (G.player == uta.cse3310.PlayerType.PLAYERTHREE) {
+      G.player = uta.cse3310.PlayerType.PLAYERFOUR;
     }
     E.YouAre = G.player;
     E.GameId = G.GameId;
@@ -119,13 +124,18 @@ public class App extends WebSocketServer {
 
     Lobby lobby = gson.fromJson(message, Lobby.class);
     UserEvent U = gson.fromJson(message, UserEvent.class);
+    Chat c = gson.fromJson(message, Chat.class);
     Game game = conn.getAttachment();
     game.start = U.start;
     if (U.playing == true)
       game.Update(U);
-
-    lobby.joinGame(game, lobby.name);
-    game.PlayerName = lobby.name;
+    else if (c.chatstatus == true)//add
+      c.chatbox(game, c.word);//add //
+    else if (lobby.status == true){//add
+        game = lobby.joinGame(game, lobby.name);
+        game.PlayerName = lobby.name;
+        c.assignidx(lobby,game);//add
+      }
 
     String jsonString;
     jsonString = gson.toJson(game);

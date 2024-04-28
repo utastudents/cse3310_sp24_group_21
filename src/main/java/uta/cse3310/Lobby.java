@@ -7,7 +7,9 @@ public class Lobby {
      private ArrayList<Game> activeGames = new ArrayList<>();
     private int gameId = 1;
     public String name;
-
+    PlayerType playeridx;
+    boolean status;
+    
     public Game createGame() {
         Game game = new Game();
         activeGames.add(game);
