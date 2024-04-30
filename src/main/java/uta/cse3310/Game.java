@@ -1,14 +1,10 @@
 package uta.cse3310;
-
 import java.util.ArrayList;
-
 public class Game {
-
     public PlayerType[][] Button;
     public int GameId;
     public String PlayerName;
     char[][] cells = new char[20][20];
-
     public ArrayList<String> players = new ArrayList<>();
     public ArrayList<String> sol = new ArrayList<>();
     public ArrayList<String> gameWords = new ArrayList<>();
@@ -16,16 +12,14 @@ public class Game {
     public ArrayList<String> foundwords = new ArrayList<>();
     public ArrayList<String> chat = new ArrayList<>();
     public ArrayList<String> chatplayers = new ArrayList<>();
-    public GameState state = GameState.LOBBY;z
+    public GameState state = GameState.LOBBY;
     PlayerType player;
     public int playerNum;
     boolean start;
-
     Game() {
         Button = new PlayerType[20][20];
         ResetBoard();
     }
-
     public void Update(UserEvent U) {
         int i, j, k, l;
         String delim = "[,]+";
@@ -39,7 +33,6 @@ public class Game {
             j = Integer.valueOf(b);
             k = Integer.valueOf(c);
             l = Integer.valueOf(d);
-
             if (U.i == i && U.j == j && U.k == k && U.l == l && Button[U.i][U.j] == PlayerType.NOPLAYER
                     && Button[U.k][U.l] == PlayerType.NOPLAYER) {
                 horizontal(i, j, k, l, U.PlayerIdx);
@@ -63,7 +56,6 @@ public class Game {
             }
         }
     }
-
     public void diagonal(int i, int j, int k, int l, PlayerType PlayerIdx) {
         if (i < k && j > l) {
             for (int a = i, b = j; a <= k;) {
@@ -91,7 +83,6 @@ public class Game {
             }
         }
     }
-
     public void vertical(int i, int j, int k, int l, PlayerType PlayerIdx) {
         if (j > l && i == k) {
             for (int e = l; e <= j; e++) {
@@ -103,7 +94,6 @@ public class Game {
             }
         }
     }
-
     public void horizontal(int i, int j, int k, int l, PlayerType PlayerIdx) {
         // horizontal word
         if (i > k && j == l) {
@@ -116,7 +106,6 @@ public class Game {
             }
         }
     }
-
     public void ResetBoard() {
         // initializes the board to NOPLAYER in all spots
         for (int i = 0; i < 20; i++) {
@@ -137,7 +126,7 @@ public class Game {
            // addToLeaderboard(playerType.toString(), points);
         //}
     //}
-    
+
 
 
     //LEADERBOARD
@@ -170,8 +159,5 @@ public class Game {
     //}
     
     
-
-
     
-
 }
