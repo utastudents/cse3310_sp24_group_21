@@ -15,8 +15,6 @@ var count = 0;
 var timerInterval;
 var timerDisplay = document.getElementById('timerDisplay');
 var timerSeconds = 420; // 7 minutes
-var playerPoints = {}; 
-var selectedWord = "";
 class Chat {
     word = null;
     playeridx = null;
@@ -183,43 +181,6 @@ function chatbox(word) {
         chat.appendChild(chatmsg);
     }
 }
-
-
-function selectWord(startRow, startCol, endRow, endCol) {
-    selectedWord = ""; 
-    if (startRow === endRow && startCol === endCol) {   
-        selectedWord = document.getElementById(startRow + "," + startCol).innerHTML;
-    } else {
-        var rowIncrement = startRow === endRow ? 0 : (endRow > startRow ? 1 : -1);
-        var colIncrement = startCol === endCol ? 0 : (endCol > startCol ? 1 : -1);
-        for (var row = startRow, col = startCol; row !== endRow || col !== endCol; row += rowIncrement, col += colIncrement) {
-            selectedWord += document.getElementById(row + "," + col).innerHTML;
-        }
-        selectedWord += document.getElementById(endRow + "," + endCol).innerHTML;
-    }
-} 
-
-function updateLeaderboard() {
-    var leaderboardList = document.getElementById("leaderboardList");
-    leaderboardList.innerHTML = ""; 
-    var sortedPlayerPoints = [];
-    for (var player in playerPoints) {
-        sortedPlayerPoints.push({ player: player, points: playerPoints[player] });
-    }
-    sortedPlayerPoints.sort(function(a, b) {
-        return b.points - a.points;
-    });
-
-    for (var i = 0; i < sortedPlayerPoints.length; i++) {
-        var listItem = document.createElement("li");
-        listItem.textContent = sortedPlayerPoints[i].player + ": " + sortedPlayerPoints[i].points + " points";
-        leaderboardList.appendChild(listItem);
-    }
-}
-
-
-
-
 function buttonClick(i, j) {
     if (id == 0) {
         p1turns++;
@@ -298,18 +259,6 @@ function buttonClick(i, j) {
         connection.send(JSON.stringify(U));
         console.log(JSON.stringify(U))
     }
-
-    if (wordIsSelectedAndHighlighted) {
-        // increment player's points by 1
-        playerPoints[playerName]++;
-        // updateee the leaderboard
-        updateLeaderboard();
-    }
-
-
-
-
-
 }
 
 function fillGrid(array) {
@@ -372,7 +321,6 @@ function updateLobbyStatus(players) {
         });
     } 
 }
-
 function joinLobby() {
     var name = document.getElementById("name").value;
     if (name.trim() !== "") {
