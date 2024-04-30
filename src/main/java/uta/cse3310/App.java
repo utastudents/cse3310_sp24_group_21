@@ -154,21 +154,11 @@ public class App extends WebSocketServer {
 
   }
 
-  @Override
+@Override
   public void onMessage(WebSocket conn, ByteBuffer message) {
-      // Convert ByteBuffer to string
-      String messageString = new String(message.array(), StandardCharsets.UTF_8);
-      System.out.println(conn + ": " + messageString);
-      
-     // String[] parts = messageString.split(" ");
-      //if (parts.length >= 3 && parts[0].equals("SELECT_WORD")) {
-          //String selectedWord = parts[1];
-          //PlayerType playerType = PlayerType.valueOf(parts[2]);
-          // Call the selectWord method on the game instance
-         // game.selectWord(selectedWord, playerType);
-     // }
+    
+    System.out.println(conn + ": " + message);
 
-      // Other message handling logic...
   }
 
 
