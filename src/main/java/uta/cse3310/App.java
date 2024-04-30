@@ -32,6 +32,18 @@ public class App extends WebSocketServer {
   // List<String> solutions = new ArrayList<>();
   // }
 
+    //public void updateLeaderboard(String playerName, int points) {
+    //leaderboard.addScore(playerName, points);
+    //broadcastUpdatedLeaderboard();
+//}
+
+//private void broadcastUpdatedLeaderboard() {
+  //List<Leaderboard.PlayerScore> highScores = leaderboard.getHighScores();
+ // Gson gson = new Gson();
+ // String leaderboardJson = gson.toJson(highScores);
+  //broadcast(leaderboardJson);
+//}
+
   public App(int port) {
     super(new InetSocketAddress(port));
   }
