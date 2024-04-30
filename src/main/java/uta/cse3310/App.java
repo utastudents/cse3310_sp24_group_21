@@ -157,7 +157,7 @@ public class App extends WebSocketServer {
   @Override
   public void onMessage(WebSocket conn, ByteBuffer message) {
       // Convert ByteBuffer to string
-      //String messageString = new String(message.array(), StandardCharsets.UTF_8);
+      String messageString = new String(message.array(), StandardCharsets.UTF_8);
       System.out.println(conn + ": " + messageString);
       
      // String[] parts = messageString.split(" ");
