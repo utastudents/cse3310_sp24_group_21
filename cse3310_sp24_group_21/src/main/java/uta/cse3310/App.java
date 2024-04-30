@@ -43,7 +43,7 @@ public class App extends WebSocketServer {
  // String leaderboardJson = gson.toJson(highScores);
   //broadcast(leaderboardJson);
 //}
-
+  
   public App(int port) {
     super(new InetSocketAddress(port));
   }
