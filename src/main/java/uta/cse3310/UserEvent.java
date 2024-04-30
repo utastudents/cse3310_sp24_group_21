@@ -14,7 +14,6 @@ public class UserEvent {
 
     }
 
-
     // UserEvent(int _GameId, PlayerType _PlayerIdx, int _Button) {
     // GameId = _GameId;
     // PlayerIdx = _PlayerIdx;

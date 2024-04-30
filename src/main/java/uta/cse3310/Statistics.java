@@ -32,21 +32,35 @@ public class Statistics {
 
     public Integer getWinsForPlayer(PlayerType player) {
         switch (player) {
-            case PLAYERONE: return winsbyPlayer1;
-            case PLAYERTWO: return winsbyPlayer2;
-            case PLAYERTHREE: return winsbyPlayer3;
-            case PLAYERFOUR: return winsbyPlayer4;
-            default: return 0;
+            case PLAYERONE:
+                return winsbyPlayer1;
+            case PLAYERTWO:
+                return winsbyPlayer2;
+            case PLAYERTHREE:
+                return winsbyPlayer3;
+            case PLAYERFOUR:
+                return winsbyPlayer4;
+            default:
+                return 0;
         }
     }
 
     public void setWinsForPlayer(PlayerType player, Integer wins) {
         switch (player) {
-            case PLAYERONE: winsbyPlayer1 = wins; break;
-            case PLAYERTWO: winsbyPlayer2 = wins; break;
-            case PLAYERTHREE: winsbyPlayer3 = wins; break;
-            case PLAYERFOUR: winsbyPlayer4 = wins; break;
-            default: break;
+            case PLAYERONE:
+                winsbyPlayer1 = wins;
+                break;
+            case PLAYERTWO:
+                winsbyPlayer2 = wins;
+                break;
+            case PLAYERTHREE:
+                winsbyPlayer3 = wins;
+                break;
+            case PLAYERFOUR:
+                winsbyPlayer4 = wins;
+                break;
+            default:
+                break;
         }
     }
 
@@ -68,11 +82,16 @@ public class Statistics {
 
     public Integer getRankForPlayer(PlayerType player) {
         switch (player) {
-            case PLAYERONE: return rankofPlayer1;
-            case PLAYERTWO: return rankofPlayer2;
-            case PLAYERTHREE: return rankofPlayer3;
-            case PLAYERFOUR: return rankofPlayer4;
-            default: return 0;
+            case PLAYERONE:
+                return rankofPlayer1;
+            case PLAYERTWO:
+                return rankofPlayer2;
+            case PLAYERTHREE:
+                return rankofPlayer3;
+            case PLAYERFOUR:
+                return rankofPlayer4;
+            default:
+                return 0;
         }
     }
 
@@ -90,18 +109,27 @@ public class Statistics {
 
         // Sort players by wins descending
         LinkedHashMap<PlayerType, Integer> sortedRanks = ranks.entrySet().stream()
-            .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
         // Update ranks based on sorted order
         int rank = 1;
         for (PlayerType player : sortedRanks.keySet()) {
             switch (player) {
-                case PLAYERONE: rankofPlayer1 = rank++; break;
-                case PLAYERTWO: rankofPlayer2 = rank++; break;
-                case PLAYERTHREE: rankofPlayer3 = rank++; break;
-                case PLAYERFOUR: rankofPlayer4 = rank++; break;
-                default: break;
+                case PLAYERONE:
+                    rankofPlayer1 = rank++;
+                    break;
+                case PLAYERTWO:
+                    rankofPlayer2 = rank++;
+                    break;
+                case PLAYERTHREE:
+                    rankofPlayer3 = rank++;
+                    break;
+                case PLAYERFOUR:
+                    rankofPlayer4 = rank++;
+                    break;
+                default:
+                    break;
             }
         }
     }

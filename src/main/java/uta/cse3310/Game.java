@@ -1,10 +1,7 @@
 package uta.cse3310;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
 
-// there are a lot of remnants from the tictactoe program incase they're needed later, will be removed otherwise
 public class Game {
 
     public PlayerType[][] Button;
@@ -66,36 +63,35 @@ public class Game {
             }
         }
     }
+
     public void diagonal(int i, int j, int k, int l, PlayerType PlayerIdx) {
         if (i < k && j > l) {
-            for (int a = i, b = j; a<=k;) {
+            for (int a = i, b = j; a <= k;) {
                 Button[b][a] = PlayerIdx;
                 a++;
                 b--;
             }
-        } 
-        else if (i > k && j > l) {
-            for (int a = i, b = j; a>=k;) {
+        } else if (i > k && j > l) {
+            for (int a = i, b = j; a >= k;) {
                 Button[b][a] = PlayerIdx;
                 a--;
                 b--;
             }
-        }
-        else if (i < k && j < l) {
-            for (int a = i, b = j; a<=k;) {
+        } else if (i < k && j < l) {
+            for (int a = i, b = j; a <= k;) {
                 Button[b][a] = PlayerIdx;
                 a++;
                 b++;
             }
-        }
-        else if (i > k && j < l) {
-            for (int a = i, b = j; a>=k;) {
+        } else if (i > k && j < l) {
+            for (int a = i, b = j; a >= k;) {
                 Button[b][a] = PlayerIdx;
                 a--;
                 b++;
             }
         }
     }
+
     public void vertical(int i, int j, int k, int l, PlayerType PlayerIdx) {
         if (j > l && i == k) {
             for (int e = l; e <= j; e++) {
@@ -107,6 +103,7 @@ public class Game {
             }
         }
     }
+
     public void horizontal(int i, int j, int k, int l, PlayerType PlayerIdx) {
         // horizontal word
         if (i > k && j == l) {
@@ -114,7 +111,7 @@ public class Game {
                 Button[j][e] = PlayerIdx;
             }
         } else if (k > i && j == l) {
-            for (int f = i; f <= k; f++){
+            for (int f = i; f <= k; f++) {
                 Button[j][f] = PlayerIdx;
             }
         }

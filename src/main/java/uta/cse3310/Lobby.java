@@ -1,15 +1,13 @@
 package uta.cse3310;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Lobby {
-     private ArrayList<Game> activeGames = new ArrayList<>();
-    private int gameId = 1;
+    private ArrayList<Game> activeGames = new ArrayList<>();
     public String name;
     PlayerType playeridx;
     boolean status;
-    
+
     public Game createGame() {
         Game game = new Game();
         activeGames.add(game);
@@ -21,13 +19,13 @@ public class Lobby {
         game.players.add(playerName);
         return game;
     }
-     
-     public ArrayList<Game> getActiveGames() {
+
+    public ArrayList<Game> getActiveGames() {
         return activeGames;
     }
-    
+
     public boolean startGame(Game game) {
-        if(game.players.size() >= 2) {
+        if (game.players.size() >= 2) {
             game.state = GameState.PLAYING;
             return true;
         }

@@ -1,26 +1,16 @@
 package uta.cse3310;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
-import java.io.File;
 
 import org.java_websocket.WebSocket;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Vector;
 
 import com.google.gson.Gson;
@@ -61,10 +51,14 @@ public class App extends WebSocketServer {
     ServerEvent E = new ServerEvent();
     Game G = null;
     for (Game i : ActiveGames) {
-      if (i.player == uta.cse3310.PlayerType.PLAYERONE) G = i; 
-      else if (i.player == uta.cse3310.PlayerType.PLAYERTWO) G = i;
-      else if (i.player == uta.cse3310.PlayerType.PLAYERTHREE) G = i;
-      else if (i.player == uta.cse3310.PlayerType.PLAYERFOUR) G = i;
+      if (i.player == uta.cse3310.PlayerType.PLAYERONE)
+        G = i;
+      else if (i.player == uta.cse3310.PlayerType.PLAYERTWO)
+        G = i;
+      else if (i.player == uta.cse3310.PlayerType.PLAYERTHREE)
+        G = i;
+      else if (i.player == uta.cse3310.PlayerType.PLAYERFOUR)
+        G = i;
     }
 
     if (G == null) {
@@ -129,13 +123,13 @@ public class App extends WebSocketServer {
     game.start = U.start;
     if (U.playing == true)
       game.Update(U);
-    else if (c.chatstatus == true)//add
-      c.chatbox(game, c.word);//add //
-    else if (lobby.status == true){//add
-        game = lobby.joinGame(game, lobby.name);
-        game.PlayerName = lobby.name;
-        c.assignidx(lobby,game);//add
-      }
+    else if (c.chatstatus == true)// add
+      c.chatbox(game, c.word);// add //
+    else if (lobby.status == true) {// add
+      game = lobby.joinGame(game, lobby.name);
+      game.PlayerName = lobby.name;
+      c.assignidx(lobby, game);// add
+    }
 
     String jsonString;
     jsonString = gson.toJson(game);
