@@ -115,8 +115,8 @@ public class App extends WebSocketServer {
   public void onClose(WebSocket conn, int code, String reason, boolean remote) {
     System.out.println(conn + " has closed");
     // Retrieve the game tied to the websocket connection
-    Game G = conn.getAttachment();
-    G = null;
+    // Game G = conn.getAttachment();
+    // G = null;
   }
 
   @Override

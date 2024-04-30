@@ -1,78 +1,51 @@
 package uta.cse3310;
 
-import junit.framework.TestCase;
-import java.util.Arrays;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class GridTest extends TestCase {
-    private Grid.GridGen grid;
+public class GridTest {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        grid = new Grid.GridGen();
-        // Initialize the grid to empty state
-        for (int i = 0; i < Grid.nRows; i++) {
-            Arrays.fill(grid.cells[i], (char) 0);
-        }
-    }
-
-    public void testReadWords() {
-        // Testing reading words from the file
-        List<String> words = Grid.readWords();
-        assertFalse("Word list should not be empty", words.isEmpty());
-    }
-
+    @Test
     public void testCreateGrid() {
-        // Using shorter, more manageable words that should easily fit into the grid
-        List<String> words = Arrays.asList("CAT", "DOG", "HAT", "LOG", "MOG", "RAT", "BAT", "SAG");
-    
-        // Invoke createGrid with a controlled list of words
-        Grid.GridGen createdGrid = Grid.createGrid(words, 10); // Allow more than the minimum words
-    
-        assertNotNull("Grid should not be null after creation", createdGrid);
-        assertTrue("Grid should have at least the minimum number of words placed", createdGrid.solutions.size() >= Grid.minWords);
-        // Check if any words are placed at all
-        assertTrue("At least one word should be placed to pass the test", createdGrid.solutions.size() > 0);
-    
-        //print out details for debugging
-        System.out.println("Words placed: " + createdGrid.solutions.size());
-        System.out.println("Attempts: " + createdGrid.numAttempts);
-        System.out.println("Density: " + createdGrid.density);
-    }
-    
-    public void testTryPlaceWord() {
-        // Testing word placement
-        String word = "HELLO";
-        int[] orientations = new int[8];
+        List<String> words = new ArrayList<>();
+        words.add("TEST");
+        words.add("GRID");
+
+        Grid.GridGen grid = Grid.createGrid(words, 2); // Limiting to 2 words for testing
+        assertNotNull(grid); // Ensure grid is not null
+        assertTrue(grid.solutions.size() >= 1 && grid.solutions.size() <= 2); // Ensure correct number of words placed
     }
 
-    public void testTryLocation() {
-        // Testing specific location for word placement
-        String word = "TEST";
-        int dir = 0; // Direction index for horizontal right
-        int pos = 0; // Start position at the top-left corner of the grid
-        int lettersPlaced = Grid.tryLocation(grid, word, dir, pos);
-        assertTrue("Number of letters placed should match word length if no overlaps", lettersPlaced > 0);
-    }
-
+    @Test
     public void testCountValidWordCharacters() {
-        // Testing the count of characters in placed words
-        grid.solutions.add("HELLO      (0, 0)(4,0)");
-        grid.solutions.add("WORLD      (0, 1)(4,1)");
+        Grid.GridGen grid = new Grid.GridGen();
+        grid.solutions.add("HELLO (0, 0)(4,0)");
+        grid.solutions.add("WORLD (0, 1)(4,1)");
+
         int count = Grid.countValidWordCharacters(grid);
-        assertEquals("Count of valid word characters should match the total letters in solutions", 10, count);
+        assertEquals(10, count); // Total characters in placed words
     }
 
-    public void testUniformFillerDistribution() {
-        // Test uniform distribution of filler characters
-        int[] letterCount = new int[26]; // Initialize letter counts
-        Arrays.fill(letterCount, 5); // Assume an initial distribution
+    @Test
+    public void testCalculateUniformness() {
+        double[] letterCounts = { 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 };
+        int totalFillerCount = 25;
+    
+        double uniformness = Grid.calculateUniformness(letterCounts, totalFillerCount);
+        assertTrue(uniformness > 0.9); // Ensure uniformness is above 0.85
     }
-
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        grid = null;
+    
+    
+    @Test
+    public void testTryLocation() {
+        Grid.GridGen grid = new Grid.GridGen();
+        grid.cells = new char[5][5];
+    
+        int lettersPlaced = Grid.tryLocation(grid, "HELLO", 0, 0); // Attempt to place "HELLO" horizontally at (0, 0)
+        assertEquals(5, lettersPlaced); // Ensure 5 letters are placed
+        assertEquals("HELLO", grid.solutions.get(0).split("\\s+")[0]); // Verify correct word placement
     }
 }

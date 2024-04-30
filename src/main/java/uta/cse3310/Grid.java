@@ -42,6 +42,7 @@ public class Grid {
     static final Random RANDOM = new Random();
     static final int ALPHABET_SIZE = 26;
 
+    /* 
     public static void main(String[] args) {
 
         long startTime = System.currentTimeMillis();
@@ -52,6 +53,7 @@ public class Grid {
                 " milliseconds");
 
     }
+    */
 
     public static List<String> readWords() {
         int maxLength = Math.max(nRows, nCols);
@@ -210,7 +212,6 @@ public class Grid {
     }
 
     // print
-    // print
     static void printResult(GridGen grid) {
         if (grid == null || grid.numAttempts == 0) {
             System.out.println("No grid to display");
@@ -310,11 +311,10 @@ public class Grid {
     }
 
     static void fillEmptyCells(GridGen grid) {
-        for (int r = 0; r < nRows; r++) {
-            for (int c = 0; c < nCols; c++) {
+        for (int r = 0; r < grid.cells.length; r++) { // Iterate over rows
+            for (int c = 0; c < grid.cells[r].length; c++) { // Iterate over columns in each row
                 if (grid.cells[r][c] == 0) {
-                    grid.cells[r][c] = (char) ('A' + RANDOM.nextInt(ALPHABET_SIZE)); // Fill empty cells with random
-                                                                                     // letters
+                    grid.cells[r][c] = (char) ('A' + RANDOM.nextInt(ALPHABET_SIZE)); // Fill empty cells with random letters
                 }
             }
         }

@@ -10,7 +10,7 @@ public class Statistics {
     private Integer winsbyPlayer4;
     private Integer tieGames;
     private Integer activeGames;
-    private Integer scoreTotal;
+    // private Integer scoreTotal;
     private Integer rankofPlayer1;
     private Integer rankofPlayer2;
     private Integer rankofPlayer3;
@@ -27,7 +27,7 @@ public class Statistics {
         rankofPlayer2 = 0;
         rankofPlayer3 = 0;
         rankofPlayer4 = 0;
-        scoreTotal = 0;
+        // scoreTotal = 0;
     }
 
     public Integer getWinsForPlayer(PlayerType player) {
@@ -96,7 +96,7 @@ public class Statistics {
     }
 
     public void setScoreTotal(Integer score) {
-        scoreTotal = score;
+        // scoreTotal = score;
         updatePlayerRanks();
     }
 
