@@ -139,7 +139,6 @@ public class Game {
     //}
     
 
-
     //LEADERBOARD
     //private boolean isWordValid(String selectedWord) {
         // Check if the selected word is present in the word bank
