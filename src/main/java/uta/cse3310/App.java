@@ -122,7 +122,11 @@ public class App extends WebSocketServer {
   @Override
   public void onMessage(WebSocket conn, String message) {
     System.out.println(conn + ": " + message);
-
+    
+    //if (message.startsWith("POINTS_EARNED")) {
+          // Handle points earned message
+     // }
+  
     // Bring in the data from the webpage
     // A UserEvent is all that is allowed at this point
     GsonBuilder builder = new GsonBuilder();
@@ -152,9 +156,21 @@ public class App extends WebSocketServer {
 
   @Override
   public void onMessage(WebSocket conn, ByteBuffer message) {
-    System.out.println(conn + ": " + message);
+      // Convert ByteBuffer to string
+      //String messageString = new String(message.array(), StandardCharsets.UTF_8);
+      System.out.println(conn + ": " + messageString);
+      
+     // String[] parts = messageString.split(" ");
+      //if (parts.length >= 3 && parts[0].equals("SELECT_WORD")) {
+          //String selectedWord = parts[1];
+          //PlayerType playerType = PlayerType.valueOf(parts[2]);
+          // Call the selectWord method on the game instance
+         // game.selectWord(selectedWord, playerType);
+     // }
 
+      // Other message handling logic...
   }
+
 
   @Override
   public void onError(WebSocket conn, Exception ex) {
