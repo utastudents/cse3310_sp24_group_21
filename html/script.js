@@ -14,7 +14,7 @@ var p3i, p3j, p4i, p4j = 0;
 var count = 0;
 var timerInterval;
 var timerDisplay = document.getElementById('timerDisplay');
-var timerSeconds = 180; // 7 minutes
+var timerSeconds = 420; // 7 minutes
 class Chat {
     word = null;
     playeridx = null;

@@ -125,5 +125,53 @@ public class Game {
             }
         }
     }
+      //public void selectWord(String selectedWord, PlayerType playerType) {
+        //System.out.println("Selected word: " + selectedWord);
+        // Check if the selected word is valid
+       // if (isWordValid(selectedWord)) {
+            // Calculate points based on the length of the word
+           // int wordLength = selectedWord.length();
+            //int points = calculatePoints(wordLength);
+            //System.out.println("Points earned: " + points);
+            // Add points to the player's score in the leaderboard
+           // addToLeaderboard(playerType.toString(), points);
+        //}
+    //}
+    
+
+
+    //LEADERBOARD
+    //private boolean isWordValid(String selectedWord) {
+        // Check if the selected word is present in the word bank
+       // boolean isWordInWordBank = gameWords.contains(selectedWord);
+        
+        // Check if the selected word has not already been found (crossed out)
+       // boolean isWordNotAlreadyFound = !foundwords.contains(selectedWord);
+        
+        // Return true only if the word is in the word bank, has not already been found,
+        // and meets the Wordle game rules (e.g., matches the length of the target word)
+        //return isWordInWordBank && isWordNotAlreadyFound && matchesTargetWord(selectedWord);
+    //}
+    
+    //private boolean matchesTargetWord(String selectedWord) {
+        // Check if the selected word matches the target word (for simplicity, let's assume a fixed target word)
+        //String targetWord = gameWords.get(0); // Assuming the first word in the word bank is the target word
+        //return selectedWord.equalsIgnoreCase(targetWord);
+    //}
+    
+    //private int calculatePoints(int wordLength) {
+        // Points can be calculated based on the length of the word
+        //return wordLength;
+//}
+    
+    //private void addToLeaderboard(String playerName, int points) {
+        // Add the points to the player's score in the leaderboard
+       // leaderBoard.addScore(playerName, points);
+    //}
+    
+    
+
+
+    
 
 }

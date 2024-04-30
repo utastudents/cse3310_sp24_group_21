@@ -32,6 +32,18 @@ public class App extends WebSocketServer {
   // List<String> solutions = new ArrayList<>();
   // }
 
+    //public void updateLeaderboard(String playerName, int points) {
+    //leaderboard.addScore(playerName, points);
+    //broadcastUpdatedLeaderboard();
+//}
+
+//private void broadcastUpdatedLeaderboard() {
+  //List<Leaderboard.PlayerScore> highScores = leaderboard.getHighScores();
+ // Gson gson = new Gson();
+ // String leaderboardJson = gson.toJson(highScores);
+  //broadcast(leaderboardJson);
+//}
+
   public App(int port) {
     super(new InetSocketAddress(port));
   }
@@ -110,7 +122,11 @@ public class App extends WebSocketServer {
   @Override
   public void onMessage(WebSocket conn, String message) {
     System.out.println(conn + ": " + message);
-
+    
+    //if (message.startsWith("POINTS_EARNED")) {
+          // Handle points earned message
+     // }
+  
     // Bring in the data from the webpage
     // A UserEvent is all that is allowed at this point
     GsonBuilder builder = new GsonBuilder();
@@ -138,11 +154,13 @@ public class App extends WebSocketServer {
 
   }
 
-  @Override
+@Override
   public void onMessage(WebSocket conn, ByteBuffer message) {
+    
     System.out.println(conn + ": " + message);
 
   }
+
 
   @Override
   public void onError(WebSocket conn, Exception ex) {
