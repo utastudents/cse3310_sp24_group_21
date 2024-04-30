@@ -126,29 +126,4 @@ public class Game {
         }
     }
 
-    // public void Update(UserEvent U) {
-    // if ((CurrentTurn == U.PlayerIdx) && (CurrentTurn == PlayerType.PLAYERONE ||
-    // CurrentTurn == PlayerType.PLAYERTWO)) {
-    // // Move is legitimate, lets do what was requested
-
-    // // Is the button not taken by X or O?
-    // if (Button[U.Button] == PlayerType.NOPLAYER) {
-    // System.out.println("the button was 0, setting it to" + U.PlayerIdx);
-    // Button[U.Button] = U.PlayerIdx;
-    // if (U.PlayerIdx == PlayerType.PLAYERTWO) {
-    // CurrentTurn = PlayerType.PLAYERONE;
-    // Msg[1] = "Other Players Move.";
-    // Msg[0] = "Your Move.";
-    // } else {
-    // CurrentTurn = PlayerType.PLAYERTWO;
-    // Msg[0] = "Other Players Move.";
-    // Msg[1] = "Your Move.";
-    // }
-    // } else {
-    // Msg[PlayerToIdx(U.PlayerIdx)] = "Not a legal move.";
-    // }
-    // }
-
-    // }
-
 }
