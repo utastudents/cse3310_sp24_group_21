@@ -16,7 +16,7 @@ public class Game {
     public ArrayList<String> foundwords = new ArrayList<>();
     public ArrayList<String> chat = new ArrayList<>();
     public ArrayList<String> chatplayers = new ArrayList<>();
-    public GameState state = GameState.LOBBY;
+    public GameState state = GameState.LOBBY;z
     PlayerType player;
     public int playerNum;
     boolean start;
@@ -138,6 +138,7 @@ public class Game {
         //}
     //}
     
+
 
     //LEADERBOARD
     //private boolean isWordValid(String selectedWord) {
