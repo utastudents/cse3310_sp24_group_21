@@ -321,29 +321,39 @@ function updateLobbyStatus(players) {
         });
     } 
 }
+
+var playerCounter = 1; 
+var playerNames = []; 
+
 function joinLobby() {
-    var name = document.getElementById("name").value;
-    if (name.trim() !== "") {
-        // var msg = {
-        //      "Action": "JOIN_LOBBY",
-        //      "PlayerName": name
-        // };
-        lobby = new Lobby;
-        lobby.name = name;
-        if (id == 0)
-        lobby.playeridx = "PLAYERONE";
-        else if (id == 1)
-        lobby.playeridx = "PLAYERTWO";
-        else if (id == 2)
-        lobby.playeridx = "PLAYERTHREE";
-        else if (id == 3)
-        lobby.playeridx = "PLAYERFOUR";
-        lobby.status = true; 
-        // connection.send(JSON.stringify(msg));
-        connection.send(JSON.stringify(lobby));
-        inLobby = true;
+    var name = document.getElementById("name").value.trim();
+    var uniqueName = name;
+    
+    if (playerNames.includes(uniqueName)) {
+        alert("Name is already taken. Please choose a different name.");
+        return;
     }
+
+    playerNames.push(uniqueName);
+    playerCounter++;
+    
+    lobby = new Lobby;
+    lobby.name = uniqueName;
+    if (id == 0)
+    lobby.playeridx = "PLAYERONE";
+    else if (id == 1)
+    lobby.playeridx = "PLAYERTWO";
+    else if (id == 2)
+    lobby.playeridx = "PLAYERTHREE";
+    else if (id == 3)
+    lobby.playeridx = "PLAYERFOUR";
+    lobby.status = true; 
+    connection.send(JSON.stringify(lobby));
+    inLobby = true;
 }
+
+
+
 function startTimer() {
     timerInterval = setInterval(updateTimer, 1000);
 }
