@@ -324,16 +324,13 @@ function updateLobbyStatus(players) {
 
 var playerCounter = 1; 
 var playerNames = []; 
-
 function joinLobby() {
     var name = document.getElementById("name").value.trim();
     var uniqueName = name;
-    
     if (playerNames.includes(uniqueName)) {
         alert("Name is already taken. Please choose a different name.");
         return;
     }
-
     playerNames.push(uniqueName);
     playerCounter++;
     
@@ -351,8 +348,6 @@ function joinLobby() {
     connection.send(JSON.stringify(lobby));
     inLobby = true;
 }
-
-
 
 function startTimer() {
     timerInterval = setInterval(updateTimer, 1000);
