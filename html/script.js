@@ -47,7 +47,15 @@ connection.onclose = function (evt) {
     console.log("close");
     document.getElementById("topMessage").innerHTML = "Server Offline";
 }
-
+fetchVersionAndUpdateTitle();
+function fetchVersionAndUpdateTitle() {
+    fetch('/api/version')
+      .then(response => response.text())
+      .then(version => {
+          document.title = `${version}`;  
+      })
+      .catch(error => console.error('Failed to fetch version:', error));
+  }
 connection.onmessage = function (evt) {
     var msg = evt.data;
     console.log("Message received: " + msg);
