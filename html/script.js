@@ -396,19 +396,7 @@ function startGame() {
         startTimer(); // Start the timer only if it's not already running
     }
 
-    // Populate the leaderboard with player names
-    // var leaderboardList = document.getElementById("leaderboardList");
-    // leaderboardList.innerHTML = ""; // Clear existing leaderboard entries
-
-    // // Get player names from the lobby and add them to the leaderboard
-    // var playersDiv = document.getElementById("players");
-    // var playerNames = playersDiv.getElementsByTagName("div");
-    // for (var i = 0; i < playerNames.length; i++) {
-    //     var playerName = playerNames[i].textContent;
-    //     var listItem = document.createElement("li");
-    //     listItem.textContent = playerName;
-    //     leaderboardList.appendChild(listItem);
-    // }
+    
 
     // Clear the top message
     document.getElementById("topMessage").innerHTML = "";
