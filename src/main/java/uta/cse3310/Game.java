@@ -12,6 +12,7 @@ public class Game {
     public ArrayList<String> foundwords = new ArrayList<>();
     public ArrayList<String> chat = new ArrayList<>();
     public ArrayList<String> chatplayers = new ArrayList<>();
+    public ArrayList<String> scores = new ArrayList<>();
     public GameState state = GameState.LOBBY;
     PlayerType player;
     public int playerNum;
@@ -20,7 +21,7 @@ public class Game {
         Button = new PlayerType[20][20];
         ResetBoard();
     }
-    public void Update(UserEvent U) {
+    public void Update(UserEvent U,Game game) {
         int i, j, k, l;
         String delim = "[,]+";
         for (String s : sol) {
@@ -35,9 +36,13 @@ public class Game {
             l = Integer.valueOf(d);
             if (U.i == i && U.j == j && U.k == k && U.l == l && Button[U.i][U.j] == PlayerType.NOPLAYER
                     && Button[U.k][U.l] == PlayerType.NOPLAYER) {
-                horizontal(i, j, k, l, U.PlayerIdx);
-                vertical(i, j, k, l, U.PlayerIdx);
-                diagonal(i, j, k, l, U.PlayerIdx);
+                        LeaderBoard board = new LeaderBoard();
+                        if (horizontal(i, j, k, l, U.PlayerIdx) != 0) 
+                            board.addScore(U.PlayerIdx,game,horizontal(i, j, k, l, U.PlayerIdx));
+                        if (vertical(i, j, k, l, U.PlayerIdx) != 0)
+                        board.addScore(U.PlayerIdx,game,vertical(i, j, k, l, U.PlayerIdx));
+                        if (diagonal(i, j, k, l, U.PlayerIdx) != 0)
+                        board.addScore(U.PlayerIdx,game,diagonal(i, j, k, l, U.PlayerIdx));
                 for (String words : findword) {
                     String[] word = words.split(delim);
                     String removedWord = word[0];
@@ -56,55 +61,55 @@ public class Game {
             }
         }
     }
-    public void diagonal(int i, int j, int k, int l, PlayerType PlayerIdx) {
+    public int diagonal(int i, int j, int k, int l, PlayerType PlayerIdx) {
         if (i < k && j > l) {
             for (int a = i, b = j; a <= k;) {
                 Button[b][a] = PlayerIdx;
                 a++;
                 b--;
-            }
+            }return k-i+1;
         } else if (i > k && j > l) {
             for (int a = i, b = j; a >= k;) {
                 Button[b][a] = PlayerIdx;
                 a--;
                 b--;
-            }
+            }return i-k+1;
         } else if (i < k && j < l) {
             for (int a = i, b = j; a <= k;) {
                 Button[b][a] = PlayerIdx;
                 a++;
                 b++;
-            }
+            }return k-i+1;
         } else if (i > k && j < l) {
             for (int a = i, b = j; a >= k;) {
                 Button[b][a] = PlayerIdx;
                 a--;
                 b++;
-            }
-        }
+            } return i-k+1;
+        }return 0;
     }
-    public void vertical(int i, int j, int k, int l, PlayerType PlayerIdx) {
+    public int vertical(int i, int j, int k, int l, PlayerType PlayerIdx) {
         if (j > l && i == k) {
             for (int e = l; e <= j; e++) {
                 Button[e][i] = PlayerIdx;
-            }
+            }return j-l+1;
         } else if (l > j && i == k) {
             for (int f = j; f <= l; f++) {
                 Button[f][i] = PlayerIdx;
-            }
-        }
+            }return l-j+1;
+        }return 0;
     }
-    public void horizontal(int i, int j, int k, int l, PlayerType PlayerIdx) {
+    public int horizontal(int i, int j, int k, int l, PlayerType PlayerIdx) {
         // horizontal word
         if (i > k && j == l) {
             for (int e = k; e <= i; e++) {
                 Button[j][e] = PlayerIdx;
-            }
+            } return i-k+1;
         } else if (k > i && j == l) {
             for (int f = i; f <= k; f++) {
                 Button[j][f] = PlayerIdx;
-            }
-        }
+            } return k-i+1;
+        }return 0;
     }
     public void ResetBoard() {
         // initializes the board to NOPLAYER in all spots

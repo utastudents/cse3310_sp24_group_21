@@ -23,6 +23,7 @@ public class App extends WebSocketServer {
   // the vector ActiveGames
   Vector<Game> ActiveGames = new Vector<Game>();
   // Vector<Game> players = new Vector<Game>();
+  LeaderBoard l = new LeaderBoard();
   List<String> words = new ArrayList<>();
 
   int GameId = 0;
@@ -138,13 +139,14 @@ public class App extends WebSocketServer {
     Game game = conn.getAttachment();
     game.start = U.start;
     if (U.playing == true)
-      game.Update(U);
+      game.Update(U,game);
     else if (c.chatstatus == true)// add
       c.chatbox(game, c.word);// add //
     else if (lobby.status == true) {// add
       game = lobby.joinGame(game, lobby.name);
       game.PlayerName = lobby.name;
       c.assignidx(lobby, game);// add
+      l.setPlayer(lobby, 0,game);  
     }
 
     String jsonString;

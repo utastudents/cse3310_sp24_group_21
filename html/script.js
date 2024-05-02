@@ -161,6 +161,9 @@ connection.onmessage = function (evt) {
     if ('chat' in obj) {//add
         chatbox(obj.chat);
     }
+    if ('scores' in obj) {
+        leaderboard(obj.scores);
+    }
 }
 function addChat() {
     var addword = document.getElementById("chat-box").value;
@@ -394,18 +397,18 @@ function startGame() {
     }
 
     // Populate the leaderboard with player names
-    var leaderboardList = document.getElementById("leaderboardList");
-    leaderboardList.innerHTML = ""; // Clear existing leaderboard entries
+    // var leaderboardList = document.getElementById("leaderboardList");
+    // leaderboardList.innerHTML = ""; // Clear existing leaderboard entries
 
-    // Get player names from the lobby and add them to the leaderboard
-    var playersDiv = document.getElementById("players");
-    var playerNames = playersDiv.getElementsByTagName("div");
-    for (var i = 0; i < playerNames.length; i++) {
-        var playerName = playerNames[i].textContent;
-        var listItem = document.createElement("li");
-        listItem.textContent = playerName;
-        leaderboardList.appendChild(listItem);
-    }
+    // // Get player names from the lobby and add them to the leaderboard
+    // var playersDiv = document.getElementById("players");
+    // var playerNames = playersDiv.getElementsByTagName("div");
+    // for (var i = 0; i < playerNames.length; i++) {
+    //     var playerName = playerNames[i].textContent;
+    //     var listItem = document.createElement("li");
+    //     listItem.textContent = playerName;
+    //     leaderboardList.appendChild(listItem);
+    // }
 
     // Clear the top message
     document.getElementById("topMessage").innerHTML = "";
@@ -415,6 +418,19 @@ function startGame() {
     gamePlayersDiv.innerHTML = "";
     for (var i = 0; i < playerNames.length; i++) {
         gamePlayersDiv.innerHTML += "<div>" + playerNames[i].textContent + "</div>";
+    }
+}
+function leaderboard(playerScore) {
+    var leaderboardList = document.getElementById("leaderboardList");
+    leaderboardList.innerHTML = ""; // Clear existing leaderboard entries
+
+    // Get player names from the lobby and add them to the leaderboard
+    // var playersDiv = document.getElementById("players");
+    // var playerNames = playersDiv.getElementsByTagName("div");
+    for (var i = 0; i < playerScore.length; i++) {
+        var listItem = document.createElement("li");
+        listItem.textContent = playerScore[i];
+        leaderboardList.appendChild(listItem);
     }
 }
 

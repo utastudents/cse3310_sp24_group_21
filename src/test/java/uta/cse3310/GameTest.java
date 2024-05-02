@@ -29,7 +29,7 @@ public class GameTest extends TestCase {
     public void testHorizontalPlacement() {
         // Simulate a valid horizontal word placement by the player
         UserEvent ue = new UserEvent(0, 0, 0, 0, null);
-        game.Update(ue);
+        game.Update(ue,game);
         for (int i = 0; i <= 4; i++) {
             assertEquals("Expected NOPLAYER at position", PlayerType.NOPLAYER, game.Button[0][i]);
         }
@@ -38,7 +38,7 @@ public class GameTest extends TestCase {
     public void testVerticalPlacement() {
         // Simulate a valid vertical word placement by the player
         UserEvent ue = new UserEvent(5, 2, 5, 6, PlayerType.NOPLAYER);
-        game.Update(ue);
+        game.Update(ue,game);
         for (int j = 2; j <= 6; j++) {
             assertEquals("Expected NOPLAYER at position", PlayerType.NOPLAYER, game.Button[j][5]);
         }
@@ -47,7 +47,7 @@ public class GameTest extends TestCase {
     public void testDiagonalPlacement() {
         // Test a forward diagonal (top left to bottom right)
         UserEvent ue = new UserEvent(3, 3, 6, 6, PlayerType.NOPLAYER);
-        game.Update(ue);
+        game.Update(ue,game);
         int k = 3;
         for (int i = 3; i <= 6; i++) {
             assertEquals("Expected NOPLAYER at diagonal position", PlayerType.NOPLAYER, game.Button[k][i]);
