@@ -412,9 +412,7 @@ function leaderboard(playerScore) {
     var leaderboardList = document.getElementById("leaderboardList");
     leaderboardList.innerHTML = ""; // Clear existing leaderboard entries
 
-    // Get player names from the lobby and add them to the leaderboard
-    // var playersDiv = document.getElementById("players");
-    // var playerNames = playersDiv.getElementsByTagName("div");
+  
     for (var i = 0; i < playerScore.length; i++) {
         var listItem = document.createElement("li");
         listItem.textContent = playerScore[i];
