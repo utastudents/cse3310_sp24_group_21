@@ -1,8 +1,6 @@
 package uta.cse3310;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 public class LeaderBoard {
     public ArrayList<String> scores = new ArrayList<>();

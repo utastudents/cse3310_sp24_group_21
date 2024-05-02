@@ -11,7 +11,6 @@
 
 <body>
     
-    
     <div class="chat-container">
         <div class="chat-header">
             <h2>Chat</h2>
@@ -23,42 +22,32 @@
         </div>
     </div> 
 
-    
-
-
     <div id="word-bank" style="display:none;">
-        <p style="text-align: center">
-        </p>
+        <p style="text-align: center"></p>
     </div>
     <div id="container">
         <div id="header">Word Search Game</div>
         <div id="lobby">
             <label for="name">Enter your name:</label>
             <input type="text" id="name" placeholder="Enter name">
-            <button onclick="joinLobby()">Join Lobby</button>
+            <button id="joinButton" onclick="joinLobby()">Join Lobby</button>
             <p id="lobbyStatus">Players in the lobby:</p>
             <div id="players"></div>
-
-
-
         </div>
 
         <div id="game">
             <p id="gameStatus">Game has started!</p>
-
-
             <table id="timerTable"
                 style="position: absolute; top: 20px; left: 20px; background-color: rgba(0, 0, 0, 0.7); color: #ffffff;">
                 <tr>
                     <td>Time Left: <span id="timerDisplay">5:00</span></td>
                 </tr>
             </table>
-
             <div id="gamePlayers"></div>
         </div>
         <table id="grid"></table>
 
-         <!-- Buttons container -->
+        <!-- Buttons container -->
         <div class="button-container">
             <button id="startButton" onclick="startGame()" style="display:none;">Start Game</button>
             <button id="rulesButton" onclick="showRules()">Rules</button>
@@ -86,13 +75,20 @@
         <label id="bottomMessage"></label>
     </div>
 
-
-
-</body>
-
-</html>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
+    <script>
+        function joinLobby() {
+            var nameInput = document.getElementById("name");
+            var playerName = nameInput.value.trim();
+            if (playerName !== "") {
+                nameInput.disabled = true; // Disable input after joining
+                document.getElementById("players").innerText = "Players in the lobby: " + playerName;
+                document.getElementById("joinButton").style.display = "none"; // Hide join button
+                document.getElementById("lobbyStatus").style.display = "none"; // Hide lobby status
+                document.getElementById("startButton").style.display = "block"; // Show start button
+            }
+        }
+    </script>
 </body>
 
 </html>
