@@ -399,10 +399,7 @@ function startGame() {
     
 
     // Clear the top message
-
-
-    
-    document.getElementById("topMessage").innerHTML = "";
+     document.getElementById("topMessage").innerHTML = "";
 
     // Display the players' names side by side
     var gamePlayersDiv = document.getElementById("gamePlayers");
